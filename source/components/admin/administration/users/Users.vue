@@ -45,7 +45,6 @@ export default {
     mounted() {
         this.newAppName = this.appName
         this.$store.dispatch( 'setLocation', 'users' )
-        this.$store.dispatch('setSearchField', 'email')
     },
     destroyed() {
         this.$store.dispatch( 'setLocation', '' )

@@ -126,8 +126,7 @@ export default {
         }
     },
     mounted() {
-        this.$store.dispatch( 'setLocation', 'tasks' ),
-        this.$store.dispatch('setSearchField', 'title')
+        this.$store.dispatch( 'setLocation', 'tasks' )
     },
     destroyed() {
         this.$store.dispatch( 'setLocation', '' )

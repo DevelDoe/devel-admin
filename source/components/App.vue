@@ -62,6 +62,9 @@
                     <li v-if="logged.applications.indexOf('notes') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('notes') }">
                         <a href="/#/admin/notes"> Notes </a>
                     </li>
+                    <li v-if="logged.applications.indexOf('blog') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('blog') }">
+                        <a href="/#/admin/blog"> Blog </a>
+                    </li>
 
                     <li class="nav-caption">Administration</li>
                     <li v-if="logged.administrations.indexOf('data') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('data') }">

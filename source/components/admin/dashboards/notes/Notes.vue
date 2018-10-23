@@ -87,7 +87,6 @@ export default {
     },
     mounted() {
         this.$store.dispatch( 'setLocation', 'notes' )
-        this.$store.dispatch('setSearchField', 'title')
     },
     destroyed() {
         this.$store.dispatch( 'setLocation', '' )

@@ -19,7 +19,6 @@ const store = new Vux.Store({
         appName: 'DevelStrap VueJS',
         token: '',
         location: 'home',
-        searchField: '',
         showSearch: false,
         tasks: [],
         resources: null,
@@ -32,7 +31,6 @@ const store = new Vux.Store({
         appName        : state => { return state.appName },
         token          : state => { return state.token },
         location       : state => { return state.location },
-        searchField    : state => { return state.searchField },
         showSearch     : state => { return state.showSearch },
         tasks          : state => { return state.tasks },
         resources      : state => { return state.resources },
@@ -46,7 +44,6 @@ const store = new Vux.Store({
         setToken       : ( state, payload ) => { state.token = payload },
         delToken       : ( state )          => { state.token = '' },
         setLocation    : ( state, payload ) => { state.location = payload },
-        setSearchField : ( state, payload ) => { state.searchField = payload },
         toggleSearch   : ( state )          => { state.showSearch = !state.showSearch },
 
         setTasks       : ( state, payload ) => { state.tasks = payload },
@@ -75,7 +72,6 @@ const store = new Vux.Store({
         setToken       : ( ctx, payload )   => { ctx.commit( 'setToken', payload ) },
         delToken       : ( ctx, payload )   => { ctx.commit( 'delToken', payload ) },
         setLocation    : ( ctx, payload )   => { ctx.commit( 'setLocation', payload ) },
-        setSearchField : ( ctx, payload )   => { ctx.commit( 'setSearchField', payload ) },
         toggleSearch   : ( ctx )            => { ctx.commit( 'toggleSearch') },
 
         setTasks       : ( ctx, payload )   => { ctx.commit( 'setTasks', payload ) },

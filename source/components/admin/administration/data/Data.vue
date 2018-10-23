@@ -188,7 +188,6 @@ export default {
     mounted() {
         this.newAppName = this.appName
         this.$store.dispatch( 'setLocation', 'data' )
-        this.$store.dispatch('setSearchField', 'name')
     },
     destroyed() {
         this.$store.dispatch( 'setLocation', '' )

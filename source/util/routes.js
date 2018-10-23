@@ -8,12 +8,13 @@
  */
 
 import Portal   from '../components/site/portal/Portal.vue'
-import Overview from '../components/admin/dashboard/overview/Overview.vue'
-import Tasks    from '../components/admin/dashboard/tasks/Tasks.vue'
-import Notes    from '../components/admin/dashboard/notes/Notes.vue'
-import Data     from '../components/admin/setting/data/Data.vue'
-import Users    from '../components/admin/setting/users/Users.vue'
-import User     from '../components/admin/setting/users/User.vue'
+import Overview from '../components/admin/dashboards/overview/Overview.vue'
+import Tasks    from '../components/admin/dashboards/tasks/Tasks.vue'
+import Notes    from '../components/admin/dashboards/notes/Notes.vue'
+import Blog     from '../components/admin/dashboards/blog/Blog.vue'
+import Data     from '../components/admin/administration/data/Data.vue'
+import Users    from '../components/admin/administration/users/Users.vue'
+import User     from '../components/admin/administration/users/User.vue'
 
 import store from '../store/store'
 
@@ -35,37 +36,36 @@ export default [{
         component: Overview,
         name: 'overview',
         beforeEnter: authenticate
-    },
-    {
+    },{
         path: '/admin/tasks',
         component: Tasks,
         name: 'tasks',
         beforeEnter: authenticate
-    },
-    {
+    },{
         path: '/admin/notes',
         component: Notes,
         name: 'notes',
         beforeEnter: authenticate
-    },
-    {
+    }, {
+        path: '/admin/blog',
+        component: Blog,
+        name: 'blog',
+        beforeEnter: authenticate
+    },{
         path: '/admin/data',
         component: Data,
         name: 'data',
         beforeEnter: authenticate
-    },
-    {
+    },{
         path: '/admin/users',
         component: Users,
         name: 'users',
         beforeEnter: authenticate
-    },
-    {
+    },{
         path: '/admin/user',
         component: User,
         name: 'user'
-    },
-    {
+    },{
       path: '*',
       component: Portal,
       name: 'portal'

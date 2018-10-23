@@ -127,7 +127,7 @@ export default {
             valid: true,
             newPassword:'',
             sec_lvs:  { root: 0, admin: 1, owner: 2, operator: 3, super: 4, user: 5, pleab: 6, anonymous: 7, special: 8, guest: 9 },
-            apps: [ 'tasks', 'notes' ],
+            apps: [ 'tasks', 'notes', 'blog' ],
             admins: [ 'users', 'data' ],
             uploadedFile: {},
             currentStatus: null,
