@@ -390,8 +390,8 @@ export default {
     name: 'home',
     data() {
         return {
-            email: 'andreeray@live.com',
-            password: 'JI21ko87.'
+            email: 'guest@company.domain',
+            password: 'password'
         }
     },
     computed: {
