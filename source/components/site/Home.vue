@@ -19,7 +19,7 @@
                     </div>
                     <div class="modal-body text-center">
                         <form class="form-signin" id="loginForm" onsubmit="return false;">
-                            <h1>DevelStrap VueJS</h1>
+                            <h1>{{appName}}</h1>
                             <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
                             <label for="inputEmail" class="sr-only">Email address</label>
                             <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="" v-model="email">
@@ -83,14 +83,8 @@
                     <img src="../../assets/img/background.png" >
                     <div class="carousel-caption">
                         <h1 class="display-2">{{ appName }}</h1>
-                        <h3>starting point for your VueJS projects.</h3>
+                        <h3>fully featured administration application.</h3>
                     </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="../../assets/img/background2.png" >
-                </div>
-                <div class="carousel-item">
-                    <img src="../../assets/img/background3.png" >
                 </div>
             </div>
         </div>
@@ -99,10 +93,10 @@
         <div class="container-fluid">
             <div class="row jumbotron">
                 <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
-                    <p class="lead">This project can be used as a starting point for Vue web app development. It quickly straps all the needs for a complete Vue web app solution. Feel free to clone the repo over at GitHub</p>
+                    <p class="lead"> Its built with vue and holds all the core feature of a web administration application. </p>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-3 col-lg-9 col-xl-2">
-                    <a href="https://github.com/DevelDoe/devel-vue"><button type="button" class="btn btn-outline-secondary btn-lg">GitHub</button> </a>
+                    <a href="https://github.com/DevelDoe/devel-admin"><button type="button" class="btn btn-outline-secondary btn-lg">GitHub</button> </a>
                 </div>
             </div>
         </div>
@@ -209,7 +203,7 @@
                 <div class="col-md-12 col-lg-6">
                     <h2>Get Started...</h2>
                     <h4>Clone</h4>
-                    <code>git clone git@github.com:DevelDoe/devel-vue.git</code>
+                    <code>git clone git@github.com:DevelDoe/devel-admin.git</code>
                     <h4>Install</h4>
                     <code>npm install</code>
                     <h4>Build</h4>
@@ -298,7 +292,7 @@
                     </div>
                     <div class="col-lg-6">
                         <h3>Version 2.0 Full Stack</h3>
-                        <p>Version 2.0 has more features but rely heavely on a backend. Checkout develStrap backendAPI.</p>
+                        <p>Version 2.0 has more features but rely heavely on a backend. Checkout <a href="https://github.com/DevelDoe/develstrap-backend">develStrap backendAPI</a>.</p>
                         <div class="list-group">
                             <div  class="list-group-item list-group-item-action flex-column align-items-start">
                                 <div class="d-flex w-100 justify-content-between">
@@ -309,15 +303,22 @@
                             </div>
                             <div  class="list-group-item list-group-item-action flex-column align-items-start">
                                 <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">Todo</h5>
+                                    <h5 class="mb-1">Tasks</h5>
                                     <small>V2.1.2</small>
                                 </div>
-                                <p class="mb-1">Simple todo list for admin.</p>
+                                <p class="mb-1">Simple todo list.</p>
+                            </div>
+                            <div  class="list-group-item list-group-item-action flex-column align-items-start">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">Notes</h5>
+                                    <small>V2.1.3</small>
+                                </div>
+                                <p class="mb-1">Simple notes feature.</p>
                             </div>
                             <div  class="list-group-item list-group-item-action flex-column align-items-start">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1">Toaster</h5>
-                                    <small>V2.1.3</small>
+                                    <small>V2.1.4</small>
                                 </div>
                                 <p class="mb-1">Notification system.</p>
                             </div>
@@ -383,7 +384,7 @@
 </template>
 
 <script>
-
+import config from '../../../config'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -391,11 +392,12 @@ export default {
     data() {
         return {
             email: 'guest@company.domain',
-            password: 'password'
+            password: 'password',
+            appName: config.app_name
         }
     },
     computed: {
-        ...mapGetters([ 'appName', 'token', 'location', 'users' ])
+        ...mapGetters([ 'token', 'location', 'users' ])
     },
     methods: {
         isActiveNavItem: function( location ) {
