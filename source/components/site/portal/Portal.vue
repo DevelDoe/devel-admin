@@ -1,13 +1,5 @@
-<!--
-@Author: Andree Ray <andreeray>
-@Date:   2018-01-13T21:50:46+01:00
-@Email:  andreeray@live.com
-@Filename: Home.vue
-@Last modified by:   Morgan Andree Ray
-@Last modified time: 08-05-2018
--->
 <template>
-    <div id="home">
+    <div id="portal">
 
         <!-- Modal -->
         <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModallLabel" aria-hidden="true">
@@ -40,7 +32,7 @@
         </div>
 
 
-        <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top" id="home">
+        <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top" >
             <div class="container-fluid">
                 <a class="navbar-brand" href="#"> {{ appName }} </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
@@ -48,7 +40,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li @click="$store.dispatch( 'setLocation', 'home' )" :class="{ 'nav-item': true, active: isActiveNavItem('home') }">
+                        <li @click="$store.dispatch( 'setLocation', 'portal' )" :class="{ 'nav-item': true, active: isActiveNavItem('portal') }">
                             <a class="nav-link" href="#"> home </a>
                         </li>
                         <li @click="$store.dispatch( 'setLocation', 'stack' )" :class="{ 'nav-item': true, active: isActiveNavItem('stack') }">
@@ -80,7 +72,7 @@
             </ol>
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="../../assets/img/background.png" >
+                    <img src="../../../assets/img/background.png" >
                     <div class="carousel-caption">
                         <h1 class="display-2">{{ appName }}</h1>
                         <h3>fully featured administration application.</h3>
@@ -384,11 +376,11 @@
 </template>
 
 <script>
-import config from '../../../config'
+import config from '../../../../config'
 import { mapGetters } from 'vuex'
 
 export default {
-    name: 'home',
+    name: 'portal',
     data() {
         return {
             email: 'guest@company.domain',
@@ -447,7 +439,7 @@ export default {
         }
     },
     mounted() {
-        this.$store.dispatch( 'setLocation', 'home' )
+        this.$store.dispatch( 'setLocation', 'portal' )
     },
     destroyed() {
         this.$store.dispatch( 'setLocation', '' )
@@ -455,7 +447,7 @@ export default {
 }
 </script>
 <style lang="scss">
-#home {
+#portal {
 
     .form-signin {
         width: 100%;

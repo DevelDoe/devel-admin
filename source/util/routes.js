@@ -7,7 +7,7 @@
  * @Last modified time: 2018-01-18T21:26:42+01:00
  */
 
-import Home     from '../components/site/Home.vue'
+import Portal   from '../components/site/portal/Portal.vue'
 import Overview from '../components/admin/dashboard/overview/Overview.vue'
 import Tasks    from '../components/admin/dashboard/tasks/Tasks.vue'
 import Notes    from '../components/admin/dashboard/notes/Notes.vue'
@@ -67,7 +67,7 @@ export default [{
     },
     {
       path: '*',
-      component: Home,
-      name: 'home'
+      component: Portal,
+      name: 'portal'
     }
 ]

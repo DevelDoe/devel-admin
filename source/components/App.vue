@@ -48,8 +48,8 @@
                 <ul class="nav nav-stacked">
 
                     <li class="nav-caption">Site</li>
-                    <li :class="{ 'nav-item': true, active: isActiveNavItem('home') || isActiveNavItem('stack') || isActiveNavItem('about') || isActiveNavItem('code') || isActiveNavItem('connect') }">
-                        <a href="/#/"> Landing </a>
+                    <li :class="{ 'nav-item': true, active: isActiveNavItem('portal') || isActiveNavItem('stack') || isActiveNavItem('about') || isActiveNavItem('code') || isActiveNavItem('connect') }">
+                        <a href="/#/"> Portal </a>
                     </li>
 
                     <li class="nav-caption">Dashboards</li>
