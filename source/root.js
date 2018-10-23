@@ -26,8 +26,6 @@ const router = new VueRouter({ routes })
 import store from './store/store'
 
 
-import chart from 'chart.js'
-
 import api from './util/api'
 Object.defineProperty(Vue.prototype, '$api', { get() { return this.$root.api } } )
 
