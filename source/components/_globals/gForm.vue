@@ -62,7 +62,7 @@
                             <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
                                 <div class="dropbox">
                                     <input type="file" :name="item.name" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length" accept="image/*" class="input-file">
-                                    <p v-if="isInitial"> Drag your avatar here to begin<br> or click to browse </p>
+                                    <p v-if="isInitial"> Drag your avatar here to begin upload<br> or click to browse </p>
                                     <p v-if="isSaving" class="uploading"> Uploading your avatar,<br> please stand by... </p>
                                 </div>
                             </form>
