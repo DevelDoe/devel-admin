@@ -5,6 +5,7 @@ Complete featured web administration application. built with Vue 2.0 + vue-route
 <p align="center">
   <a href="http://develstrapvue.net/" target="_blank">
     <img src="https://i.imgur.com/xBhjuRU.jpg" width="700px">
+    <br>
     Live Demo
   </a>
 </p>
