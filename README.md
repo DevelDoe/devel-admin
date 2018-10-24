@@ -42,8 +42,6 @@ Complete featured web administration application. built with Vue 2.0 + vue-route
 
 **Requires Node.js 7+**
 
-`npm install`
-
 Add configuration file 'config.js' to root of file structure:
 
 *config.js*
