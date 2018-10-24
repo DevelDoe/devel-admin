@@ -2,11 +2,7 @@
     <div id="dashboard" class="admin">
 
         <div class="row padding">
-            <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1" v-for="(note, index) in filterNotes">
-                <div class="paper">
-                    <h3> {{ note.title }}</h3>
-                </div>
-            </div>
+           
             <div class="col-12">
                 <div class="paper">
                     <h3>Order History</h3>
@@ -23,17 +19,36 @@
                     </ul>
                 </div>
             </div>
+             <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1" v-for="(note, index) in filterNotes">
+                <div class="paper">
+                    <h3> {{ note.title }}</h3>
+                </div>
+            </div>
+             <div class="col-lg-12" v-if="logged.applications.indexOf('blog') !== -1" >
+                <div class="paper">
+                    <h2>Posts</h2>
+                    <div class="row" v-for="(post, index) in loggedPosts"  :key=" 'post' + index" >
+                        <div class="col">
+                             <router-link :to="{ name: 'post', query: { id: post._id } }">
+                                <small  class=" text-muted">{{$moment.unix(post.createdAt).format('DD MMM - YYYY')}}</small>
+                                <h3>{{post.title}}</h3>
+                                <p>{{post.summary}}</p>
+                            </router-link>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import Chart from 'chart.js';
 export default {
     name: 'dashboard',
     computed: {
-        ...mapGetters([ 'tasks', 'logged', 'notes' ]),
+        ...mapGetters([ 'tasks', 'logged', 'notes', 'posts' ]),
         filterTasks() {
             return this.loggedTasks.filter( todo => { return todo.completed === false  })
         },
@@ -48,6 +63,11 @@ export default {
         loggedNotes: function() {
             return this.notes.filter( note => {
                 return note.user_id === this.logged._id
+            })
+        },
+        loggedPosts: function() {
+            return this.posts.filter( post => {
+                return post.user_id === this.logged._id
             })
         },
     },
@@ -82,5 +102,15 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="scss">
+#dashboard {
+    .paper {
+        li {
+            list-style-type: none;
+        }
+        a {
+            color: #eee;
+        }
+    }
+}
 </style>

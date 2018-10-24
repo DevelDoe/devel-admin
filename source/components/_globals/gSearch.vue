@@ -62,7 +62,11 @@ export default {
                                 if(key === field.name ) {
                                     // if there an user associated to this field, is so check if its the current user and ad only those
                                     if( (obj.user_id && obj.user_id === this.logged._id) || !obj.user_id) {
+                                        
                                         newObj['field'] = obj[key]
+                                        if(newObj['field'].length > 40) {
+                                            newObj['field'] = newObj['field'].substring(0, 40) + '...'
+                                        }
                                     } else {
                                         newObj['field'] = ''
                                     }
