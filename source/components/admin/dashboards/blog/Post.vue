@@ -15,8 +15,8 @@ export default {
     computed: {
         ...mapGetters([ 'posts', 'logged' ]),
         post() {
-            if(this.$route.query.post_id)
-                return this.posts.find(post => post._id === this.$route.query.post_id ) || null
+            if(this.$route.query.id)
+                return this.posts.find(post => post._id === this.$route.query.id ) || null
             else {
                 return {
                     title: '',

@@ -11,8 +11,8 @@ export default {
     computed: {
         ...mapGetters([ 'users' ]),
         user() {
-            if(this.$route.query.user_id)
-                return this.users.find(user => user._id === this.$route.query.user_id ) || null
+            if(this.$route.query.id)
+                return this.users.find(user => user._id === this.$route.query.id ) || null
             else {
                 return {
                     fname: '',

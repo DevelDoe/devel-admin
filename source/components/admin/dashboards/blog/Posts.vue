@@ -2,7 +2,7 @@
     <div id="blog">
         <div class="row" v-for="(post, i) in loggedPosts" :key="'post'+i">
             <div class="col" >
-                <router-link :to="{ name: 'post', query: { post_id: post._id } }">
+                <router-link :to="{ name: 'post', query: { id: post._id } }">
                     <small  class=" text-muted">{{$moment.unix(post.createdAt).format('DD MMM - YYYY')}}</small>
                     <h2>{{post.title}}</h2>
                     
@@ -32,7 +32,7 @@ export default {
         },
     },
     mounted() {
-        this.$store.dispatch( 'setLocation', 'blog' )
+        this.$store.dispatch( 'setLocation', 'posts' )
     },
     destroyed() {
         this.$store.dispatch( 'setLocation', '' )
