@@ -26,7 +26,7 @@
             </div>
              <div class="col-lg-12" v-if="logged.applications.indexOf('blog') !== -1" >
                 <div class="paper">
-                    <h2>Posts</h2>
+                    <h2>Latest Posts</h2>
                     <div class="row" v-for="(post, index) in loggedPosts"  :key=" 'post' + index" >
                         <div class="col">
                              <router-link :to="{ name: 'post', query: { id: post._id } }">
