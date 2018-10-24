@@ -32,7 +32,7 @@ export default {
         },
     },
     mounted() {
-        this.$store.dispatch( 'setLocation', 'blog' )
+        this.$store.dispatch( 'setLocation', 'posts' )
     },
     destroyed() {
         this.$store.dispatch( 'setLocation', '' )
