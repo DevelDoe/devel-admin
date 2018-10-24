@@ -9,6 +9,20 @@
                     <canvas ref="orderHistoryCanvas" width="400" height="100" ></canvas>
                 </div>
             </div>
+            <div class="col-lg-12" v-if="logged.applications.indexOf('blog') !== -1" >
+                <div class="paper">
+                    <h2>Latest Posts</h2>
+                    <div class="row" v-for="(post, index) in loggedPosts"  :key=" 'post' + index" >
+                        <div class="col">
+                             <router-link :to="{ name: 'post', query: { id: post._id } }">
+                                <small  class=" text-muted">{{$moment.unix(post.createdAt).format('DD MMM - YYYY')}}</small>
+                                <h3>{{post.title}}</h3>
+                                <p>{{post.summary}}</p>
+                            </router-link>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1 && filterTasks.length > 0">
                 <div class="paper">
                     <h3>Tasks</h3>
@@ -24,20 +38,7 @@
                     <p> {{ note.title }}</p>
                 </div>
             </div>
-             <div class="col-lg-12" v-if="logged.applications.indexOf('blog') !== -1" >
-                <div class="paper">
-                    <h2>Latest Posts</h2>
-                    <div class="row" v-for="(post, index) in loggedPosts"  :key=" 'post' + index" >
-                        <div class="col">
-                             <router-link :to="{ name: 'post', query: { id: post._id } }">
-                                <small  class=" text-muted">{{$moment.unix(post.createdAt).format('DD MMM - YYYY')}}</small>
-                                <h3>{{post.title}}</h3>
-                                <p>{{post.summary}}</p>
-                            </router-link>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
 </template>
