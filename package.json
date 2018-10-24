@@ -4,7 +4,7 @@
   "description": "administration site",
   "main": "index.js",
   "scripts": {
-    "dist": "cross-env webpack --config webpack.prod.js",
+    "build": "cross-env webpack --config webpack.prod.js",
     "dev": " webpack-dev-server --config webpack.dev.js --watch"
   },
   "repository": {

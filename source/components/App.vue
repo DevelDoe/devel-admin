@@ -47,12 +47,18 @@
                 <li :class="{ 'nav-item': true, active: isActiveNavItem('overview') }">
                     <a href="/#/admin/overview"> Overview </a>
                 </li>
-                <li v-if="logged.applications.indexOf('tasks') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('tasks') }">
-                    <a href="/#/admin/tasks"> Tasks </a>
+                <li class="dropdown" :class="{ 'nav-item': true, active: isActiveNavItem('tasks') ||  isActiveNavItem('notes')  }">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">Productivity <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li v-if="logged.applications.indexOf('tasks') !== -1" >
+                            <a href="/#/admin/tasks"> Tasks </a>
+                        </li>
+                        <li v-if="logged.applications.indexOf('notes') !== -1" >
+                            <a href="/#/admin/notes"> Notes </a>
+                        </li>
+                    </ul>
                 </li>
-                <li v-if="logged.applications.indexOf('notes') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('notes') }">
-                    <a href="/#/admin/notes"> Notes </a>
-                </li>
+                
                 <li v-if="logged.applications.indexOf('blog') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('posts') }">
                     <a href="/#/admin/posts"> Blog </a>
                 </li>
@@ -132,6 +138,116 @@ export default {
             float: right;
             font-size: 24px;
             padding-right: 1rem;
+        }
+    }
+    .drawer {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        width: 200px;
+        z-index: 1000;
+        background-color: #252830;
+
+        .navbar {
+            background-color:  transparent !important;
+            color: #ccc !important;
+
+            a {
+                color: #c2cade;
+            }
+            .navbar-user {
+
+                .img {
+                    position: relative;
+
+                    img {
+                        width: 100%;
+                    }
+
+                }
+
+                .info {
+                    padding-left: 0px;
+
+                    h2 {
+                        font-size: 14px;
+                        font-weight: bold;
+                        overflow: hidden;
+                        margin: 0;
+                        padding-top: 7px;
+                    }
+
+                    h3 {
+                        font-size: 12px;
+                        overflow: hidden;
+                        margin: 0;
+                        padding-top: 4px;
+                    }
+
+
+                }
+
+            }
+        }
+    }
+    .nav-stacked {
+        .nav-caption {
+            letter-spacing: 1px;
+            color: #c2cade;
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+
+        li {
+            padding: 0.5rem 1.2rem;
+            border-radius: 0.25rem;
+            width: 100%;
+            cursor: pointer;
+            margin-bottom: 5px;
+            transition: background-color .3s ease-in-out;
+
+            a {
+                color: #b1b1b1;
+                width: 100%;
+                height: 100%;
+                transition: color .3s ease-in-out;
+
+                &:hover {
+                    text-decoration: none;
+                    color: #fff;
+                }
+            }
+        }
+
+        .dropdown {
+            
+            .dropdown-menu {
+                background-color: #252830;
+                 a {
+                    color: #b1b1b1;
+                    width: 100%;
+                    height: 100%;
+                    transition: color .3s ease-in-out;
+
+                    &:hover {
+                        text-decoration: none;
+                        color: #b1b1b1;
+                    }
+                }
+                
+            }
+            .show {
+                    border: 1px solid rgba(255, 255, 255, 0.15);
+                }
+
+        }
+
+        .active {
+            background-color: #1ec2ff;
+
+            a {
+                color: #252830;
+            }
         }
     }
 }

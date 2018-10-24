@@ -61,7 +61,7 @@ npm install
 npm run dev
 
 # build for production
-npm run dist
+npm run build
 ```
 
 ## License

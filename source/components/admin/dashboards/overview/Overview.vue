@@ -21,7 +21,7 @@
             </div>
              <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1" v-for="(note, index) in filterNotes">
                 <div class="paper">
-                    <h3> {{ note.title }}</h3>
+                    <p> {{ note.title }}</p>
                 </div>
             </div>
              <div class="col-lg-12" v-if="logged.applications.indexOf('blog') !== -1" >
