@@ -115,10 +115,7 @@
         <div class="row">
             <div class="col-md-7">
                 <h4 class="mb-3">General settings</h4>
-                <div class="mb-3">
-                    <label for="appName">Application Name</label>
-                    <input class="form-control" autocomplete="off" v-model="newAppName" @keyup.enter="updateAppName" @blur="updateAppName">
-                </div>
+               
             </div>
         </div>
         <div class="row">
