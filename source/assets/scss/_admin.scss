@@ -2,22 +2,8 @@
     color: #eee;
     height: 100%;
 
-    .form-group {
-        .form-control {
-            color: #ccc;
-            background-color: rgba(255, 255, 255, 0.01);
-            border: none;
-            padding: 29px;
-            border-radius: 0;
-        }
-        select {
-            color: #ccc;
-        }
-        option {
-            color:  $background;
-            font-weight:bold;
-            padding:5px
-        }
+    hr {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
     .btn-danger {
         color: $background;

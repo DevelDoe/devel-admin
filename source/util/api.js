@@ -204,10 +204,7 @@ const API = {
                         if( process.env.NODE_ENV === 'development' ) console.log('Fetch Error :-S', err)
                         store.dispatch('setLoading', false)
                     })
-            } else {
-                return false
-                store.dispatch('setLoading', false)
-            }
+            } 
         } else {
             store.dispatch('setLoading', false)
         }
@@ -342,6 +339,7 @@ function validate( coll, data ) {
     if ( !valid ) {
         bus.$emit('toast', err.join(', ') )
         setTimeout( () => { bus.$emit('toast', '' ) }, 4000 )
+        store.dispatch('setLoading', false)
         return
     }
 

@@ -425,6 +425,7 @@ export default {
                             this.$api.get( 'resource', () => {
                                 this.$api.get( 'task' )
                                 this.$api.get( 'note' )
+                                this.$api.get( 'post' )
                             })
                         })
 

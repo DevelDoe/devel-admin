@@ -1,8 +1,6 @@
 <template lang="html">
     <div class="admin" id="user">
-
-            <gForm :schema="'user'" :data="user" />
-
+        <gForm :schema="'user'" :data="user" />
     </div>
 </template>
 
@@ -11,7 +9,7 @@ import {mapGetters} from 'vuex'
 export default {
     name: 'user',
     computed: {
-        ...mapGetters([ 'users', 'logged' ]),
+        ...mapGetters([ 'users' ]),
         user() {
             if(this.$route.query.user_id)
                 return this.users.find(user => user._id === this.$route.query.user_id ) || null
@@ -29,6 +27,15 @@ export default {
                 }
             }
         },
+    },
+    mounted() {
+        this.$store.dispatch( 'setLocation', 'users' )
+    },
+    destroyed() {
+        this.$store.dispatch( 'setLocation', '' )
     }
 }
 </script>
+<style lang="scss">
+
+</style>

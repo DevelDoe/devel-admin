@@ -7,14 +7,15 @@
  * @Last modified time: 2018-01-18T21:26:42+01:00
  */
 
-import Portal   from '../components/site/portal/Portal.vue'
+import Portal from '../components/site/portal/Portal.vue'
 import Overview from '../components/admin/dashboards/overview/Overview.vue'
-import Tasks    from '../components/admin/dashboards/tasks/Tasks.vue'
-import Notes    from '../components/admin/dashboards/notes/Notes.vue'
-import Blog     from '../components/admin/dashboards/blog/Blog.vue'
-import Data     from '../components/admin/administration/data/Data.vue'
-import Users    from '../components/admin/administration/users/Users.vue'
-import User     from '../components/admin/administration/users/User.vue'
+import Tasks from '../components/admin/dashboards/tasks/Tasks.vue'
+import Notes from '../components/admin/dashboards/notes/Notes.vue'
+import Posts from '../components/admin/dashboards/blog/Posts.vue'
+import Post from '../components/admin/dashboards/blog/Post.vue'
+import Data from '../components/admin/administration/data/Data.vue'
+import Users from '../components/admin/administration/users/Users.vue'
+import User from '../components/admin/administration/users/User.vue'
 
 import store from '../store/store'
 
@@ -47,9 +48,14 @@ export default [{
         name: 'notes',
         beforeEnter: authenticate
     }, {
-        path: '/admin/blog',
-        component: Blog,
-        name: 'blog',
+        path: '/admin/posts',
+        component: Posts,
+        name: 'posts',
+        beforeEnter: authenticate
+    },{
+        path: '/admin/post',
+        component: Post,
+        name: 'post',
         beforeEnter: authenticate
     },{
         path: '/admin/data',
@@ -64,7 +70,8 @@ export default [{
     },{
         path: '/admin/user',
         component: User,
-        name: 'user'
+        name: 'user',
+        beforeEnter: authenticate
     },{
       path: '*',
       component: Portal,

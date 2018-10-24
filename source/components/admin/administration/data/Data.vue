@@ -156,7 +156,7 @@ export default {
                 details: false,
                 fields: [],
             },
-            inputTypes: [  'text', 'none', 'select', 'checkbox', 'password', 'email', 'sec_lv', 'button', 'image' ],
+            inputTypes: [  'text', 'textarea', 'none', 'select', 'checkbox', 'password', 'email', 'sec_lv', 'button', 'image', 'array' ],
             dbTypes: [ 'String', 'Boolean', 'Number', 'Date', 'Buffer', 'Mixed', 'ObjectId', 'Array', 'Decimal128', 'Map' ],
             levels: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
         }

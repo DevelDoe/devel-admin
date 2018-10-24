@@ -1,0 +1,41 @@
+<template>
+    <div id="post">
+        <gForm :schema="'post'" :data="post" :select="categories" />
+    </div>
+</template>
+<script>
+import {mapGetters} from 'vuex'
+export default {
+    name: 'post',
+    data() {
+        return {
+            categories: [ 'HTML', 'CSS', 'JavaScript', 'Linux' ]
+        }
+    },
+    computed: {
+        ...mapGetters([ 'posts', 'logged' ]),
+        post() {
+            if(this.$route.query.post_id)
+                return this.posts.find(post => post._id === this.$route.query.post_id ) || null
+            else {
+                return {
+                    title: '',
+                    original: '',
+                    body: '',
+                    createdAt: this.$moment().unix(),
+                    category: '',
+                    tags: [],
+                    published: false,
+                    user_id: this.logged._id
+                }
+            }
+        },
+    },
+    mounted() {
+        this.$store.dispatch( 'setLocation', 'blog' )
+    },
+    destroyed() {
+        this.$store.dispatch( 'setLocation', '' )
+    }
+}
+</script>

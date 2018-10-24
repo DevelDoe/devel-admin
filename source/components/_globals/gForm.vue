@@ -26,24 +26,33 @@
 
         <div class="row ">
             <div class="col">
-                <h3>Data</h3>
                 <form id="userForm" class="needs-validation" :class="{ 'needs-validation': !valid }" novalidate onsubmit="return false;">
                     <span  v-for="(item, i) in fields" :key="i">
                         <div class="form-group" v-if="item.inputType === 'text'">
-                            <label >{{item.label}}</label>
                             <input type="text" class="form-control" :id="item.name"  :placeholder="item.label" v-model="data[item.name]">
                         </div>
                         <div class="form-group" v-if="item.inputType === 'password'">
-                            <label >{{item.label}}</label>
                             <input type="password" class="form-control" :id="item.name"  :placeholder="item.label" v-model="data[item.name]">
                         </div>
                         <div class="form-group" v-if="item.inputType === 'email'">
-                            <label >{{item.label}}</label>
-                            <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" :placeholder="item.label" required v-model="data[item.name]"  >
-                            <div class="invalid-feedback"> You must enter a email address, this will be used on login.</div>
+                            <input type="email" class="form-control" :id="item.name" :placeholder="item.label" v-model="data[item.name]"  >
+                        </div>
+                        <div class="form-group" v-if="item.inputType === 'textarea'">
+                            <textarea class="form-control" :id="item.name" :placeholder="item.label" v-model="data[item.name]" ></textarea>
+                        </div>
+                        <div class="form-group" v-if="item.inputType === 'select' ">
+                            <select class="form-control"  v-model="data[item.name]">
+                                <option disabled value="">{{item.name}}</option>
+                                <option v-for="(key, i) in Object.keys(select)" :value="select[key]" >{{select[key]}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group" v-if="item.inputType === 'button'">
+                            <button class="btn btn-dark" :class="{ 'active': data[item.name] }" :id="item.name" :placeholder="item.label" @click="data[item.name] = !data[item.name], $forceUpdate()" >{{item.name}}</button>
+                        </div>
+                        <div class="form-group" v-if="item.inputType === 'array'">
+                            <input type="text" class="form-control" :id="item.name" :placeholder="item.label" v-model="data[item.name]" @blur="split(item.name)" @keyup.enter="split(item.name)">
                         </div>
                         <div class="form-group" v-if="item.inputType === 'sec_lv' && data._id !== logged._id && logged.sec_lv < data.sec_lv ">
-                            <label>{{item.label}}</label>
                             <select class="form-control"  v-model="data.sec_lv">
                                 <option v-for="(key, i) in Object.keys(accelSecLv)" :value="accelSecLv[key]" >{{key}}</option>
                             </select>
@@ -88,7 +97,7 @@
                     <div class="col">
                         <h3>Applications</h3>
                         <span v-for="(app, i) in apps">
-                            <button type="button" class="btn btn-dark" :class="{ 'active': data.applications.indexOf(app) !== -1 } " @click="toggleApplication(app)">{{app}}</button>
+                            <button type="button" class="btn btn-dark" :class="{ 'active': data.applications.indexOf(app) !== -1 } " @click="toggleApplication(app)"  style="margin-bottom:10px;">{{app}}</button>
                         </span>
                     </div>
                 </div>
@@ -96,7 +105,7 @@
                     <div class="col">
                         <h3>Administration</h3>
                         <span v-for="(admin, i) in admins">
-                            <button type="button" class="btn btn-dark" :class="{ 'active': data.administrations.indexOf(admin) !== -1 } " @click="toggleAdministrations(admin)">{{admin}}</button>
+                            <button type="button" class="btn btn-dark" :class="{ 'active': data.administrations.indexOf(admin) !== -1 } " @click="toggleAdministrations(admin)" style="margin-bottom:10px;">{{admin}}</button>
                         </span>
                     </div>
                 </div>
@@ -121,7 +130,7 @@ import { mapGetters } from 'vuex'
 const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
 export default {
     name: 'gForm',
-    props: [ 'schema', 'data' ],
+    props: [ 'schema', 'data', 'select'],
     data() {
         return {
             valid: true,
@@ -229,6 +238,9 @@ export default {
                 formData.append(fieldName, fileList[x], fileList[x].name)
             })
             this.upload(formData)
+        },
+        split(itemName) {
+            this.data[itemName] = this.data[itemName].split(',')
         }
     },
     mounted() {
@@ -239,6 +251,27 @@ export default {
 
 <style lang="scss">
 #gform {
+    .form-group {
+        .form-control {
+            color: #ccc;
+            background-color: rgba(255, 255, 255, 0.01);
+            border: none;
+            padding: 29px;
+            border-radius: 0;
+        }
+        select {
+            padding: 17px !important;
+            height: 59px;
+        }
+        option {
+            color:  #252830;
+            font-weight:bold;
+            padding:5px
+        }
+    }
+    #body {
+        height: 350px;
+    }
     .toggleFeatures {
         button {
             margin-left: 10px;
