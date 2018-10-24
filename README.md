@@ -13,25 +13,25 @@ Complete featured web administration application. built with Vue 2.0 + vue-route
 ## Features
 
 * 1.0
- * Vue
- * Vue Router
- * Centralized store.
- * Bootstrap
- * Portal
- * Administration
- * Charts
+  * Vue
+  * Vue Router
+  * Centralized store.
+  * Bootstrap
+  * Portal
+  * Administration
+  * Charts
 * 2.0
- * database integration
- * Tasks feature
- * Notes feature
- * Notification system
- * Application metadata
- * Validation logic
- * JWT Token Authentication 
- * Authorization, roles and permissions
- * Blogging Feature
- * Dynamic Search
- * Rich file transfer
+  * database integration
+  * Tasks feature
+  * Notes feature
+  * Notification system
+  * Application metadata
+  * Validation logic
+  * JWT Token Authentication 
+  * Authorization, roles and permissions
+  * Blogging Feature
+  * Dynamic Search
+  * Rich file transfer
 
  
 
