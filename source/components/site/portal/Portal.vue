@@ -397,7 +397,7 @@ export default {
         },
         login() {
            
-            fetch('http://35.241.141.40:4002/login', {
+            fetch(`${config.api_url}login`, {
                 method: "POST",
                 mode: "cors",
                 cache: "no-cache",
