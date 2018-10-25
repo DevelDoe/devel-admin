@@ -396,6 +396,7 @@ export default {
             return this.location === location
         },
         login() {
+           
             fetch('http://35.241.141.40:4002/login', {
                 method: "POST",
                 mode: "cors",
@@ -413,11 +414,7 @@ export default {
             }).then( res => {
                 res.json().then( data => {
                     if(data.token) {
-
                         this.$store.dispatch('setToken', data.token)
-
-
-
                         this.$api.get( 'user', () => {
                             var user = this.users.find( user => user.email === this.email )
                             this.$store.dispatch('setLogged', user )
@@ -428,12 +425,10 @@ export default {
                                 this.$api.get( 'post' )
                             })
                         })
-
-
-
-
                     }
                 })
+            }).catch(err => {
+                console.log(err)
             })
 
 
