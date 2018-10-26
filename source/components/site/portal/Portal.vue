@@ -45,24 +45,15 @@
             </div>
         </figure>
 
-       <div class="container-fluid padding">
-                <div class="row">
-                    <div class="container-fluid padding" id="connect">
-                        <div class="row text-center padding">
-                            <div class="col-12 social padding">
-                                <a href="https://www.facebook.com/develdoe"><i class="fa fa-facebook"></i></a>
-                                <a href="https://www.github.com/develdoe"><i class="fa fa-github"></i></a>
-                                <a href="https://www.instagram.com/develdoe"><i class="fa fa-instagram"></i></a>
-                                <a href="http://andreeray.se"><i class="fa fa-home"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
+       <div class="social">
+            <a href="https://www.facebook.com/develdoe"><i class="fa fa-facebook"></i></a>
+            <a href="https://www.github.com/develdoe"><i class="fa fa-github"></i></a>
+            <a href="https://www.instagram.com/develdoe"><i class="fa fa-instagram"></i></a>
+            <a href="http://andreeray.se"><i class="fa fa-home"></i></a>
+        </div>
 
         <footer>
-            ĕn-jĕnˈdər by DevelDoe
+            <a href="https://github.com/DevelDoe">ĕn-jĕnˈdər by DevelDoe</a> 
         </footer>
     </div>
 </template>
@@ -142,7 +133,7 @@ export default {
 
     .carousel-caption {
         position: absolute;
-        top: 55%;
+        top: 56%;
         transform: translateY(-50%);
         h1 {
             font-size: 500%;
@@ -150,19 +141,19 @@ export default {
             text-shadow: 1px 1px 15px #000;
         }
         h5 {
-            margin: 2rem;
+            margin-bottom: 1.5rem;
         }
 
     }
     
     .btn-outline-secondary {
-        border: none;
-        background-color: #3c528c;
-        color:#d8edf5;;
+            border: none;
+            color: #899bb1;
+            background: #364763;
 
         &:hover {
-            background-color: #253573;
-            color: white;
+             color:white;
+            background: #4a6186;
         }
     }
 
@@ -227,14 +218,17 @@ export default {
         -webkit-transform: translateZ(0);
                 transform: translateZ(0);
         will-change: transform;
+        transition: left 500ms;
     }
     .social {
         position: fixed;
-        bottom: 0;
-        left: 0;
+        bottom: 10px;
+        right: 0px;
         a {
-            font-size: 4.5rem;
-            padding: 3rem;
+            padding: 15px;
+        }
+        .fa {
+            font-size: 22px !important;
         }
         .fa-facebook,
         .fa-github,
@@ -259,17 +253,28 @@ export default {
         }
     }
     footer {
-        color: #d5d5d5;
-        background: #8ab8d1;
+        
+        background: #364763;
         height: 93px;
-        width: 102px;
-        padding: 11px;
-        font-size: 11px;
+        width: 106px;
+        padding: 9px;
+        font-size: 12px;
         position: fixed;
         right: 0;
         bottom: 93px;
-        padding-top: 53px;
-        font-weight: 100;
+        font-weight: 400;
+        a {
+            position: absolute;
+            color: #899bb1;
+            padding-top: 40px;
+
+            &:hover {
+                color: white;
+            }
+        }
+        &:hover {
+            background-color: #4e658c;
+        }
     }
 
     

@@ -151,8 +151,8 @@ export default {
     }
     .navbar {
         padding: .8rem;
-        background-color: rgba(255,255,255,.04) !important;
         color: #eee;
+        background-color: transparent !important;
     }
     .navbar-brand {
         color: #eee;
@@ -187,56 +187,6 @@ export default {
             float: right;
             font-size: 24px;
             padding-right: 1rem;
-        }
-    }
-    .drawer {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        width: 200px;
-        z-index: 1000;
-        background-color: #292140;
-
-        .navbar {
-            background-color:  transparent !important;
-            color: #ccc !important;
-
-            a {
-                color: #c2cade;
-            }
-            .navbar-user {
-
-                .img {
-                    position: relative;
-
-                    img {
-                        width: 100%;
-                    }
-
-                }
-
-                .info {
-                    padding-left: 0px;
-
-                    h2 {
-                        font-size: 14px;
-                        font-weight: bold;
-                        overflow: hidden;
-                        margin: 0;
-                        padding-top: 7px;
-                    }
-
-                    h3 {
-                        font-size: 12px;
-                        overflow: hidden;
-                        margin: 0;
-                        padding-top: 4px;
-                    }
-
-
-                }
-
-            }
         }
     }
     .nav-stacked {
