@@ -4,7 +4,7 @@ Complete featured web administration application. built with Vue 2.0 + vue-route
 
 <p align="center">
   <a href="http://develadmin.net/" target="_blank">
-    <img src="https://imgur.com/acbo98g" width="700px">
+    <img src="https://i.imgur.com/acbo98g.jpg" width="700px">
     <br>
     Live Demo
   </a>
