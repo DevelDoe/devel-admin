@@ -52,7 +52,7 @@
                         <div class="form-group" v-if="item.inputType === 'array'">
                             <input type="text" class="form-control" :id="item.name" :placeholder="item.label" v-model="data[item.name]" @blur="split(item.name)" @keyup.enter="split(item.name)">
                         </div>
-                        <div class="form-group" v-if="item.inputType === 'sec_lv' && data._id !== logged._id && logged.sec_lv < data.sec_lv ">
+                        <div class="form-group" v-if="item.inputType === 'sec_lv' && ( data._id !== logged._id && logged.sec_lv < data.sec_lv ) || (item.inputType === 'sec_lv' && data.sec_lv === '') ">
                             <select class="form-control"  v-model="data.sec_lv">
                                 <option v-for="(key, i) in Object.keys(accelSecLv)" :value="accelSecLv[key]" >{{key}}</option>
                             </select>
