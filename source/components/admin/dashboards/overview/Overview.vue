@@ -3,10 +3,15 @@
 
         <div class="row padding">
            
-            <div class="col-12">
+            <!-- <div class="col-12">
                 <div class="paper">
                     <h3>Order History</h3>
                     <canvas ref="orderHistoryCanvas" width="400" height="100" ></canvas>
+                </div>
+            </div> -->
+            <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1" v-for="(note, index) in filterNotes">
+                <div class="paper">
+                    <p> {{ note.title }}</p>
                 </div>
             </div>
             <div class="col-lg-12" v-if="logged.applications.indexOf('blog') !== -1" >
@@ -33,11 +38,7 @@
                     </ul>
                 </div>
             </div>
-             <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1" v-for="(note, index) in filterNotes">
-                <div class="paper">
-                    <p> {{ note.title }}</p>
-                </div>
-            </div>
+           
             
         </div>
     </div>
