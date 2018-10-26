@@ -73,6 +73,21 @@
             </ul>
         </div>
     </div>
+    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top" >
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#"> {{ appName }} </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li id="login" v-if="!token">
+                            <button type="button" class="btn btn-login" data-toggle="modal" data-target="#loginModal" >login</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     </transition >
     <div id="admin" :class="{ 'content': true, 'admin-open': token }">
         <div class="container-fluid">
@@ -99,14 +114,15 @@
 </template>
 
 <script>
-
+import config from '../../config'
 import { mapGetters } from 'vuex'
 export default {
     name: 'app',
     data() {
         return {
             toast: '',
-            showSearch: false
+            showSearch: false,
+            appName: config.app_name
         }
     },
     computed: {
@@ -124,6 +140,30 @@ export default {
 </script>
 <style lang="scss">
 #app {
+    .navbar {
+        padding: .8rem;
+        background-color: rgba(255,255,255,.04) !important;
+        color: #eee;
+    }
+    .navbar-brand {
+        color: #eee;
+        img {
+            width: 10%;
+            margin-bottom: 10px;
+        }
+    }
+    .navbar-nav {
+        li {
+            padding-right: 20px;
+        }
+    }
+    .btn-login {
+        background: transparent;
+        color: #eee;
+        &:hover {
+            background-color:rgba(255,255,255,0.04)
+        }
+    }
     .heading {
         position: relative;
 
