@@ -35,7 +35,7 @@
         
          <figure>
             <div class="fixed-wrap">
-                <div id="fixed">
+                <div id="fixed" :class="{ logged: logged}">
                     <div class="carousel-caption">
                         <h1 class="display-2">{{ appName }}</h1>
                         <h5>Fully featured web administration application, built with Vue 2.0. Please sign in with guest account and have a look around!</h5>
@@ -81,7 +81,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters([ 'token', 'location', 'users' ])
+        ...mapGetters([ 'logged', 'location', 'users' ])
     },
     methods: {
         isActiveNavItem: function( location ) {

@@ -72,8 +72,12 @@
                 </li>
             </ul>
         </div>
+         
     </div>
-    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top" >
+    
+    </transition >
+
+    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top" v-if="!logged">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#"> {{ appName }} </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
@@ -87,8 +91,8 @@
                     </ul>
                 </div>
             </div>
-        </nav>
-    </transition >
+    </nav>
+   
     <div id="admin" :class="{ 'content': true, 'admin-open': token }">
         <div class="container-fluid">
             <div class="row heading" v-if="logged">
@@ -140,6 +144,11 @@ export default {
 </script>
 <style lang="scss">
 #app {
+    #portal {
+        #fixed.logged {
+            left: 100px;
+        }
+    }
     .navbar {
         padding: .8rem;
         background-color: rgba(255,255,255,.04) !important;
@@ -186,7 +195,7 @@ export default {
         bottom: 0;
         width: 200px;
         z-index: 1000;
-        background-color: #252830;
+        background-color: #292140;
 
         .navbar {
             background-color:  transparent !important;
@@ -283,7 +292,7 @@ export default {
         }
 
         .active {
-            background-color: #1ec2ff;
+            background-color: #b0b0d4;
 
             a {
                 color: #252830;

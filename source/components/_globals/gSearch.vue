@@ -134,7 +134,7 @@ export default {
     }
     .results {
         color: #ccc;
-        padding: 0 14%;
+        padding: 2% 17%;
 
         .result {
             font-size:24px;

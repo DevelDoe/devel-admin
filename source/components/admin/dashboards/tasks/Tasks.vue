@@ -149,6 +149,9 @@ export default {
         position: relative;
         z-index: 2;
         border:none;
+        padding-left: 25px;
+        margin-top: 15px;
+
         .task-list {
             margin: 0;
             padding: 0;
@@ -156,8 +159,10 @@ export default {
             .task {
                 padding-left: 0px;
                 position: relative;
-                font-size: 20px;
+                font-size: 24px;
                 border-bottom: none;
+                padding: .5rem;
+                
                 .toggle {
                     text-align: center;
                     width: 40px;
@@ -170,10 +175,10 @@ export default {
                         margin: .5rem;
                     }
                     .fa {
-                        font-size: 17px;
-                        color: #333;
+                        font-size: 20px !important;
+                        color:#3e3261 !important;
                         &:hover {
-                            color: #ccc;
+                            color: #ccc !important;
                         }
                     }
                     .fa-check-done {

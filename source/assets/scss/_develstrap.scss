@@ -6,16 +6,17 @@ body {
     min-height: 100%;
     width: 100%;
     font-family: 'Poppins', sans-serif;
-    background: #252830;
+    background: #2d2446;
     letter-spacing: 1px;
 }
 h1,h2,h3,h4,h5,h6 {
     font-weight: 200;
 }
 a {
-
+    color: #b0b0d4;
     &:hover {
         text-decoration: none;
+        color: #ccc;
     }
 }
 button {
