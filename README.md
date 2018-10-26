@@ -3,7 +3,7 @@
 Complete featured web administration application. built with Vue 2.0 + vue-router + vuex, 
 
 <p align="center">
-  <a href="http://develadmin.net/" target="_blank">
+  <a href="http://develadmin.nu/" target="_blank">
     <img src="https://i.imgur.com/acbo98g.jpg" width="700px">
     <br>
     Live Demo
