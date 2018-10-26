@@ -9,7 +9,7 @@ export default {
     name: 'post',
     data() {
         return {
-            categories: [ 'HTML', 'CSS', 'JavaScript', 'Linux', 'MongoDB', 'Git', 'Vue' ]
+            categories: [ 'HTML', 'CSS', 'JavaScript', 'Linux', 'MongoDB', 'Git', 'Vue', 'Webpack' ]
         }
     },
     computed: {
