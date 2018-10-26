@@ -20,7 +20,7 @@
     mode: 'production',
     output: {
         filename: '[name].bundle.js',
-        path: path.resolve(__dirname, '../../server/apps/develAdmin'),
+        path: path.resolve(__dirname, '../../server/apps/develdevils'),
     },
     plugins: [
         new UglifyJSPlugin(),
