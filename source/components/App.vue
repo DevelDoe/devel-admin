@@ -78,19 +78,19 @@
     </transition >
 
     <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top" v-if="!logged">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#"> {{ appName }} </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ml-auto">
-                        <li id="login" >
-                            <button type="button" class="btn btn-login" data-toggle="modal" data-target="#loginModal" >login</button>
-                        </li>
-                    </ul>
-                </div>
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"> {{ appName }} </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li id="login" >
+                        <button type="button" class="btn btn-login" data-toggle="modal" data-target="#loginModal" >login</button>
+                    </li>
+                </ul>
             </div>
+        </div>
     </nav>
    
     <div id="admin" :class="{ 'content': true, 'admin-open': token }">
@@ -152,6 +152,7 @@ export default {
                 res.json().then( data => {
                     
                     if(data.msg === 'Loged out') {
+                        this.$store.dispatch('delToken')
                         this.$store.dispatch('delLogged')
                         this.$router.push('/')
                     }
