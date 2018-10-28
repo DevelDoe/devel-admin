@@ -29,7 +29,7 @@
                             <h3>{{ logged.fname }} {{ logged.lname }}</h3>
                         </div>
                         <div class="devel-col" >
-                            <i class="fa fa-sign-out"  aria-hidden="true" @click="$store.dispatch('delToken'), $store.dispatch('delLogged'), $router.push('/')" ></i>
+                            <i class="fa fa-sign-out"  aria-hidden="true" @click="logout" ></i>
                         </div>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li id="login" v-if="!token">
+                        <li id="login" >
                             <button type="button" class="btn btn-login" data-toggle="modal" data-target="#loginModal" >login</button>
                         </li>
                     </ul>
@@ -135,6 +135,30 @@ export default {
     methods: {
         isActiveNavItem: function( location ) {
             return this.location === location
+        },
+        logout: function() {
+            
+            fetch(`${config.api_url}public/logout`, {
+                method: "POST",
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                redirect: "follow",
+                referrer: "no-referrer",
+            }).then( res => {
+                res.json().then( data => {
+                    
+                    if(data.msg === 'Loged out') {
+                        this.$store.dispatch('delLogged')
+                        this.$router.push('/')
+                    }
+                })
+            }).catch(err => {
+                console.log(err)
+            })
         }
     },
     created() {
