@@ -6,16 +6,15 @@
  * @Last modified by:   andreeray
  * @Last modified time: 2018-01-18T21:26:42+01:00
  */
-
-import Portal from '../components/site/portal/Portal.vue'
-import Overview from '../components/admin/dashboards/overview/Overview.vue'
-import Tasks from '../components/admin/dashboards/tasks/Tasks.vue'
-import Notes from '../components/admin/dashboards/notes/Notes.vue'
-import Posts from '../components/admin/dashboards/blog/Posts.vue'
-import Post from '../components/admin/dashboards/blog/Post.vue'
-import Data from '../components/admin/administration/data/Data.vue'
-import Users from '../components/admin/administration/users/Users.vue'
-import User from '../components/admin/administration/users/User.vue'
+const Portal = () => import('../components/site/portal/Portal.vue')
+const Overview = () => import('../components/admin/dashboards/overview/Overview.vue')
+const Tasks = () => import('../components/admin/dashboards/tasks/Tasks.vue')
+const Notes = () => import('../components/admin/dashboards/notes/Notes.vue')
+const Posts = () => import('../components/admin/dashboards/blog/Posts.vue')
+const Post = () => import('../components/admin/dashboards/blog/Post.vue')
+const Data = () => import('../components/admin/administration/data/Data.vue')
+const Users = () => import('../components/admin/administration/users/Users.vue')
+const User = () => import('../components/admin/administration/users/User.vue')
 
 import store from '../store/store'
 

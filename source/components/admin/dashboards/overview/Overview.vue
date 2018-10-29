@@ -14,10 +14,10 @@
                     <p> {{ note.title }}</p>
                 </div>
             </div>
-            <div class="col-lg-12" v-if="logged.applications.indexOf('blog') !== -1" >
+            <div class="col-lg-6" v-if="logged.applications.indexOf('blog') !== -1" >
                 <div class="paper">
-                    <h2>Latest Posts</h2>
-                    <div class="row" v-for="(post, index) in loggedPosts"  :key=" 'post' + index" >
+                    <h1>Latest Posts</h1>
+                    <div class="row" v-for="(post, index) in filteredPosts"  :key=" 'post' + index" >
                         <div class="col">
                              <router-link :to="{ name: 'post', query: { id: post._id } }">
                                 <small  class=" text-muted">{{$moment.unix(post.createdAt).format('DD MMM - YYYY')}}</small>
@@ -30,7 +30,7 @@
             </div>
             <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1 && filterTasks.length > 0">
                 <div class="paper">
-                    <h3>Tasks</h3>
+                    <h1>Tasks</h1>
                     <ul class="todo-list">
                         <li v-for="(todo, index) in filterTasks" class="todo" :key=" 'todo' + index"  >
                             {{ todo.title }}
@@ -46,6 +46,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { keySort } from '../../../../util/helperFunc.js'
 import Chart from 'chart.js';
 export default {
     name: 'dashboard',
@@ -67,36 +68,38 @@ export default {
                 return note.user_id === this.logged._id
             })
         },
-        loggedPosts: function() {
-            return this.posts.filter( post => {
+        filteredPosts() {
+            const usersPosts = this.posts.filter( post => {
                 return post.user_id === this.logged._id
             })
-        },
+            const sorted = keySort(usersPosts, 'updtedAt')
+            return sorted.slice(0, 3)
+        }
     },
     mounted() {
-        this.$store.dispatch( 'setLocation', 'overview' )
-        var chart = new Chart(this.$refs.orderHistoryCanvas, {
-            type: 'line',
-            data: {
-                labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-                datasets: [{
-                    label: '# orders',
-                    data: [12, 19, 3, 5, 2, 3],
-                    backgroundColor: 'RGBA(30, 194, 255, 1)',
-                    borderColor: 'RGBA(161, 223, 247, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero:true
-                        }
-                    }]
-                }
-            }
-        })
+        // this.$store.dispatch( 'setLocation', 'overview' )
+        // var chart = new Chart(this.$refs.orderHistoryCanvas, {
+        //     type: 'line',
+        //     data: {
+        //         labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        //         datasets: [{
+        //             label: '# orders',
+        //             data: [12, 19, 3, 5, 2, 3],
+        //             backgroundColor: 'RGBA(30, 194, 255, 1)',
+        //             borderColor: 'RGBA(161, 223, 247, 1)',
+        //             borderWidth: 1
+        //         }]
+        //     },
+        //     options: {
+        //         scales: {
+        //             yAxes: [{
+        //                 ticks: {
+        //                     beginAtZero:true
+        //                 }
+        //             }]
+        //         }
+        //     }
+        // })
     },
     destroyed() {
         this.$store.dispatch( 'setLocation', '' )
@@ -107,12 +110,16 @@ export default {
 <style lang="scss">
 #dashboard {
     .paper {
-        li {
+        ul {
+            padding: 0;
+            li {
             list-style-type: none;
         }
         a {
             color: #eee;
         }
+        }
+        
     }
 }
 </style>

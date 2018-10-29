@@ -17,23 +17,23 @@
     <transition name="drawer">
     <div :class="{ 'drawer': logged }" v-if="logged">
 
-            <nav class="navbar  navbar-dark bg-light sticky-top" id="home">
-                <div class="navbar-user">
-                    <div class="container-fluid">
-                        <div class="img">
-                            <img :src="logged.img_src " alt="">
+        <nav class="navbar  navbar-dark bg-light sticky-top" id="home">
+            <div class="navbar-user">
+                <div class="container-fluid">
+                    <div class="img">
+                        <img :src="logged.img_src " alt="">
 
-                        </div>
-                        <div class="devel-col info">
-                            <h2>{{ logged.username }}</h2>
-                            <h3>{{ logged.fname }} {{ logged.lname }}</h3>
-                        </div>
-                        <div class="devel-col" >
-                            <i class="fa fa-sign-out"  aria-hidden="true" @click="logout" ></i>
-                        </div>
+                    </div>
+                    <div class="devel-col info">
+                        <h2>{{ logged.username }}</h2>
+                        <h3>{{ logged.fname }} {{ logged.lname }}</h3>
+                    </div>
+                    <div class="devel-col" >
+                        <i class="fa fa-sign-out"  aria-hidden="true" @click="logout" ></i>
                     </div>
                 </div>
-            </nav>
+            </div>
+        </nav>
 
         <div class="container-fluid">
             <ul class="nav nav-stacked">
@@ -164,116 +164,19 @@ export default {
     },
     created() {
         this.$bus.$on('toast', toast => { this.toast = toast })
+    },
+    mounted() {
+        var vm = this
+        window.addEventListener('keyup', function(event) {
+            if (event.keyCode == 83 && event.altKey ) {
+                vm.$store.dispatch('toggleSearch')
+            }
+        })
+        
     }
 }
 </script>
 <style lang="scss">
-#app {
-    #portal {
-        #fixed.logged {
-            left: 100px;
-        }
-    }
-    .navbar {
-        padding: .8rem;
-        color: #eee;
-        background-color: transparent !important;
-    }
-    .navbar-brand {
-        color: #eee;
-        img {
-            width: 10%;
-            margin-bottom: 10px;
-        }
-    }
-    .navbar-nav {
-        li {
-            padding-right: 20px;
-        }
-    }
-    .btn-login {
-        background: transparent;
-        color: #eee;
-        &:hover {
-            background-color:rgba(255,255,255,0.04)
-        }
-    }
-    .heading {
-        position: relative;
 
-        h2 {
-            position: absolute;
-            top: 12px;
-            left: 57px;
-            font-size: 33px;
-            color: #ccc;
-        }
-        .fa-search {
-            float: right;
-            font-size: 24px;
-            padding-right: 1rem;
-        }
-    }
-    .nav-stacked {
-        .nav-caption {
-            letter-spacing: 1px;
-            color: #c2cade;
-            text-transform: uppercase;
-            margin-top: 10px;
-        }
-
-        li {
-            padding: 0.5rem 1.2rem;
-            border-radius: 0.25rem;
-            width: 100%;
-            cursor: pointer;
-            margin-bottom: 5px;
-            transition: background-color .3s ease-in-out;
-
-            a {
-                color: #b1b1b1;
-                width: 100%;
-                height: 100%;
-                transition: color .3s ease-in-out;
-
-                &:hover {
-                    text-decoration: none;
-                    color: #fff;
-                }
-            }
-        }
-
-        .dropdown {
-            
-            .dropdown-menu {
-                background-color: #252830;
-                 a {
-                    color: #b1b1b1;
-                    width: 100%;
-                    height: 100%;
-                    transition: color .3s ease-in-out;
-
-                    &:hover {
-                        text-decoration: none;
-                        color: #b1b1b1;
-                    }
-                }
-                
-            }
-            .show {
-                    border: 1px solid rgba(255, 255, 255, 0.15);
-                }
-
-        }
-
-        .active {
-            background-color: #b0b0d4;
-
-            a {
-                color: #252830;
-            }
-        }
-    }
-}
 
 </style>

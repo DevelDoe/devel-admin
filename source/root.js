@@ -40,7 +40,16 @@ Object.defineProperty(Vue.prototype, '$bus', { get() { return this.$root.api.bus
 import moment from 'moment'
 Object.defineProperty(Vue.prototype, '$moment', { get() { return this.$root.moment } })
 
-const hljs = require('highlight.js')
+import hljs from 'highlight.js/lib/highlight'
+import javascript from 'highlight.js/lib/languages/javascript'
+hljs.registerLanguage('javascript', javascript)
+import css from 'highlight.js/lib/languages/css'
+hljs.registerLanguage('css', css)
+import html from 'highlight.js/lib/languages/xml'
+hljs.registerLanguage('html', html)
+import bash from 'highlight.js/lib/languages/bash'
+hljs.registerLanguage('bash', bash)
+
 const markdown = require('markdown-it')({
     highlight: function (str, lang) {
         if (lang && hljs.getLanguage(lang)) {
@@ -50,6 +59,7 @@ const markdown = require('markdown-it')({
                     '</code></pre>';
             } catch (__) {}
         }
+
         return '<pre class="hljs"><code>' + markdown.utils.escapeHtml(str) + '</code></pre>';
     }
 })

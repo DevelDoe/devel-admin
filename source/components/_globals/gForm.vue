@@ -1,5 +1,5 @@
 <template lang="html">
-    <div id="gform" class="container-fluid">
+    <div id="gform" >
 
         <!-- deleteModal -->
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModallLabel" aria-hidden="true">
@@ -112,13 +112,15 @@
             </div>
 
         </div>
-        <div class="row">
-            <div class="col" v-if="data._id">
+        <div class="row controls" v-if="data._id">
+            <div class="btn-group">
                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
-                <button type="button" class="btn btn-primary" @click="update()">Save</button>
+                <button type="button" class="btn btn" @click="update()">Save</button>
             </div>
-            <div class="col" v-else>
-                <button type="button" class="btn btn-primary" @click="save()">Save</button>
+        </div>
+        <div class="row controls" v-else>
+            <div class="btn-group">
+                <button type="button" class="btn btn" @click="save()">Save</button>
             </div>
         </div>
 
@@ -251,6 +253,7 @@ export default {
 
 <style lang="scss">
 #gform {
+    position: relative;
     .form-group {
         .form-control {
             color: #ccc;

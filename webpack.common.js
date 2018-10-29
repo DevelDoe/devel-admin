@@ -1,17 +1,8 @@
-/**
- * @Author: Morgan Andree Ray
- * @Date:   29-04-2018
- * @Email:  info@andreeray.se
- * @Filename: webpack.common.js
- * @Last modified by:   Morgan Andree Ray
- * @Last modified time: 08-05-2018
- * @License: MIT
- */
-
 const webpack = require('webpack')
 const path = require('path')
 const WriteFilePlugin = require('write-file-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
     entry: {
@@ -42,6 +33,7 @@ module.exports = {
             Tooltip: 'exports-loader?Tooltip!bootstrap/js/dist/tooltip',
             Util: 'exports-loader?Util!bootstrap/js/dist/util',
         }),
+        new VueLoaderPlugin()
     ],
     module: {
         rules: [
