@@ -6,6 +6,12 @@
     z-index: 1000;
     background-color: $primary-dark;
 
+    .container-fluid {
+        margin-left: 0px;
+        margin-right: 0px;
+        padding: 0;
+    }
+
     .navbar {
         background-color: transparent !important;
         color: #ccc !important;

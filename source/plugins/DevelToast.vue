@@ -20,11 +20,10 @@ export default {
         bottom:0;
         right:0;
         z-index: 9999;
-        background: #313640;
-        color: #eee;
+        background: #212740;
+        color: #b0b0d4;
         padding: 1rem 2rem;
-        border: 1px solid #333;
+        border: 1px solid #b0b0d4;
         margin: 1rem;
-        border-radius: 5px;
     }
 </style>

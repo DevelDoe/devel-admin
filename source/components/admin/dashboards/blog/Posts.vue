@@ -11,9 +11,9 @@
                 <hr>
             </div>
         </div>
-        <div class="row">
-            <div class="col">
-                <button class="btn btn-primary" @click="$router.push('post')">New post</button>
+        <div class="row controls">
+            <div class="btn-group">
+                <button class="btn" @click="$router.push('post')">New post</button>
             </div>
         </div>
         

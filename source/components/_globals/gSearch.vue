@@ -97,8 +97,7 @@ export default {
     },
     updated() {
         if(this.showSearch)  this.$nextTick(() => this.$refs.search.focus())
-
-   }
+    }
 }
 </script>
 
