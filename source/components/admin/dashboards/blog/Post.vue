@@ -1,6 +1,6 @@
 <template>
     <div id="post">
-        <gForm :schema="'post'" :data="post" :select="categories" />
+        <gForm :schema="'post'" :data="post" :select="select" />
     </div>
 </template>
 <script>
@@ -9,7 +9,10 @@ export default {
     name: 'post',
     data() {
         return {
-            categories: [ 'HTML', 'CSS', 'JavaScript', 'Linux', 'MongoDB', 'Git', 'Vue', 'Webpack', 'Node' ]
+            select: {
+                category: [ 'HTML', 'CSS', 'JavaScript', 'Linux', 'MongoDB', 'Git', 'Vue', 'Webpack', 'Node', 'Design' ],
+                lang: [ 'en', 'sv']
+            }
         }
     },
     computed: {
@@ -20,13 +23,19 @@ export default {
             else {
                 return {
                     title: '',
+                    summary: '',
                     original: '',
                     body: '',
-                    createdAt: this.$moment().unix(),
+                    publishedAt: '',
                     category: '',
                     tags: [],
                     published: false,
-                    user_id: this.logged._id
+                    user_id: this.logged._id,
+                    shared: false,
+                    lang: '',
+                    wip: false,
+                    feat: false,
+                    important: false
                 }
             }
         },

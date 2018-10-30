@@ -42,12 +42,9 @@
                         </div>
                         <div class="form-group" v-if="item.inputType === 'select' ">
                             <select class="form-control"  v-model="data[item.name]">
-                                <option disabled value="">{{item.name}}</option>
-                                <option v-for="(key, i) in Object.keys(select)" :value="select[key]" >{{select[key]}}</option>
+                                <option disabled value="">{{item.label}}</option>
+                                <option v-for="(key, i) in select[item.name]" :value="key" >{{key}}</option>
                             </select>
-                        </div>
-                        <div class="form-group" v-if="item.inputType === 'button'">
-                            <button class="btn btn-dark" :class="{ 'active': data[item.name] }" :id="item.name" :placeholder="item.label" @click="data[item.name] = !data[item.name], $forceUpdate()" >{{item.name}}</button>
                         </div>
                         <div class="form-group" v-if="item.inputType === 'array'">
                             <input type="text" class="form-control" :id="item.name" :placeholder="item.label" v-model="data[item.name]" @blur="split(item.name)" @keyup.enter="split(item.name)">
@@ -114,13 +111,21 @@
         </div>
         <div class="row controls" v-if="data._id">
             <div class="btn-group">
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                
+                <span v-for="(item, i) in fields" :key="'btn'+i">
+                    <button v-if="item.inputType === 'button'" class="btn btn-ctrl" :class="{ 'active': data[item.name] }"  @click="data[item.name] = !data[item.name], $forceUpdate()" >{{item.label}}</button>
+                </span>
+                
                 <button type="button" class="btn btn" @click="update()">Save</button>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
             </div>
         </div>
         <div class="row controls" v-else>
             <div class="btn-group">
-                <button type="button" class="btn btn" @click="save()">Save</button>
+                <span v-for="(item, i) in fields" :key="'btn'+i">
+                    <button v-if="item.inputType === 'button'" class="btn btn-ctrl" :class="{ 'active': data[item.name] }"  @click="data[item.name] = !data[item.name], $forceUpdate()" >{{item.label}}</button>
+                </span>
+                <button type="button" class="btn" @click="save()">Save</button>
             </div>
         </div>
 
@@ -142,7 +147,8 @@ export default {
             admins: [ 'users', 'data' ],
             uploadedFile: {},
             currentStatus: null,
-            uploadError: ''
+            uploadError: '',
+            selectCounter: 0
         }
     },
     computed: {
@@ -187,6 +193,9 @@ export default {
             this.$forceUpdate()
         },
         update() {
+            if(this.data.published) { 
+                this.data.publishedAt = this.$moment().unix() 
+            }
             if( this.logged._id === this.data._id ) {
                 this.$store.dispatch('delLogged')
                 this.$store.dispatch('setLogged', this.data)
@@ -254,6 +263,8 @@ export default {
 <style lang="scss">
 #gform {
     position: relative;
+    padding-bottom: 60px;
+
     .form-group {
         .form-control {
             color: #ccc;
@@ -340,6 +351,8 @@ export default {
         animation-iteration-count: infinite;
         animation-direction: alternate;
     }
+
+    
 
     @-moz-keyframes blink {
         from {
