@@ -200,6 +200,7 @@ export default {
                 this.$store.dispatch('delLogged')
                 this.$store.dispatch('setLogged', this.data)
             }
+            if(this.data.publishedAt) delete this.data.publishedAt
             const valid = this.$api.update( this.schema, this.data )
             if( valid === undefined ) {
                 this.$router.push(`${this.schema}s`)
@@ -214,6 +215,7 @@ export default {
             this.$router.push(`${this.schema}s`)
         },
         save: function () {
+            if(this.data.publishedAt) delete this.data.publishedAt
             const valid = this.$api.save( this.schema, this.data )
             if( valid === undefined ) {
                 this.$router.push(`${this.schema}s`)
