@@ -198,9 +198,6 @@ export default {
             this.$forceUpdate()
         },
         update() {
-            if(this.data.published) { 
-                this.data.publishedAt = this.$moment().unix() 
-            }
             if( this.logged._id === this.data._id ) {
                 this.$store.dispatch('delLogged')
                 this.$store.dispatch('setLogged', this.data)
