@@ -209,16 +209,11 @@ export default {
 
         },
         remove: function() {
+            this.$api.del( this.schema, this.data )
             $('#deleteModal').modal('hide')
-            debugger
             this.$router.push(`${this.schema}s`)
         },
         save: function () {
-            console.log("published",this.data.published)
-            if(this.data.published) { 
-                debugger
-                this.data.publishedAt = this.$moment().unix() 
-            }
             const valid = this.$api.save( this.schema, this.data )
             if( valid === undefined ) {
                 this.$router.push(`${this.schema}s`)
