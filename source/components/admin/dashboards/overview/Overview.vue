@@ -79,7 +79,7 @@ export default {
             const usersPosts = this.posts.filter( post => {
                 return post.user_id === this.logged._id || post.shared
             })
-            const sorted = keySort(usersPosts, 'updtedAt')
+            const sorted = keySort(usersPosts, 'updatedAt', true)
             return sorted.slice(0, 6)
         }
     },
