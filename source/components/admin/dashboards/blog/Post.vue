@@ -26,7 +26,6 @@ export default {
                     summary: '',
                     original: '',
                     body: '',
-                    publishedAt: '',
                     category: '',
                     tags: [],
                     published: false,
