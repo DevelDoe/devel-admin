@@ -39,7 +39,7 @@ export default {
             const usersPosts = this.posts.filter( post => {
                 return post.user_id === this.logged._id
             })
-            return keySort(usersPosts, 'updatedAt')
+            return keySort(usersPosts, 'updatedAt', true)
         },
         moveImp() {
             const imp = this.filteredPosts.filter(post => !post.important)
