@@ -73,11 +73,11 @@ export default {
                 return post.user_id === this.logged._id
             })
             const sorted = keySort(usersPosts, 'updtedAt')
-            return sorted.slice(0, 3)
+            return sorted.slice(0, 6)
         }
     },
     mounted() {
-        // this.$store.dispatch( 'setLocation', 'overview' )
+        this.$store.dispatch( 'setLocation', 'overview' )
         // var chart = new Chart(this.$refs.orderHistoryCanvas, {
         //     type: 'line',
         //     data: {

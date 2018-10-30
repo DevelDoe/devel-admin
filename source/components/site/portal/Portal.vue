@@ -100,6 +100,8 @@ export default {
                         this.$store.dispatch('setToken', data.token)
                         this.$api.get( 'user', () => {
                             var user = this.users.find( user => user.email === this.email )
+                            this.$bus.$emit('toast', 'Welcome back ' + user.username )
+                            setTimeout( () => { this.$bus.$emit('toast', '' ) }, 4000 )
                             this.$store.dispatch('setLogged', user )
                             $('#loginModal').modal('hide')
                             this.$api.get( 'resource', () => {
@@ -108,6 +110,9 @@ export default {
                                 this.$api.get( 'post' )
                             })
                         })
+                    } else {
+                        this.$bus.$emit('toast', data.msg )
+                        setTimeout( () => { this.$bus.$emit('toast', '' ) }, 3000 )
                     }
                 })
             }).catch(err => {
