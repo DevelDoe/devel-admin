@@ -1,33 +1,19 @@
 <template lang="html">
     <div id="dashboard" class="admin">
-
-        <div class="row padding">
-           
-            <!-- <div class="col-12">
-                <div class="paper">
-                    <h3>Order History</h3>
-                    <canvas ref="orderHistoryCanvas" width="400" height="100" ></canvas>
-                </div>
-            </div> -->
-            <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1" v-for="(note, index) in filterNotes">
-                <div class="paper">
-                    <p> {{ note.title }}</p>
-                </div>
+         <div class="row padding paper" v-if="logged.applications.indexOf('blog') !== -1">
+            <div class="col-12">
+                <h1>Latest Posts</h1>
             </div>
-            <div class="col-lg-6" v-if="logged.applications.indexOf('blog') !== -1" >
-                <div class="paper">
-                    <h1>Latest Posts</h1>
-                    <div class="row" v-for="(post, index) in filteredPosts"  :key=" 'post' + index" >
-                        <div class="col">
-                             <router-link :to="{ name: 'post', query: { id: post._id } }">
-                                <small  class=" text-muted">{{$moment.unix(post.createdAt).format('DD MMM - YYYY')}}</small>
-                                <h3>{{post.title}}</h3>
-                                <p>{{post.summary}}</p>
-                            </router-link>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-6" v-for="(post, index) in filteredPosts"  :key=" 'post' + index" >
+                        <router-link :to="{ name: 'post', query: { id: post._id } }">
+                        <small  class=" text-muted">{{$moment.unix(post.updatedAt).format('DD MMM - YYYY')}}</small>
+                        <h3>{{post.title}}</h3>
+                        <p>{{post.summary}}</p>
+                        <small  class="text-muted author">by {{author(post.user_id)}}</small>
+                    </router-link>
             </div>
+        </div>
+         <div class="row padding">
             <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1 && filterTasks.length > 0">
                 <div class="paper">
                     <h1>Tasks</h1>
@@ -36,6 +22,21 @@
                             {{ todo.title }}
                         </li>
                     </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row padding">
+           
+            <!-- <div class="col-12">
+                <div class="paper">
+                    <h3>Order History</h3>
+                    <canvas ref="orderHistoryCanvas" width="400" height="100" ></canvas>
+                </div>
+            </div> -->
+              
+            <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1" v-for="(note, index) in filterNotes">
+                <div class="paper">
+                    <p> {{ note.title }}</p>
                 </div>
             </div>
            
@@ -51,7 +52,7 @@ import Chart from 'chart.js';
 export default {
     name: 'dashboard',
     computed: {
-        ...mapGetters([ 'tasks', 'logged', 'notes', 'posts' ]),
+        ...mapGetters([ 'tasks', 'logged', 'notes', 'posts', 'users' ]),
         filterTasks() {
             return this.loggedTasks.filter( todo => { return todo.completed === false  })
         },
@@ -70,10 +71,17 @@ export default {
         },
         filteredPosts() {
             const usersPosts = this.posts.filter( post => {
-                return post.user_id === this.logged._id
+                return post.user_id === this.logged._id || post.shared
             })
             const sorted = keySort(usersPosts, 'updtedAt')
             return sorted.slice(0, 6)
+        }
+    },
+    methods: {
+        author(id) {
+            let author = this.users.find(user => user._id === id)
+            if(author.username) return author.username 
+            else return author.email
         }
     },
     mounted() {
@@ -109,17 +117,27 @@ export default {
 
 <style lang="scss">
 #dashboard {
+
     .paper {
+
+        margin: 15px;
+        padding: 15px;
+
+        p {
+            padding: 0;
+            margin: 0;
+        }
+
         ul {
             padding: 0;
+
             li {
-            list-style-type: none;
+                list-style-type: none;
+            }
+            a {
+                color: #eee;
+            }
         }
-        a {
-            color: #eee;
-        }
-        }
-        
     }
 }
 </style>
