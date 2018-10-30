@@ -4,7 +4,8 @@
             <section class="col" :class="{important: post.important}">
                 <router-link :to="{ name: 'post', query: { id: post._id } }">
                     <small class="text-muted">
-                        <span class="date">{{$moment.unix(post.updatedAt).format('DD MMM - YYYY')}}</span>
+                        <span class="date" v-if="post.published">{{$moment(post.publishedAt).format('DD MMM - YYYY')}}</span>
+                        <span class="date" v-else>{{$moment.unix(post.updatedAt).format('DD MMM - YYYY')}}</span>
                          
                     </small>
                     <div class="marks">

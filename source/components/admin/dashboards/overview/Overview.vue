@@ -5,12 +5,18 @@
                 <h1>Latest Posts</h1>
             </div>
             <div class="col-6" v-for="(post, index) in filteredPosts"  :key=" 'post' + index" >
-                        <router-link :to="{ name: 'post', query: { id: post._id } }">
-                        <small  class=" text-muted">{{$moment.unix(post.updatedAt).format('DD MMM - YYYY')}}</small>
-                        <h3>{{post.title}}</h3>
-                        <p>{{post.summary}}</p>
-                        <small  class="text-muted author">by {{author(post.user_id)}}</small>
-                    </router-link>
+                <router-link :to="{ name: 'post', query: { id: post._id } }" v-if="post.user_id === logged._id">
+                    <small  class=" text-muted">{{$moment.unix(post.updatedAt).format('DD MMM - YYYY')}}</small>
+                    <h3>{{post.title}}</h3>
+                    <p>{{post.summary}}</p>
+                    <small  class="text-muted author">by {{author(post.user_id)}}</small>
+                </router-link>
+                <span v-else>
+                    <small  class=" text-muted">{{$moment.unix(post.updatedAt).format('DD MMM - YYYY')}}</small>
+                    <h3>{{post.title}}</h3>
+                    <p>{{post.summary}}</p>
+                    <small  class="text-muted author">by {{author(post.user_id)}}</small>
+                </span>
             </div>
         </div>
          <div class="row padding">
