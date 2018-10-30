@@ -187,12 +187,17 @@ const API = {
                             store.dispatch('setLoading', false)
                             return
                         }
-                        const Coll = capitalize(coll)
-                        store.dispatch(`del${Coll}`, data._id)
-                        store.dispatch(`add${Coll}`, data)
-                        bus.$emit('toast', 'Updated' )
-                        setTimeout( () => { bus.$emit('toast', '' ) }, 4000 )
-                        store.dispatch('setLoading', false)
+                        res.json().then(d => {
+                            const Coll = capitalize(coll)
+                            store.dispatch(`del${Coll}`, data._id)
+                            store.dispatch(`add${Coll}`, d)
+                            bus.$emit('toast', 'Updated')
+                            setTimeout(() => {
+                                bus.$emit('toast', '')
+                            }, 4000)
+                            store.dispatch('setLoading', false)
+                        })
+                        
                     })
                     .catch(err => {
                         bus.$emit('toast', 'Database update error' )
