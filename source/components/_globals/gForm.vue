@@ -28,6 +28,9 @@
             <div class="col">
                 <form id="userForm" class="needs-validation" :class="{ 'needs-validation': !valid }" novalidate onsubmit="return false;">
                     <span  v-for="(item, i) in fields" :key="i">
+                        <div class="form-group" v-if="item.inputType === 'date' && data.published">
+                            <datepicker :placeholder="item.label" v-model="data[item.name]"></datepicker>
+                        </div>
                         <div class="form-group" v-if="item.inputType === 'text'">
                             <input type="text" class="form-control" :id="item.name"  :placeholder="item.label" v-model="data[item.name]">
                         </div>
@@ -54,6 +57,7 @@
                                 <option v-for="(key, i) in Object.keys(accelSecLv)" :value="accelSecLv[key]" >{{key}}</option>
                             </select>
                         </div>
+                        
                         <!-- fileupload -->
                         <span v-if=" item.inputType === 'image'">
                             <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
@@ -135,6 +139,7 @@
 <script>
 import { mapGetters } from 'vuex'
 const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
+import Datepicker from 'vuejs-datepicker'
 export default {
     name: 'gForm',
     props: [ 'schema', 'data', 'select'],
@@ -200,7 +205,6 @@ export default {
                 this.$store.dispatch('delLogged')
                 this.$store.dispatch('setLogged', this.data)
             }
-            if(this.data.publishedAt) delete this.data.publishedAt
             const valid = this.$api.update( this.schema, this.data )
             if( valid === undefined ) {
                 this.$router.push(`${this.schema}s`)
@@ -215,7 +219,6 @@ export default {
             this.$router.push(`${this.schema}s`)
         },
         save: function () {
-            if(this.data.publishedAt) delete this.data.publishedAt
             const valid = this.$api.save( this.schema, this.data )
             if( valid === undefined ) {
                 this.$router.push(`${this.schema}s`)
@@ -258,6 +261,9 @@ export default {
     },
     mounted() {
       this.reset();
+    },
+    components: {
+        Datepicker
     }
 }
 </script>
@@ -385,5 +391,29 @@ export default {
             opacity: 0;
         }
     }
+
+    .vdp-datepicker  {
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.01);
+         color: #eee;
+        input {
+            width: 100%;
+            padding: 15px;
+            color: #eee;
+            background-color: rgba(255, 255, 255, 0.01);
+            border: none;
+        }
+        .vdp-datepicker__calendar {
+            position: absolute;
+            top: -400%;
+            left: 10%;
+            width: 100%;
+            z-index: 100;
+            background-color: rgb(39, 45, 72);
+            width: 80%;
+            border: none;
+        }
+    }
+
 }
 </style>
