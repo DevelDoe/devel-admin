@@ -130,9 +130,10 @@
                         <Resources v-for="(resource, i) in resources" :key="'resource'+i" :resource="resource" :inputTypes="inputTypes" :levels="levels" :dbTypes="dbTypes"/>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#resourceModal" >Add Resource</button>
+                
+                <div class="row controls">
+                    <div class="btn-group">
+                        <button type="button" class="btn" data-toggle="modal" data-target="#resourceModal" >Add Resource</button>
                     </div>
                 </div>
             </div>

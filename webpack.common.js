@@ -11,7 +11,7 @@ module.exports = {
     plugins: [
         new WriteFilePlugin(),
         new HtmlWebpackPlugin({
-            title: 'DevelVue',
+            title: 'devel admin',
             template: 'index.html'
         }),
         new webpack.ProvidePlugin({
