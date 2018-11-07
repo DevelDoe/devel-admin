@@ -166,7 +166,7 @@
                             required: {{field.required}}<br>
                             searchable: {{field.search}}<br>
                             unique: {{field.unique}}<br>
-                            DB Type: {{ field.dbType }}
+                            DB Type: {{ field.dbType }}<br>
                             Label: {{ field.label }}<br>
                             Input Type: {{ field.inputType }}
                         </div>
