@@ -360,7 +360,7 @@ function duplicate( coll, data, key ) {
     })
 
     var fieldsData = removeSelfFromList.map( item => {
-        if(item[key] !== null) return item[key].toLowerCase()
+        if (item[key] && item[key] !== null) return item[key].toLowerCase()
     })
 
     var duplicate = fieldsData.some( name => {
