@@ -1,6 +1,7 @@
 <template lang="html">
     <div id="users" class="admin">
         <div class="row" v-for="(user, i) in users" :key="'user'+i">
+            <span v-if="user.sec_lv >= logged.sec_lv">
             <div class="col-sm" v-if="user.fname && user.lname">
                 <router-link :to="{ name: 'user', query: { id: user._id } }">
                     {{user.fname}} {{user.lname}}
@@ -26,10 +27,11 @@
                     {{user.email}}
                 </router-link>
             </div>
+            </span>
         </div>
-        <div class="row">
-            <div class="col">
-                <button type="button" class="btn btn-primary" @click="$router.push('user')" > add user </button>
+        <div class="row controls">
+            <div class="btn-group">
+                <button type="button" class="btn " @click="$router.push('user')" > add user </button>
             </div>
         </div>
     </div>

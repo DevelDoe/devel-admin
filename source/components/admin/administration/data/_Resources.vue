@@ -150,14 +150,32 @@
               </h5>
             </div>
             <div :id="'collapse' + resource._id" class="collapse" :aria-labelledby="'heading'+ resource._id" :data-parent="'#accordionResource'+ resource._id">
-              <div class="card-body text-left">
-                  <div class="">
-
-                      {{resource}}
-                  </div>
-                  <div class="controls">
-                      <button type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#deleteModal' +  resource._id">Delete</button>
-                      <button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#updateModal' +  resource._id">Edit</button>
+                <div class="card-body text-left">
+                    <div class="row">
+                        <div class="col">
+                            <p>
+                            Details page: {{resource.details}}<br>
+                            read: {{resource.read}}<br>
+                            write: {{resource.write}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row padding" v-for="(field, i) in resource.fields">
+                        <div class="col">
+                            <h6>{{field.name}}</h6>
+                            required: {{field.required}}<br>
+                            searchable: {{field.search}}<br>
+                            unique: {{field.unique}}<br>
+                            DB Type: {{ field.dbType }}
+                            Label: {{ field.label }}<br>
+                            Input Type: {{ field.inputType }}
+                        </div>
+                    </div>
+                  <div class="row ">
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#deleteModal' +  resource._id">Delete</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#updateModal' +  resource._id">Edit</button>
+                        </div>
                   </div>
 
               </div>
@@ -222,6 +240,12 @@ export default {
             }
         }
 
+    }
+    .card-body {
+        font-size: .8rem;
+    }
+    .btn-group {
+        margin-top: 10px;
     }
 }
 

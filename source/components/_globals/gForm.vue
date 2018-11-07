@@ -93,7 +93,7 @@
                 </form>
 
             </div>
-            <div class="col-4 toggleFeatures" v-if="data.applications" >
+            <div class="col-4 toggleFeatures" v-if="data.applications && logged.sec_lv <= 1" >
                 <div class="row padding">
                     <div class="col">
                         <h3>Applications</h3>
