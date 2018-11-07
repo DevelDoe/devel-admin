@@ -164,7 +164,7 @@ export default {
                             }
                         }
                         .fa-done {
-                            color: #eee;
+                            color: #eee !important;
                         }
                     }
                     .edit {
