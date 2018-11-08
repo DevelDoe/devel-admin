@@ -96,7 +96,7 @@
             </div>
 
             <!-- BLOG -->
-            <div class="col-lg-6" id="blogPreview">
+            <div class="col-lg-6" id="blogPreview" v-if="data.category">
                 <div class="child" id="blogPreviewChild">
                     <header id="header">
                         <h1>{{ data.category}} - {{ data.title }}</h1>
