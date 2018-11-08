@@ -77,7 +77,7 @@ new Vue({
     el: '#app',
     store: store,
     data () {
-     let data = { api, moment }
+     let data = { api, moment, markdown }
      return data
    },
    render (h) {
