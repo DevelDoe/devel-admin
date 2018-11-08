@@ -1,6 +1,8 @@
 <template>
-    <div id="post">
+    <div id="post ">
+
         <gForm :schema="'post'" :data="post" :select="select" />
+
     </div>
 </template>
 <script>

@@ -24,15 +24,16 @@
         </div>
 
 
-        <div class="row ">
-            <div class="col">
+        <div class="row parent">
+            <div class="col child">
+
                 <form id="userForm" class="needs-validation" :class="{ 'needs-validation': !valid }" novalidate onsubmit="return false;">
                     <span  v-for="(item, i) in fields" :key="i">
                         <div class="form-group" v-if="item.inputType === 'date' && data.published">
                             <datepicker :placeholder="item.label" v-model="data[item.name]"></datepicker>
                         </div>
                         <div class="form-group" v-if="item.inputType === 'text'">
-                            <input type="text" class="form-control" :id="item.name"  :placeholder="item.label" v-model="data[item.name]">
+                            <input type="text" class="form-control" :id="item.name"  :placeholder="item.label" v-model="data[item.name]" @keydown="$forceUpdate()">
                         </div>
                         <div class="form-group" v-if="item.inputType === 'password'">
                             <input type="password" class="form-control" :id="item.name"  :placeholder="item.label" v-model="data[item.name]">
@@ -41,10 +42,10 @@
                             <input type="email" class="form-control" :id="item.name" :placeholder="item.label" v-model="data[item.name]"  >
                         </div>
                         <div class="form-group" v-if="item.inputType === 'textarea'">
-                            <textarea class="form-control" :id="item.name" :placeholder="item.label" v-model="data[item.name]" ></textarea>
+                            <textarea class="form-control" :id="item.name" :placeholder="item.label" v-model="data[item.name]" @keydown="$forceUpdate()" ></textarea>
                         </div>
                         <div class="form-group" v-if="item.inputType === 'select' ">
-                            <select class="form-control"  v-model="data[item.name]">
+                            <select class="form-control"  v-model="data[item.name]" @blur="$forceUpdate()">
                                 <option disabled value="">{{item.label}}</option>
                                 <option v-for="(key, i) in select[item.name]" :value="key" >{{key}}</option>
                             </select>
@@ -93,6 +94,23 @@
                 </form>
 
             </div>
+
+            <!-- BLOG -->
+            <div class="col-lg-6" id="blogPreview">
+                <div class="child" id="blogPreviewChild">
+                    <header id="header">
+                        <h1>{{ data.category}} - {{ data.title }}</h1>
+                    </header>
+                    <div id="summary">
+                        <small>{{ data.summary }}</small>
+                    </div>
+                    <div id="blogPreviewBody" >
+                        <p v-html="$markdown.render(data.body)"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- USER -->
             <div class="col-4 toggleFeatures" v-if="data.applications && logged.sec_lv <= 1" >
                 <div class="row padding">
                     <div class="col">
@@ -113,6 +131,8 @@
             </div>
 
         </div>
+
+
         <div class="row controls" v-if="data._id">
             <div class="btn-group">
                 
@@ -256,6 +276,10 @@ export default {
             this.data[itemName] = this.data[itemName].split(',')
         }
     },
+    updated() {
+        var body = document.getElementById("blogPreviewChild")
+        body.scrollTop = body.scrollHeight
+    },
     mounted() {
       this.reset();
     },
@@ -268,14 +292,14 @@ export default {
 <style lang="scss">
 #gform {
     position: relative;
-    padding-bottom: 60px;
+    padding-bottom: 50px;
 
     .form-group {
         .form-control {
             color: #ccc;
             background-color: rgba(255, 255, 255, 0.01);
             border: none;
-            padding: 29px;
+            padding: 20px;
             border-radius: 0;
         }
         select {
@@ -287,10 +311,15 @@ export default {
             font-weight:bold;
             padding:5px
         }
+        #summary {
+            height: 66px;
+            padding: 20px;
+        }
+        #body {
+            height: 450px;
+        }
     }
-    #body {
-        height: 350px;
-    }
+    
     .toggleFeatures {
         button {
             margin-left: 10px;
@@ -411,6 +440,32 @@ export default {
             border: none;
         }
     }
+    #blogPreview {
+        padding-top: 0;
+        min-height: 100%;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
 
+        .child {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: -17px; /* Increase/Decrease this value for cross-browser compatibility */
+            overflow-y: scroll;
+
+            header {
+                margin-bottom: 10px;
+            }
+            #summary {
+                margin-bottom: 10px;
+                font-style: italic;
+            }
+            #blogPreviewBody {
+                padding-right: 40px;
+            }
+        }
+    }
 }
 </style>

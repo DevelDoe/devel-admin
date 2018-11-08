@@ -13,6 +13,7 @@ $fa-font-path: "~font-awesome/fonts";
 @import '_loading-animation';
 @import './components/_app';
 @import './components/_posts';
+@import '_hl';
 
 // Alternatively, you may import parts of Boostrap individually as needed.
 // Note that Bootstrap’s functions, variables and mixins are required.
