@@ -25,7 +25,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-    name: 'note',
+    name: 'notes',
     data() {
         return {
             newNote: '',
@@ -84,12 +84,6 @@ export default {
         'todo-focus': function( el, binding ) {
             if( binding.value ) el.focus()
         }
-    },
-    mounted() {
-        this.$store.dispatch( 'setLocation', 'notes' )
-    },
-    destroyed() {
-        this.$store.dispatch( 'setLocation', '' )
     }
 }
 </script>

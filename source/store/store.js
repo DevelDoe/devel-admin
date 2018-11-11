@@ -26,7 +26,8 @@ const store = new Vux.Store({
         logged: null,
         notes: [],
         loading: false,
-        posts: []
+        posts: [],
+        visitors: []
     },
     getters: {
         appName: state => {
@@ -62,6 +63,9 @@ const store = new Vux.Store({
         posts: state => {
             return state.posts
         },
+        visitors: state => {
+            return state.visitors
+        }
     },
     mutations: {
         setAppName: (state, payload) => {
@@ -151,6 +155,10 @@ const store = new Vux.Store({
             })
         },
 
+        setVisitors: ( state, payload ) => {
+            state.visitors = payload
+        }
+
     },
     actions: {
         setAppName: (ctx, payload) => {
@@ -229,6 +237,10 @@ const store = new Vux.Store({
         delPost: (ctx, payload) => {
             ctx.commit('delPost', payload)
         },
+
+        setVisitors: (ctx, payload) => {
+            ctx.commit('setVisitors', payload)
+        }
     }
 })
 

@@ -44,13 +44,6 @@ export default {
     computed: {
         ...mapGetters(['users','logged']),
     },
-    mounted() {
-        this.newAppName = this.appName
-        this.$store.dispatch( 'setLocation', 'users' )
-    },
-    destroyed() {
-        this.$store.dispatch( 'setLocation', '' )
-    }
 }
 </script>
 

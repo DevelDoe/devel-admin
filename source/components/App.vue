@@ -59,12 +59,12 @@
                     </ul>
                 </li>
                 
-                <li v-if="logged.applications.indexOf('blog') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('posts') }">
+                <li v-if="logged.applications.indexOf('blog') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('blog') }">
                     <a href="/#/admin/posts"> Blog </a>
                 </li>
 
                 <li class="nav-caption">Administration</li>
-                <li v-if="logged.administrations.indexOf('data') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('data') }">
+                <li v-if="logged.administrations.indexOf('data') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('data-') }">
                     <a href="/#/admin/data">Data</a>
                 </li>
                 <li v-if="logged.administrations.indexOf('users') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('users') }">
