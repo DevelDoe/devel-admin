@@ -1,64 +1,79 @@
 <template lang="html">
     <div id="dashboard" class="admin">
-        <div class="row padding">
-           
+        <div class="row padding paper">
+            
             <div class="col-12">
                 <div class="paper">
                     <h3>PAGE VIEWS</h3>
                     <canvas ref="visitorCanvas" width="400" height="100" ></canvas>
                 </div>
             </div>
+            
             <div class="col-6">
                 <div class="paper">
-                    <canvas ref="countriesCanvas" width="400" height="100" ></canvas>
+                    <canvas ref="countriesCanvas" width="400" height="50" ></canvas>
                 </div>
             </div>
+
+             <div class="col-6">
+                <div class="paper">
+                    <canvas ref="usersCanvas" width="400" height="100" ></canvas>
+                </div>
+            </div>
+
             <div class="col-6">
                 <div class="paper">
-                    <canvas ref="authenticatedCanvas" width="400" height="100" ></canvas>
+                    <canvas ref="authenticatedCanvas" width="400" height="150" ></canvas>
                 </div>
             </div>
-              
-           
-           
             
         </div>
          <div class="row padding paper" v-if="logged.applications.indexOf('blog') !== -1">
             <div class="col-12">
-                <h1>Latest Posts</h1>
+                <div class="paper">
+                    <h1>Latest Posts</h1>
+                </div>
             </div>
             <div class="col-6" v-for="(post, index) in filteredPosts"  :key=" 'post' + index" >
-                <router-link :to="{ name: 'post', query: { id: post._id } }" v-if="post.user_id === logged._id">
-                    <small  class=" text-muted">{{$moment.unix(post.updatedAt).format('DD MMM - YYYY')}}</small>
-                    <h3>{{post.title}}</h3>
-                    <p>{{post.summary}}</p>
-                    <small  class="text-muted author">by {{author(post.user_id)}}</small>
-                </router-link>
-                <span v-else>
-                    <small  class=" text-muted">{{$moment.unix(post.updatedAt).format('DD MMM - YYYY')}}</small>
-                    <h3>{{post.title}}</h3>
-                    <p>{{post.summary}}</p>
-                    <small  class="text-muted author">by {{author(post.user_id)}}</small>
-                </span>
+                <div class="paper">
+                    <router-link :to="{ name: 'post', query: { id: post._id } }" v-if="post.user_id === logged._id">
+                        <small  class=" text-muted">{{$moment.unix(post.updatedAt).format('DD MMM - YYYY')}}</small>
+                        <h3>{{post.title}}</h3>
+                        <p>{{post.summary}}</p>
+                        <small  class="text-muted author">by {{author(post.user_id)}}</small>
+                    </router-link>
+                    <span v-else>
+                        <small  class=" text-muted">{{$moment.unix(post.updatedAt).format('DD MMM - YYYY')}}</small>
+                        <h3>{{post.title}}</h3>
+                        <p>{{post.summary}}</p>
+                        <small  class="text-muted author">by {{author(post.user_id)}}</small>
+                    </span>
+                </div>
             </div>
         </div>
-         <div class="row padding">
-            <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1 && filterTasks.length > 0">
+         <div class="row padding paper">
+            <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1 && filteredTasks.length > 0">
                 <div class="paper">
                     <h1>Tasks</h1>
                     <ul class="todo-list">
-                        <li v-for="(todo, index) in filterTasks" class="todo" :key=" 'todo' + index"  >
+                        <li v-for="(todo, index) in filteredTasks" class="todo" :key=" 'todo' + index"  >
                             {{ todo.title }}
                         </li>
                     </ul>
                 </div>
             </div>
-        </div>
-         <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1" v-for="(note, index) in filterNotes">
-            <div class="paper">
-                <p> {{ note.title }}</p>
+            <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1" >
+                <div class="paper">
+                    <h1>notes</h1>
+                    <ul class="todo-list">
+                        <li v-for="(note, index) in filterNotes" class="todo" :key=" 'note' + index"  >
+                            {{ note.title }}
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
+        
         
     </div>
 </template>
@@ -70,16 +85,15 @@ export default {
     name: 'overview',
     computed: {
         ...mapGetters([ 'tasks', 'logged', 'notes', 'posts', 'users', 'visitors' ]),
-        filterTasks() {
-            return this.loggedTasks.filter( todo => { return todo.completed === false  })
+        filteredTasks() {
+            // this users tasks
+            const users = this.tasks.filter( todo => {  return todo.user_id === this.logged._id  })
+            const completed = users.filter( todo => { return todo.completed === false  })
+            const sorted = completed.sort((a, b) => a.title.localeCompare(b.title) )
+            return sorted
         },
         filterNotes() {
             return this.loggedNotes.filter( note => { return note.overview === true  })
-        },
-        loggedTasks: function() {
-            return this.tasks.filter( todo => {
-                return todo.user_id === this.logged._id
-            })
         },
         loggedNotes: function() {
             return this.notes.filter( note => {
@@ -104,6 +118,15 @@ export default {
                 countries[country]++
             }
             return countries
+        },
+        getUsers() {
+            let users = {}
+            for(var i = 0, len = this.visitors.length; i<len; i++) {
+                var user_id = this.visitors[i].user_id
+                if( !users[user_id] ) users[user_id] = 0
+                users[user_id]++
+            }
+            return users
         }
     },
     methods: {
@@ -119,7 +142,6 @@ export default {
         }
     },
     mounted() {
-        Chart.defaults.global.elements.rectangle.backgroundColor = 'RGBA(30, 194, 255, 1)'
         var visits = new Chart(this.$refs.visitorCanvas, {
             type: 'line',
             data: {
@@ -127,7 +149,7 @@ export default {
                 datasets: [{
                     label: 'views',
                     data: [this.visits(5).length, this.visits(4).length, this.visits(3).length, this.visits(2).length, this.visits(1).length, this.visits(0).length],
-                    backgroundColor: 'RGBA(30, 194, 255, 1)',
+                    backgroundColor: 'rgba(176,176,212,1)',
                     borderWidth: 0
                 }]
             },
@@ -142,7 +164,7 @@ export default {
                         }
                     }],
                     xAxes: [{
-                        gridLines:{
+                        gridLines: {
                             color: "transparent",
                         }
                     }]
@@ -150,7 +172,7 @@ export default {
                 legend: { display: false },
                 title: {
                     display: true,
-                    text: 'Total number of views last 6 days'
+                    text: 'TOTAL'
                 }
             },     
         })
@@ -159,7 +181,7 @@ export default {
             data: {
                 datasets: [{
                     data: [this.authenticated.length, this.visitors.length - this.authenticated.length],
-                    backgroundColor: ["RGBA(30, 194, 255, 1)", "#ff7f7f"],
+                    backgroundColor: ["rgba(176,176,212,1)", "rgba(176,176,212,.3)"],
                     borderWidth: 0
                 }],
 
@@ -170,9 +192,12 @@ export default {
                 ]
             },
             options: {
+                legend: { 
+                    display: false,
+                },
                 title: {
                     display: true,
-                    text: 'Authenticated views'
+                    text: 'AUTHENTICATED',
                 }
             }
         })
@@ -194,7 +219,7 @@ export default {
                 labels: labels,
                 datasets: [
                     {
-                        backgroundColor: ["#3e95cd"],
+                        backgroundColor: ["rgba(176,176,212,1)"],
                         data: data
                     }
                 ]
@@ -204,13 +229,67 @@ export default {
                     xAxes: [{
                          ticks: {
                             beginAtZero:true,
-                        }
+                        },
+                        display: false,
                     }]
                 },
                 legend: { display: false },
                 title: {
                     display: true,
-                    text: 'Views by country'
+                    text: 'COUNTRIES'
+                }
+            }
+        })
+
+        // users chart
+
+        let usernames = []
+        let user_views = []
+        let backgrounds = []
+
+        Object.keys(this.getUsers).forEach(key => {
+            let username
+            if(key != 'undefined') {
+                username = this.users.find(user => user._id === key).username
+            } else {
+                username = 'anonymous'
+            }
+            usernames.push(username)
+        })
+
+        Object.keys(this.getUsers).forEach(value => {
+            user_views.push(this.getUsers[value])
+        })
+
+        usernames.forEach((user, index) => {
+            backgrounds.push(`rgba(176,176,212,${1/index})`)
+        })
+        
+        var users = new Chart(this.$refs.usersCanvas, {
+            type: 'horizontalBar',
+            data: {
+                labels: usernames,
+                datasets: [
+                    {
+                        backgroundColor: backgrounds,
+                        data: user_views
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    display: false,
+                    xAxes: [{
+                         ticks: {
+                            beginAtZero:true,
+                        },
+                        display: false,
+                    }]
+                },
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: 'USERS'
                 }
             }
         })
@@ -236,10 +315,24 @@ export default {
 
             li {
                 list-style-type: none;
+                list-style-type: none;
+                padding: 20px;
+                margin: 10px;
+                background: #242a46;
+                color: #b0b0d4;
             }
             a {
                 color: #eee;
             }
+        }
+    }
+    .pie {
+        padding: 50px;
+        margin-top: 39px;
+
+        .paper {
+            margin: 0;
+            padding: 0;
         }
     }
 }

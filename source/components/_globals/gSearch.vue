@@ -6,8 +6,26 @@
         <transition name="fade" mode="out-in" >
         <div class="results" v-show="search">
             <div v-for="(obj, i) in filterData" class="result">
-                <span v-if="obj._id"><a :href=" '#' + obj.path.substr(0, obj.path.length-1) + '?id=' + obj._id" @click="$store.dispatch('toggleSearch'), search = ''">{{obj.field}}</a></span>
-                <span v-else><a :href="'#'+obj.path" @click="$store.dispatch('toggleSearch'), search = ''">{{obj.field}}</a></span>
+                <span v-if="obj._id">
+                    <a :href=" '#' + obj.path.substr(0, obj.path.length-1) + '?id=' + obj._id" @click="$store.dispatch('toggleSearch'), search = ''">
+                        <span v-if="obj.field.length > 40">
+                            {{ obj.field.substring(0, 40) + '...' }}
+                        </span>
+                        <span v-else>
+                            {{ obj.field}}
+                        </span>
+                    </a>
+                </span>
+                <span v-else>
+                    <a :href="'#'+obj.path" @click="$store.dispatch('toggleSearch'), search = ''">
+                        <span v-if="obj.field.length > 40">
+                            {{ obj.field.substring(0, 40) + '...' }}
+                        </span>
+                        <span v-else>
+                            {{ obj.field}}
+                        </span>
+                    </a>
+                </span>
             </div>
             <div class="noResults" v-show="filterData.length == 0">
                 No results...
@@ -64,9 +82,6 @@ export default {
                                     if( (obj.user_id && obj.user_id === this.logged._id) || !obj.user_id) {
                                         
                                         newObj['field'] = obj[key]
-                                        if(newObj['field'].length > 40) {
-                                            newObj['field'] = newObj['field'].substring(0, 40) + '...'
-                                        }
                                     } else {
                                         newObj['field'] = ''
                                     }
@@ -91,7 +106,6 @@ export default {
         filterData() {
             return this.data.filter( key => {
                 return key.field.toLowerCase().indexOf( this.search.toLowerCase().trim() ) > -1
-                // return keys['fileld'].toLowerCase().indexOf( this.search.toLowerCase() ) > -1
             })
         },
     },
@@ -133,10 +147,11 @@ export default {
     }
     .results {
         color: #ccc;
-        padding: 2% 17%;
+        padding: 1% 17%;
 
         .result {
             font-size:24px;
+            margin: 10px;
             a{
                 color: #ccc;
                 cursor: pointer;
@@ -159,7 +174,7 @@ export default {
     .fa-times {
         position: absolute;
         top: 14px;
-        right: 17px;
+        right: 35px;
         z-index: 9999;
     }
 }

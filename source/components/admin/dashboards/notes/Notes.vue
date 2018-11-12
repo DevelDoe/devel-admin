@@ -9,7 +9,7 @@
                     <li v-for="(note, i) in loggedNotes" class="note todo" :key=" 'note' + i" :class="{  editing: note === editedNote }" >
                         <div class="view">
                             <label @dblclick="editNote(note)"> {{ note.title }} </label>
-                            <i class="fa fa-tachometer" aria-hidden="true" :class="{ 'fa-done': note.overview }" @click="note.overview = !note.overview, $api.update( 'note', note )"></i>
+                            <i class="fa fa-tachometer" aria-hidden="true" :class="{ 'fa-done': note.overview }" @click="toggleDashboard(note), $api.update( 'note', note )"></i>
                             <i class="fa fa-times" aria-hidden="true" @click="removeNote(note)"></i>
                         </div>
                         <input class="edit" type="text" v-model="note.title" v-todo-focus="note == editedNote" @blur="doneEdit(note)" @keyup.enter="doneEdit(note)" @keyup.esc="cancelEdit(note)">
@@ -78,6 +78,9 @@ export default {
         cancelEdit: function() {
             this.editedNote = null,
             note.title = this.beforeEditCache
+        },
+        toggleDashboard(note){
+            if(this.logged.sec_lv < 9) note.overview = !note.overview
         }
     },
     directives: {

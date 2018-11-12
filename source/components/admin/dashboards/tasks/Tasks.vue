@@ -9,7 +9,7 @@
                     <li v-for="(task, i) in filteredTodos" class="task" :key=" 'task' + i" :class="{ completed: task.completed, editing: task === editedTodo }" >
                         <div class="view">
                             <label @dblclick="editTodo(task)"> {{ task.title }} </label>
-                            <i class="fa fa-check" aria-hidden="true" :class="{ 'fa-check-done': task.completed }" @click="task.completed = !task.completed, $api.update( 'task', task )"></i>
+                            <i class="fa fa-check" aria-hidden="true" :class="{ 'fa-check-done': task.completed }" @click="toggleCompleted(), $api.update( 'task', task )"></i>
                             <i class="fa fa-times" aria-hidden="true" @click="removeTodo(task)"></i>
                         </div>
                         <input class="edit" type="text" v-model="title" v-task-focus="task == editedTodo" @blur="doneEdit(task)" @keyup.enter="doneEdit(task)" @keyup.esc="cancelEdit(task)">
@@ -121,6 +121,9 @@ export default {
         },
         removeCompleted: function() {
             this.tasks = filters.active( this.tasks )
+        },
+        toggleCompleted() {
+            if(this.logged.sec_lv < 9) this.task.completed = !this.task.completed
         }
     },
     directives: {
