@@ -48,41 +48,25 @@
 
             <div class="col-6">
                 <div class="paper">
-<<<<<<< HEAD
-                    <canvas ref="usersCanvas" width="400" height="70" ></canvas>
-=======
                     <canvas ref="usersCanvas" width="400" height="80" ></canvas>
->>>>>>> master
                 </div>
             </div>
 
             <div class="col-6">
                 <div class="paper">
-<<<<<<< HEAD
-                    <canvas ref="resoCanvas" width="400" height="70" ></canvas>
-=======
                     <canvas ref="resoCanvas" width="400" height="80" ></canvas>
->>>>>>> master
                 </div>
             </div>
 
             <div class="col-6">
                 <div class="paper">
-<<<<<<< HEAD
-                    <canvas ref="pagesCanvas" width="400" height="120" ></canvas>
-=======
                     <canvas ref="pagesCanvas" width="400" height="140" ></canvas>
->>>>>>> master
                 </div>
             </div>
 
             <div class="col-6">
                 <div class="paper">
-<<<<<<< HEAD
-                    <canvas ref="avgCanvas" width="400" height="120" ></canvas>
-=======
                     <canvas ref="avgCanvas" width="400" height="140" ></canvas>
->>>>>>> master
                 </div>
             </div>
             
