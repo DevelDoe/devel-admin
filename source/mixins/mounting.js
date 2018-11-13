@@ -32,6 +32,7 @@ export default {
             const visitor = {
                 page: self.$options.name,
                 app: config.app_name,
+                resolution: screen.width + 'x' + screen.height
             }
             if (self.$store.getters.logged) visitor.user_id = self.$store.getters.logged._id
 

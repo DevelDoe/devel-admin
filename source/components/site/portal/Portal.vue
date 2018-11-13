@@ -102,7 +102,7 @@ export default {
                             var user = this.users.find( user => user.email === this.email )
                             this.$store.dispatch('setLogged', user )
                             if (this.logged.username) {
-                                this.$bus.$emit('toast', 'Welcome ' + user.username )
+                                this.$bus.$emit('toast', 'Welcome back ' + user.username )
                                 setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
                             }
                             $('#loginModal').modal('hide')

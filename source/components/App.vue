@@ -16,27 +16,26 @@
 
     <transition name="drawer">
     <div :class="{ 'drawer': logged }" v-if="logged">
+        <div class="container-fluid">
+            <div class="navbar-user clearfix">
+                <div class="img">
+                    <img :src="logged.img_src " alt="" >
 
-        <nav class="navbar  navbar-dark bg-light sticky-top" id="home">
-            <div class="navbar-user">
-                <div class="container-fluid">
-                    <div class="img">
-                        <img :src="logged.img_src " alt="">
-
-                    </div>
-                    <div class="devel-col info">
+                </div>
+                <div class="info">
+                    <span>
                         <h2>{{ logged.username }}</h2>
                         <h3>{{ logged.fname }} {{ logged.lname }}</h3>
-                    </div>
-                    <div class="devel-col" >
-                        <i class="fa fa-sign-out"  aria-hidden="true" @click="logout" ></i>
-                    </div>
+                    </span>
+                    
+                </div>
+                <div class="signout">
+                    <i class="fa fa-sign-out"  aria-hidden="true" @click="logout" title="signout"></i>
                 </div>
             </div>
-        </nav>
 
-        <div class="container-fluid">
-            <ul class="nav nav-stacked">
+
+            <ul class="nav nav-stacked clearfix">
 
                 <li class="nav-caption">Site</li>
                 <li :class="{ 'nav-item': true, active: isActiveNavItem('portal') || isActiveNavItem('stack') || isActiveNavItem('about') || isActiveNavItem('code') || isActiveNavItem('connect') }">
@@ -72,7 +71,7 @@
                 </li>
             </ul>
         </div>
-         
+
     </div>
     
     </transition >
@@ -176,7 +175,3 @@ export default {
     }
 }
 </script>
-<style lang="scss">
-
-
-</style>

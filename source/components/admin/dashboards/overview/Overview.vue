@@ -24,49 +24,57 @@
 
         <div class="row padding paper">
 
-            <div class="col-12">
+            <div class="col-12 heading">
                 <h3>PAGE VIEWS</h3>
             </div>
             
-            <div class="col-6">
+            <div class="col-12">
                 <div class="paper">
-                    <canvas ref="visitorCanvas" width="400" height="100" ></canvas>
+                    <canvas ref="visitorCanvas" width="400" height="50" ></canvas>
                 </div>
             </div>
 
             <div class="col-6">
                 <div class="paper">
-                    <canvas ref="usersCanvas" width="400" height="100" ></canvas>
-                </div>
-            </div>
-
-            <div class="col-6">
-                <div class="paper">
-                    <canvas ref="pagesCanvas" width="400" height="120" ></canvas>
-                </div>
-            </div>
-
-            <div class="col-6">
-                <div class="paper">
-                    <canvas ref="avgCanvas" width="400" height="120" ></canvas>
-                </div>
-            </div>
-            
-            <div class="col-6">
-                <div class="paper">
-                    <canvas ref="countriesCanvas" width="400" height="50" ></canvas>
+                    <canvas ref="countriesCanvas" width="400" height="25" ></canvas>
                 </div>
             </div>
 
              <div class="col-6">
                 <div class="paper">
-                    <canvas ref="authenticatedCanvas" width="400" height="100" ></canvas>
+                    <canvas ref="authenticatedCanvas" width="400" height="50" ></canvas>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="paper">
+                    <canvas ref="usersCanvas" width="400" height="50" ></canvas>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="paper">
+                    <canvas ref="resoCanvas" width="400" height="50" ></canvas>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="paper">
+                    <canvas ref="pagesCanvas" width="400" height="100" ></canvas>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="paper">
+                    <canvas ref="avgCanvas" width="400" height="100" ></canvas>
                 </div>
             </div>
             
+            
+            
         </div>
         <div class="row padding paper" v-if="logged.applications.indexOf('blog') !== -1">
-            <div class="col-12">
+            <div class="col-12 heading">
                 <h3>LATEST POSTS</h3>
             </div>
             <div class="col-6" v-for="(post, index) in filteredPosts"  :key=" 'post' + index" >
@@ -194,6 +202,15 @@ export default {
             })
             return pages
         },
+        getResolutions() {
+            let resolutions = {}
+            for(var i = 0, len = this.visitors.length; i<len; i++) {
+                var resolution = this.visitors[i].resolution || undefined 
+                if( !resolutions[resolution] ) resolutions[resolution] = 0
+                resolutions[resolution]++
+            }
+            return resolutions
+        }
     },
     methods: {
         author(id) {
@@ -227,40 +244,71 @@ export default {
         },
     },
     mounted() {
-
-        // If user has not set an username
         
         if(!this.logged.username) {
             setTimeout(() => {
                 $('#setUsernameModal').modal('show')
             }, 2000)
         }
-        
-        
 
+        var views = []
+        for(var i = 30, stop = 0; i>=stop; i--) {
+            var view = {}
+            view.day = this.$moment().subtract(i, "days").format('dd DD')
+            view.views = this.visits(i).length
+            views.push(view)
+        }
+
+        // sort for pos
+        let sorted = []
+        sorted = views.sort((a,b)=>{return a.views-b.views})
+        sorted.forEach((day, i, s) => {
+            day.pos = s.length - i
+        })
+
+        let days = []
+        views.forEach(view => {
+            days.push(view.day)
+        })
+        
+        let views_views = []
+        views.forEach(view => {
+            views_views.push(view.views)
+        })
+
+        let total_views_backgrounds = []
+        views.forEach(view => {
+            total_views_backgrounds.push(`rgba(176,176,212,${1/(view.pos+1)})`)
+        })
+    
         var visits = new Chart(this.$refs.visitorCanvas, {
-            type: 'line',
+            type: 'bar',
             data: {
-                labels: [this.$moment().subtract(5, "days").format('ddd'), this.$moment().subtract(4, "days").format('ddd'), this.$moment().subtract(3, "days").format('ddd'), this.$moment().subtract(2, "days").format('ddd'), this.$moment().subtract(1, "days").format('ddd'), this.$moment().format('ddd')],
+                labels: days,
                 datasets: [{
                     label: 'views',
-                    data: [this.visits(5).length, this.visits(4).length, this.visits(3).length, this.visits(2).length, this.visits(1).length, this.visits(0).length],
-                    backgroundColor: 'rgba(176,176,212,1)',
-                    borderWidth: 0
+                    data: views_views,
+                    backgroundColor: total_views_backgrounds,
+                    borderColor: 'rgba(176,176,212,1)',
+                    borderWidth: 1
                 }]
             },
             options: {
                 scales: {
                     yAxes: [{
+                        
+                        display : false,
                         ticks: {
                             beginAtZero:true,
                         },
                         gridLines: {
+                            display : false,
                             color: "transparent",
                         }
                     }],
                     xAxes: [{
                         gridLines: {
+                            display : false,
                             color: "transparent",
                         }
                     }]
@@ -268,7 +316,7 @@ export default {
                 legend: { display: false },
                 title: {
                     display: true,
-                    text: 'TOTAL'
+                    text: 'TOTAL VIEWS LAST 30 DAYS'
                 }
             },     
         })
@@ -509,12 +557,78 @@ export default {
                 }
             }
         })
+
+        //  resolutions
+
+        
+        let resolutions = []
+        Object.keys(this.getResolutions).forEach( key => {
+            if(key !== 'undefined') resolutions.push(key)
+        })
+
+        resolutions = resolutions.sort((a, b) => b - a)
+
+        let resolutions_data = []
+        Object.keys(this.getResolutions).forEach( key => {
+            if(key !== 'undefined') resolutions_data.push(this.getResolutions[key])
+        })
+
+        let resolutions_backgrounds = []
+        resolutions.forEach((page, i) => {
+            resolutions_backgrounds.push(`rgba(176,176,212,${1/(i+1)})`)
+        })
+
+        new Chart(this.$refs.resoCanvas, {
+            type: 'horizontalBar',
+            data: {
+                labels: resolutions,
+                datasets: [
+                    {
+                        backgroundColor: resolutions_backgrounds,
+                        data: resolutions_data
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                         ticks: {
+                            beginAtZero:true,
+                        },
+                        display: false,
+                        gridLines: {
+                            display: false,
+                            color: "white"
+                        },
+                    }],
+                    yAxes: [{
+                        display: true,
+                        gridLines: {
+                            color: "transparent",
+                        },
+                    }]
+                },
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: 'RESOLUTIONS'
+                }
+            }
+        })
     }
 }
 </script>
 
 <style lang="scss">
 #dashboard {
+
+    .heading {
+        padding-bottom: 0;
+
+        h3 {
+            margin-bottom: 0;
+        }
+    }
 
     .paper {
 
@@ -536,6 +650,7 @@ export default {
                 margin: 10px;
                 background: #242a46;
                 color: #b0b0d4;
+                overflow: hidden;
             }
             a {
                 color: #eee;
