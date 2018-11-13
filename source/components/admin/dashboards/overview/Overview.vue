@@ -30,43 +30,43 @@
             
             <div class="col-12">
                 <div class="paper">
-                    <canvas ref="visitorCanvas" width="400" height="50" ></canvas>
+                    <canvas ref="visitorCanvas" width="400" height="60" ></canvas>
                 </div>
             </div>
 
             <div class="col-6">
                 <div class="paper">
-                    <canvas ref="countriesCanvas" width="400" height="25" ></canvas>
+                    <canvas ref="countriesCanvas" width="400" height="50" ></canvas>
                 </div>
             </div>
 
              <div class="col-6">
                 <div class="paper">
-                    <canvas ref="authenticatedCanvas" width="400" height="50" ></canvas>
+                    <canvas ref="authenticatedCanvas" width="400" height="70" ></canvas>
                 </div>
             </div>
 
             <div class="col-6">
                 <div class="paper">
-                    <canvas ref="usersCanvas" width="400" height="50" ></canvas>
+                    <canvas ref="usersCanvas" width="400" height="70" ></canvas>
                 </div>
             </div>
 
             <div class="col-6">
                 <div class="paper">
-                    <canvas ref="resoCanvas" width="400" height="50" ></canvas>
+                    <canvas ref="resoCanvas" width="400" height="70" ></canvas>
                 </div>
             </div>
 
             <div class="col-6">
                 <div class="paper">
-                    <canvas ref="pagesCanvas" width="400" height="100" ></canvas>
+                    <canvas ref="pagesCanvas" width="400" height="120" ></canvas>
                 </div>
             </div>
 
             <div class="col-6">
                 <div class="paper">
-                    <canvas ref="avgCanvas" width="400" height="100" ></canvas>
+                    <canvas ref="avgCanvas" width="400" height="120" ></canvas>
                 </div>
             </div>
             
