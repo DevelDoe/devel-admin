@@ -48,25 +48,25 @@
 
             <div class="col-6">
                 <div class="paper">
-                    <canvas ref="usersCanvas" width="400" height="70" ></canvas>
+                    <canvas ref="usersCanvas" width="400" height="80" ></canvas>
                 </div>
             </div>
 
             <div class="col-6">
                 <div class="paper">
-                    <canvas ref="resoCanvas" width="400" height="70" ></canvas>
+                    <canvas ref="resoCanvas" width="400" height="80" ></canvas>
                 </div>
             </div>
 
             <div class="col-6">
                 <div class="paper">
-                    <canvas ref="pagesCanvas" width="400" height="120" ></canvas>
+                    <canvas ref="pagesCanvas" width="400" height="140" ></canvas>
                 </div>
             </div>
 
             <div class="col-6">
                 <div class="paper">
-                    <canvas ref="avgCanvas" width="400" height="120" ></canvas>
+                    <canvas ref="avgCanvas" width="400" height="140" ></canvas>
                 </div>
             </div>
             
@@ -186,16 +186,18 @@ export default {
         getPages(){
             let pages = {}
             for(var i = 0, len = this.visitors.length; i<len; i++) {
-                var page = this.visitors[i].page
-                var seconds = this.visitors[i].seconds
-                if(page && page.indexOf('-') > 0) page = page.replace('-', '')
-                if( !pages[page] ) {
-                    pages[page] = {}
-                    pages[page].views = 0
-                    pages[page].seconds = 0
-                } 
-                pages[page].views++
-                pages[page].seconds += seconds
+                if(this.visitors[i].page !== undefined) {
+                    var page = this.visitors[i].page
+                    var seconds = this.visitors[i].seconds
+                    if(page && page.indexOf('-') > 0) page = page.replace('-', '')
+                    if( !pages[page] ) {
+                        pages[page] = {}
+                        pages[page].views = 0
+                        pages[page].seconds = 0
+                    } 
+                    pages[page].views++
+                    pages[page].seconds += seconds
+                }
             }
             Object.keys(pages).forEach(key => {
                 pages[key].avg = pages[key].seconds / pages[key].views
