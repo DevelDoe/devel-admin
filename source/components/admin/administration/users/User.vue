@@ -37,7 +37,6 @@ export default {
             for(var i = 0, len = this.visitors.length; i<len; i++) {
                 
                 if(this.visitors[i].page !== undefined &&  this.visitors[i].user_id == this.$route.query.id && this.visitors[i].user_id != undefined ) {
-                    
                     var page = this.visitors[i].page
                     var seconds = this.visitors[i].seconds
                     var user_id = this.visitors[i].user_id
