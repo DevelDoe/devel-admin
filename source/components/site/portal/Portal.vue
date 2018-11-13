@@ -113,10 +113,6 @@ export default {
                                 this.$api.get( 'visitor', () => {
                                     this.$router.push({ name: 'overview'})
                                 })
-<<<<<<< HEAD
-                                
-=======
->>>>>>> master
                             })
                         })
                         

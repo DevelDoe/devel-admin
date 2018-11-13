@@ -202,19 +202,6 @@ export default {
         getPages(){
             let pages = {}
             for(var i = 0, len = this.visitors.length; i<len; i++) {
-<<<<<<< HEAD
-                var page = this.visitors[i].page
-                var seconds = this.visitors[i].seconds
-                console.log(page)
-                if(page && page.indexOf('-') > 0) page = page.replace('-', '')
-                if( !pages[page] ) {
-                    pages[page] = {}
-                    pages[page].views = 0
-                    pages[page].seconds = 0
-                } 
-                pages[page].views++
-                pages[page].seconds += seconds
-=======
                 if(this.visitors[i].page !== undefined) {
                     var page = this.visitors[i].page
                     var seconds = this.visitors[i].seconds
@@ -227,7 +214,6 @@ export default {
                     pages[page].views++
                     pages[page].seconds += seconds
                 }
->>>>>>> master
             }
             Object.keys(pages).forEach(key => {
                 pages[key].avg = pages[key].seconds / pages[key].views
