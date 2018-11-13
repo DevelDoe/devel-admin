@@ -26,7 +26,7 @@ export default {
                 visibilityChange = "webkitvisibilitychange";
             }
 
-            this.socket = new WebSocket('ws://35.210.92.246:4000')
+            this.socket = new WebSocket(config.web_socket)
 
             
             const visitor = {
