@@ -41,7 +41,7 @@ export default {
                     var page = this.visitors[i].page
                     var seconds = this.visitors[i].seconds
                     var user_id = this.visitors[i].user_id
-                    if(page.indexOf('-') > 0) page = page.replace('-', '')
+                    if(page && page.indexOf('-') > 0) page = page.replace('-', '')
                     if( !pages[page] ) {
                         pages[page] = {}
                         pages[page].views = 0

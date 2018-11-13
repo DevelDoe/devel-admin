@@ -188,7 +188,7 @@ export default {
             for(var i = 0, len = this.visitors.length; i<len; i++) {
                 var page = this.visitors[i].page
                 var seconds = this.visitors[i].seconds
-                if(page.indexOf('-') > 0) page = page.replace('-', '')
+                if(page && page.indexOf('-') > 0) page = page.replace('-', '')
                 if( !pages[page] ) {
                     pages[page] = {}
                     pages[page].views = 0
