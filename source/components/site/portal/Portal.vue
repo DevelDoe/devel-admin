@@ -110,8 +110,10 @@ export default {
                                 this.$api.get( 'task' )
                                 this.$api.get( 'note' )
                                 this.$api.get( 'post' )
-                                this.$api.get( 'visitor' )
-                                this.$router.push({ name: 'overview'})
+                                this.$api.get( 'visitor', () => {
+                                    this.$router.push({ name: 'overview'})
+                                })
+                                
                             })
                         })
                         

@@ -36,7 +36,7 @@ export default {
             let pages = {}
             for(var i = 0, len = this.visitors.length; i<len; i++) {
                 
-                if(this.visitors[i].user_id == this.$route.query.id ) {
+                if(this.visitors[i].user_id == this.$route.query.id && this.visitors[i].user_id != undefined ) {
                     
                     var page = this.visitors[i].page
                     var seconds = this.visitors[i].seconds
@@ -129,7 +129,7 @@ export default {
 <style lang="scss">
 #user {
     .user-data {
-        height: 340px;
+        height: 100%;
         margin-top: -60px;
         padding: 20px 20px 20px 0;
     }
