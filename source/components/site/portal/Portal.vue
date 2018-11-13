@@ -100,10 +100,11 @@ export default {
                         this.$store.dispatch('setToken', data.token)
                         this.$api.get( 'user', () => {
                             var user = this.users.find( user => user.email === this.email )
-                            
-                            this.$bus.$emit('toast', 'Welcome ' + user.username )
-                            setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
                             this.$store.dispatch('setLogged', user )
+                            if (this.logged.username) {
+                                this.$bus.$emit('toast', 'Welcome ' + user.username )
+                                setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
+                            }
                             $('#loginModal').modal('hide')
                             this.$api.get( 'resource', () => {
                                 this.$api.get( 'task' )

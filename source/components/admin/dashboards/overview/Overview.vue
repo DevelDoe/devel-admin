@@ -1,11 +1,54 @@
 <template lang="html">
     <div id="dashboard" class="admin">
+        
+        <!-- setUsername modal -->
+        <div class="modal fade" id="setUsernameModal" tabindex="-1" role="dialog" aria-labelledby="setUsernameLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="setUsernameLabel">Devel Admin</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <form class="form-signin" id="setUsername" onsubmit="return false;">
+                            <p>Hi, please take a moment and set a username.</p>
+                            <input type="text" class="form-control" placeholder="username" required="" v-model="username">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-lg btn-primary btn-block" type="submit" form="setUsername" @click="setUsername" >SET</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row padding paper">
-            
+
             <div class="col-12">
+                <h3>PAGE VIEWS</h3>
+            </div>
+            
+            <div class="col-6">
                 <div class="paper">
-                    <h3>PAGE VIEWS</h3>
                     <canvas ref="visitorCanvas" width="400" height="100" ></canvas>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="paper">
+                    <canvas ref="usersCanvas" width="400" height="100" ></canvas>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="paper">
+                    <canvas ref="pagesCanvas" width="400" height="120" ></canvas>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="paper">
+                    <canvas ref="avgCanvas" width="400" height="120" ></canvas>
                 </div>
             </div>
             
@@ -17,22 +60,14 @@
 
              <div class="col-6">
                 <div class="paper">
-                    <canvas ref="usersCanvas" width="400" height="100" ></canvas>
-                </div>
-            </div>
-
-            <div class="col-6">
-                <div class="paper">
-                    <canvas ref="authenticatedCanvas" width="400" height="150" ></canvas>
+                    <canvas ref="authenticatedCanvas" width="400" height="100" ></canvas>
                 </div>
             </div>
             
         </div>
-         <div class="row padding paper" v-if="logged.applications.indexOf('blog') !== -1">
+        <div class="row padding paper" v-if="logged.applications.indexOf('blog') !== -1">
             <div class="col-12">
-                <div class="paper">
-                    <h1>Latest Posts</h1>
-                </div>
+                <h3>LATEST POSTS</h3>
             </div>
             <div class="col-6" v-for="(post, index) in filteredPosts"  :key=" 'post' + index" >
                 <div class="paper">
@@ -54,20 +89,22 @@
          <div class="row padding paper">
             <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1 && filteredTasks.length > 0">
                 <div class="paper">
-                    <h1>Tasks</h1>
+                    <h3>{{ filteredTasks.length | pluralize }} <span class="task-count" v-show="filteredTasks.length" v-cloak> <strong>{{ filteredTasks.length }}</strong>  remaining</span></h3>
                     <ul class="todo-list">
-                        <li v-for="(todo, index) in filteredTasks" class="todo" :key=" 'todo' + index"  >
-                            {{ todo.title }}
+                        <li v-for="(task, index) in filteredTasks" class="task" :key=" 'task' + index"  >
+                            {{ task.title }}
+                            <i class="fa fa-times" aria-hidden="true" @click="remove('task', task)"></i>
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1" >
                 <div class="paper">
-                    <h1>notes</h1>
+                    <h3>NOTES</h3>
                     <ul class="todo-list">
-                        <li v-for="(note, index) in filterNotes" class="todo" :key=" 'note' + index"  >
+                        <li v-for="(note, index) in filterNotes" class="task" :key=" 'note' + index"  >
                             {{ note.title }}
+                            <i class="fa fa-times" aria-hidden="true" @click="remove('note', note)"></i>
                         </li>
                     </ul>
                 </div>
@@ -83,6 +120,16 @@ import { mapGetters } from 'vuex'
 import { keySort } from '../../../../util/helperFunc.js'
 export default {
     name: 'overview',
+    data() {
+        return {
+            username: ''
+        }
+    },
+    filters: {
+        pluralize: function( n ) {
+            return n === 1 ? 'TASK' : 'TASKS'
+        }
+    },
     computed: {
         ...mapGetters([ 'tasks', 'logged', 'notes', 'posts', 'users', 'visitors' ]),
         filteredTasks() {
@@ -127,7 +174,26 @@ export default {
                 users[user_id]++
             }
             return users
-        }
+        },
+        getPages(){
+            let pages = {}
+            for(var i = 0, len = this.visitors.length; i<len; i++) {
+                var page = this.visitors[i].page
+                var seconds = this.visitors[i].seconds
+                if(page.indexOf('-') > 0) page = page.replace('-', '')
+                if( !pages[page] ) {
+                    pages[page] = {}
+                    pages[page].views = 0
+                    pages[page].seconds = 0
+                } 
+                pages[page].views++
+                pages[page].seconds += seconds
+            }
+            Object.keys(pages).forEach(key => {
+                pages[key].avg = pages[key].seconds / pages[key].views
+            })
+            return pages
+        },
     },
     methods: {
         author(id) {
@@ -139,9 +205,39 @@ export default {
             return this.visitors.filter( visit => {
                 return this.$moment.unix(visit.date).format('DD MMMM YY') === this.$moment().subtract(day, "days").format('DD MMMM YY')
             })
-        }
+        },
+        setUsername() {
+            let user = this.logged 
+            user.username = this.username
+            const valid = this.$api.update( 'user', user)
+            if( valid === undefined ) {
+                this.$store.dispatch('delLogged')
+                this.$store.dispatch('setLogged', user)
+                $('#setUsernameModal').modal('hide')
+                this.$router.go()
+            }
+        },
+        remove: function( schema, obj ) {
+            if(this.logged.sec_lv != 9) {
+                this.$api.del( schema, obj )
+            } else {
+                this.$bus.$emit('toast', 'No Write permissions: Your on a special guest account, I guess your someone who has an interesst in my work! Please feel free to look around.' )
+                setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
+            }
+        },
     },
     mounted() {
+
+        // If user has not set an username
+        
+        if(!this.logged.username) {
+            setTimeout(() => {
+                $('#setUsernameModal').modal('show')
+            }, 2000)
+        }
+        
+        
+
         var visits = new Chart(this.$refs.visitorCanvas, {
             type: 'line',
             data: {
@@ -248,21 +344,25 @@ export default {
         let backgrounds = []
 
         Object.keys(this.getUsers).forEach(key => {
-            let username
+            
+            let user = {}
             if(key != 'undefined') {
-                username = this.users.find(user => user._id === key).username
+                user = this.users.find(user => user._id === key) || { username: 'Deleted user' }
             } else {
-                username = 'anonymous'
+                user.username = 'Anonymous'
             }
-            usernames.push(username)
+            if(user.username !== 'Deleted user' ) usernames.push(user.username)
         })
 
         Object.keys(this.getUsers).forEach(value => {
-            user_views.push(this.getUsers[value])
+            
+            if(this.users.find(user => user._id === value) || value === 'undefined') {
+                user_views.push(this.getUsers[value])
+            }
         })
 
-        usernames.forEach((user, index) => {
-            backgrounds.push(`rgba(176,176,212,${1/index})`)
+        usernames.forEach((user, i) => {
+            backgrounds.push(`rgba(176,176,212,${1/(i+1)})`)
         })
         
         var users = new Chart(this.$refs.usersCanvas, {
@@ -284,12 +384,128 @@ export default {
                             beginAtZero:true,
                         },
                         display: false,
+                    }],
+                    yAxes: [{
+                        display: true,
+                        gridLines: {
+                            color: "transparent",
+                        },
                     }]
                 },
                 legend: { display: false },
                 title: {
                     display: true,
                     text: 'USERS'
+                }
+            }
+        })
+
+        // pages viewd chart
+
+        // sort by views
+        let sortableArray = []
+        Object.keys(this.getPages).forEach( key => {
+            sortableArray.push({'name': key, 'views': this.getPages[key].views, 'seconds': this.getPages[key].seconds, 'avg': this.getPages[key].avg})
+        })
+
+        let pages = sortableArray.sort((a, b) => b.views - a.views)
+        let pages_name = []
+        let pages_views = []
+        let pages_backgrounds = []
+
+        pages.forEach( page => {
+            pages_name.push(page.name)
+            pages_views.push(page.views)
+        })
+
+        pages.forEach((page, i) => {
+            pages_backgrounds.push(`rgba(176,176,212,${1/(i+1)})`)
+        })
+
+        var users = new Chart(this.$refs.pagesCanvas, {
+            type: 'horizontalBar',
+            data: {
+                labels: pages_name,
+                datasets: [
+                    {
+                        backgroundColor: pages_backgrounds,
+                        data: pages_views
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                         ticks: {
+                            beginAtZero:true,
+                        },
+                        display: false,
+                        gridLines: {
+                            display: false,
+                            color: "white"
+                        },
+                    }],
+                    yAxes: [{
+                        display: true,
+                        gridLines: {
+                            color: "transparent",
+                        },
+                    }]
+                },
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: 'PAGE VIEWS'
+                }
+            }
+        })
+
+        //  avg time on page chart
+
+        pages = pages.sort((a, b) => b.avg - a.avg)
+
+        let pages_avg = []
+        pages_name = []
+
+        pages.forEach( page => {
+            pages_name.push(page.name)
+            pages_avg.push(page.avg.toFixed(0))
+        })
+
+        var users = new Chart(this.$refs.avgCanvas, {
+            type: 'horizontalBar',
+            data: {
+                labels: pages_name,
+                datasets: [
+                    {
+                        backgroundColor: pages_backgrounds,
+                        data: pages_avg
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                         ticks: {
+                            beginAtZero:true,
+                        },
+                        display: false,
+                        gridLines: {
+                            display: false,
+                            color: "white"
+                        },
+                    }],
+                    yAxes: [{
+                        display: true,
+                        gridLines: {
+                            color: "transparent",
+                        },
+                    }]
+                },
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: 'AVERAGE SECONDS SPENT'
                 }
             }
         })
@@ -335,5 +551,25 @@ export default {
             padding: 0;
         }
     }
+    .task-count {
+            font-size: 11px;
+            color: #b0b0d4;
+        }
+    .task {
+        position: relative;
+
+        .fa-times {
+            position: absolute;
+            top: 8px;
+            right: 5px;
+            font-size: 11px;
+            color: #3a3a4a;
+
+            &:hover {
+                color: #b0b0d4;
+            }
+        }
+    }
+    
 }
 </style>
