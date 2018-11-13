@@ -129,7 +129,7 @@ export default {
 <style lang="scss">
 #user {
     .user-data {
-        height: 340px;
+        height: 100%;
         margin-top: -60px;
         padding: 20px 20px 20px 0;
     }
