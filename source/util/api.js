@@ -275,7 +275,7 @@ function readRights( coll ) {
     if( coll !== 'user' && coll !== 'resource' ) {
         const readRights = store.state.resources.find( resource => resource.name === coll ).read
         const accessRights = store.state.logged.sec_lv
-        if (accessRights < readRights || accessRights === readRights) {
+        if (accessRights <= readRights) {
             return true
         } else {
             return false

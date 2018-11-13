@@ -9,10 +9,10 @@
                     <li v-for="(task, i) in filteredTodos" class="task" :key=" 'task' + i" :class="{ completed: task.completed, editing: task === editedTodo }" >
                         <div class="view">
                             <label @dblclick="editTodo(task)"> {{ task.title }} </label>
-                            <i class="fa fa-check" aria-hidden="true" :class="{ 'fa-check-done': task.completed }" @click="task.completed = !task.completed, $api.update( 'task', task )"></i>
+                            <i class="fa fa-check" aria-hidden="true" :class="{ 'fa-check-done': task.completed }" @click="toggleCompleted(), $api.update( 'task', task )"></i>
                             <i class="fa fa-times" aria-hidden="true" @click="removeTodo(task)"></i>
                         </div>
-                        <input class="edit" type="text" v-model="task.title" v-task-focus="task == editedTodo" @blur="doneEdit(task)" @keyup.enter="doneEdit(task)" @keyup.esc="cancelEdit(task)">
+                        <input class="edit" type="text" v-model="title" v-task-focus="task == editedTodo" @blur="doneEdit(task)" @keyup.enter="doneEdit(task)" @keyup.esc="cancelEdit(task)">
                     </li>
                 </ul>
             </section>
@@ -55,7 +55,8 @@ export default {
         return {
             newTodo: '',
             editedTodo: null,
-            visibility: 'active'
+            visibility: 'active',
+            title: ''
         }
     },
     computed: {
@@ -65,7 +66,8 @@ export default {
             })
         },
         filteredTodos: function() {
-            return filters[this.visibility]( this.loggedTodos )
+            let f = filters[this.visibility]( this.loggedTodos )
+            return f.sort((a, b) => a.title.localeCompare(b.title))
         },
         remaining: function() {
             return filters.active( this.tasks ).length
@@ -95,15 +97,16 @@ export default {
         },
         editTodo: function( task ) {
             this.beforeEditCache = task.title
+            this.title = task.title
             this.editedTodo = task
         },
         doneEdit: function( task ) {
             if( !this.editedTodo ) return
             this.editedTodo = null
 
-            task.title = task.title.trim()
+            task.title = this.title.trim()
             if( !task.title ) this.removeTodo( task._id )
-            if ( this.beforeEditCache === task.title ) return
+            if ( this.beforeEditCache === this.title ) return
             else  {
                 const valid = this.$api.update( 'task', task )
 
@@ -118,6 +121,9 @@ export default {
         },
         removeCompleted: function() {
             this.tasks = filters.active( this.tasks )
+        },
+        toggleCompleted() {
+            if(this.logged.sec_lv < 9) this.task.completed = !this.task.completed
         }
     },
     directives: {

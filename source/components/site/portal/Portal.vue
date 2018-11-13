@@ -68,7 +68,7 @@ export default {
         return {
             email: 'guest@company.domain',
             password: 'password',
-            appName: config.app_name
+            appName: config.app_name,
         }
     },
     computed: {
@@ -100,16 +100,21 @@ export default {
                         this.$store.dispatch('setToken', data.token)
                         this.$api.get( 'user', () => {
                             var user = this.users.find( user => user.email === this.email )
-                            this.$bus.$emit('toast', 'Welcome ' + user.username )
-                            setTimeout( () => { this.$bus.$emit('toast', '' ) }, 4000 )
                             this.$store.dispatch('setLogged', user )
+                            if (this.logged.username) {
+                                this.$bus.$emit('toast', 'Welcome back ' + user.username )
+                                setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
+                            }
                             $('#loginModal').modal('hide')
                             this.$api.get( 'resource', () => {
                                 this.$api.get( 'task' )
                                 this.$api.get( 'note' )
                                 this.$api.get( 'post' )
+                                this.$api.get( 'visitor' )
+                                this.$router.push({ name: 'overview'})
                             })
                         })
+                        
                     } else {
                         this.$bus.$emit('toast', data.msg )
                         setTimeout( () => { this.$bus.$emit('toast', '' ) }, 3000 )
@@ -118,15 +123,7 @@ export default {
             }).catch(err => {
                 console.log(err)
             })
-
-
         }
-    },
-    mounted() {
-        this.$store.dispatch( 'setLocation', 'portal' )
-    },
-    destroyed() {
-        this.$store.dispatch( 'setLocation', '' )
     }
 }
 </script>

@@ -96,7 +96,7 @@
             </div>
 
             <!-- BLOG -->
-            <div class="col-lg-6" id="blogPreview" v-if="data.category">
+            <div class="col-lg-6" id="blogPreview" v-if="data.title || data.title === ''">
                 <div class="child" id="blogPreviewChild">
                     <header id="header">
                         <h1>{{ data.category}} - {{ data.title }}</h1>
@@ -111,7 +111,7 @@
             </div>
 
             <!-- USER -->
-            <div class="col-4 toggleFeatures" v-if="data.applications && logged.sec_lv <= 1" >
+            <div class="col-4 toggleFeatures" v-if="data.applications && ( logged.sec_lv <= 1 || logged.sec_lv == 9 )" >
                 <div class="row padding">
                     <div class="col">
                         <h3>Applications</h3>
@@ -208,39 +208,64 @@ export default {
     },
     methods: {
         toggleApplication( app ) {
-            if(this.data.applications.indexOf( app ) !== -1) this.data.applications.splice(this.data.applications.indexOf( app ), 1)
-            else this.data.applications.push( app )
-            this.$forceUpdate()
+            if(this.logged.sec_lvs <= 1) {
+                if(this.data.applications.indexOf( app ) !== -1) this.data.applications.splice(this.data.applications.indexOf( app ), 1)
+                else this.data.applications.push( app )
+                this.$forceUpdate()
+            } else {
+                this.$bus.$emit('toast', 'No Write permissions: Your on a special guest account, I guess your someone who has an interesst in my work! Please feel free to look around.' )
+                setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
+            }
         },
         toggleAdministrations( admin ) {
-            if(this.data.administrations.indexOf( admin ) !== -1) this.data.administrations.splice(this.data.administrations.indexOf( admin ), 1)
-            else this.data.administrations.push( admin )
-            this.$forceUpdate()
+            if(this.logged.sec_lvs <= 1) {
+                if(this.data.administrations.indexOf( admin ) !== -1) this.data.administrations.splice(this.data.administrations.indexOf( admin ), 1)
+                else this.data.administrations.push( admin )
+                this.$forceUpdate()
+            } else {
+                this.$bus.$emit('toast', 'No Write permissions: Your on a special guest account, I guess your someone who has an interesst in my work! Please feel free to look around.' )
+                setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
+            }
         },
         update() {
-            if( this.logged._id === this.data._id ) {
-                this.$store.dispatch('delLogged')
-                this.$store.dispatch('setLogged', this.data)
-            }
-            const valid = this.$api.update( this.schema, this.data )
-            if( valid === undefined ) {
-                this.$router.push(`${this.schema}s`)
+            if(this.logged.sec_lv != 9) {
+                if( this.logged._id === this.data._id ) {
+                    this.$store.dispatch('delLogged')
+                    this.$store.dispatch('setLogged', this.data)
+                }
+                const valid = this.$api.update( this.schema, this.data )
+                if( valid === undefined ) {
+                    this.$router.push(`${this.schema}s`)
+                } else {
+                    this.valid = false
+                }
             } else {
-                this.valid = false
+                this.$bus.$emit('toast', 'No Write permissions: Your on a special guest account, I guess your someone who has an interesst in my work! Please feel free to look around.' )
+                setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
             }
-
         },
         remove: function() {
-            this.$api.del( this.schema, this.data )
-            $('#deleteModal').modal('hide')
-            this.$router.push(`${this.schema}s`)
-        },
-        save: function () {
-            const valid = this.$api.save( this.schema, this.data )
-            if( valid === undefined ) {
+            if(this.logged.sec_lv != 9) {
+                this.$api.del( this.schema, this.data )
+                $('#deleteModal').modal('hide')
                 this.$router.push(`${this.schema}s`)
             } else {
-                this.valid = false
+                this.$bus.$emit('toast', 'No Write permissions: Your on a special guest account, I guess your someone who has an interesst in my work! Please feel free to look around.' )
+                setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
+                $('#deleteModal').modal('hide')
+            }
+        },
+        save: function () {
+            if(this.logged.sec_lv != 9) {
+                const valid = this.$api.save( this.schema, this.data )
+                if( valid === undefined ) {
+                    this.$router.push(`${this.schema}s`)
+                } else {
+                    this.valid = false
+                }
+            } else {
+                this.$bus.$emit('toast', 'No Write permissions: Your on a special guest account, I guess your someone who has an interesst in my work! Please feel free to look around.' )
+                setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
             }
         },
         reset() {
@@ -249,20 +274,25 @@ export default {
             this.uploadedFiles = []
         },
         upload(formData) {
-            this.currentStatus = STATUS_SAVING
-            this.$api.upload(formData)
-            .then( data => {
-                if(data.err) {
+            if(this.logged.sec_lv != 9) {
+                this.currentStatus = STATUS_SAVING
+                this.$api.upload(formData)
+                .then( data => {
+                    if(data.err) {
+                        this.currentStatus = STATUS_FAILED
+                        this.uploadError = data.err
+                        return
+                    }
+                    this.data.img_src = data.img_src
+                    this.uploadedFile = data
+                    this.currentStatus = STATUS_SUCCESS
+                }).catch(err => {
                     this.currentStatus = STATUS_FAILED
-                    this.uploadError = data.err
-                    return
-                }
-                this.data.img_src = data.img_src
-                this.uploadedFile = data
-                this.currentStatus = STATUS_SUCCESS
-            }).catch(err => {
-                this.currentStatus = STATUS_FAILED
-            })
+                })
+            } else {
+                this.$bus.$emit('toast', 'No Write permissions: Your on a special guest account, I guess your someone who has an interesst in my work! Please feel free to look around.' )
+                setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
+            }
         },
         filesChange(fieldName, fileList) {
             const formData = new FormData()
@@ -277,8 +307,10 @@ export default {
         }
     },
     updated() {
-        var body = document.getElementById("blogPreviewChild")
-        body.scrollTop = body.scrollHeight
+        if(document.getElementById("blogPreviewChild")) {
+            var body = document.getElementById("blogPreviewChild")
+            body.scrollTop = body.scrollHeight
+        }
     },
     mounted() {
       this.reset();

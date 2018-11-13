@@ -15,7 +15,7 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="resource">Name</label>
-                                    <input type="text" class="form-control" id="resource" placeholder="Resource name" autocomplete="off" v-model="newResource.name" @keyup.enter="updateAppName" @blur="updateAppName">
+                                    <input type="text" class="form-control" id="resource" placeholder="Resource name" autocomplete="off" v-model="newResource.name">
                                     <small id="nameHelp" class="form-text text-muted">Enter the name of the resource you want to add.</small>
                                 </div>
                             </div>
@@ -145,10 +145,9 @@
 import { mapGetters } from 'vuex'
 import Resources from './_Resources.vue'
 export default {
-    name: 'data-com',
+    name: 'data-',
     data() {
         return {
-            newAppName: '',
             newResource : {
                 name : '',
                 details: false,
@@ -163,11 +162,6 @@ export default {
         ...mapGetters([ 'appName', 'resources' ])
     },
     methods: {
-        updateAppName: function() {
-            const value = this.newAppName && this.newAppName.trim()
-            if( !value ) return
-            this.$store.dispatch( 'setAppName', value )
-        },
         addField( field ) {
             this.newResource.fields.push({
                 name: '',
@@ -182,13 +176,6 @@ export default {
             this.newResource.name = '',
             this.newResource.fields = []
         }
-    },
-    mounted() {
-        this.newAppName = this.appName
-        this.$store.dispatch( 'setLocation', 'data' )
-    },
-    destroyed() {
-        this.$store.dispatch( 'setLocation', '' )
     },
     components: {
         Resources

@@ -1,13 +1,31 @@
 <template lang="html">
-    <div id="gSearch" v-if="showSearch" v-cloak>
+    <div id="gSearch" v-show="showSearch" v-cloak scroll="no" style="overflow: hidden">
         <div class="search">
             <input type="search"  value="" placeholder="Search" class="search-input" ref='search' autofocus v-model="search" @keydown.esc="$store.dispatch('toggleSearch'), search = ''">
         </div>
         <transition name="fade" mode="out-in" >
         <div class="results" v-show="search">
             <div v-for="(obj, i) in filterData" class="result">
-                <span v-if="obj._id"><a :href=" '#' + obj.path.substr(0, obj.path.length-1) + '?id=' + obj._id" @click="$store.dispatch('toggleSearch'), search = ''">{{obj.field}}</a></span>
-                <span v-else><a :href="'#'+obj.path" @click="$store.dispatch('toggleSearch'), search = ''">{{obj.field}}</a></span>
+                <span v-if="obj._id">
+                    <a :href=" '#' + obj.path.substr(0, obj.path.length-1) + '?id=' + obj._id" @click="$store.dispatch('toggleSearch'), search = ''">
+                        <span v-if="obj.field.length > 40">
+                            {{ obj.field.substring(0, 40) + '...' }}
+                        </span>
+                        <span v-else>
+                            {{ obj.field}}
+                        </span>
+                    </a>
+                </span>
+                <span v-else>
+                    <a :href="'#'+obj.path" @click="$store.dispatch('toggleSearch'), search = ''">
+                        <span v-if="obj.field.length > 40">
+                            {{ obj.field.substring(0, 40) + '...' }}
+                        </span>
+                        <span v-else>
+                            {{ obj.field}}
+                        </span>
+                    </a>
+                </span>
             </div>
             <div class="noResults" v-show="filterData.length == 0">
                 No results...
@@ -26,7 +44,8 @@ export default {
     data() {
         return {
             searching: false,
-            search: ''
+            search: '',
+            keys: {37: 1, 38: 1, 39: 1, 40: 1}
         }
     },
     computed: {
@@ -60,13 +79,10 @@ export default {
                             for(var key in obj) {
                                 // is the field the searchable field
                                 if(key === field.name ) {
-                                    // if there an user associated to this field, is so check if its the current user and ad only those
-                                    if( (obj.user_id && obj.user_id === this.logged._id) || !obj.user_id) {
-                                        
+                                    // is there an user associated to this field, is so check if its the current user and add only those
+                                    // Check if the logged sec_lv is lower than the sec_lv of a user
+                                    if( ( (obj.user_id && obj.user_id === this.logged._id) || !obj.user_id ) && ( obj.sec_lv && this.logged.administrations.indexOf('users') !== -1 && this.logged.sec_lv <= obj.sec_lv || !obj.sec_lv ) ) {
                                         newObj['field'] = obj[key]
-                                        if(newObj['field'].length > 40) {
-                                            newObj['field'] = newObj['field'].substring(0, 40) + '...'
-                                        }
                                     } else {
                                         newObj['field'] = ''
                                     }
@@ -91,13 +107,46 @@ export default {
         filterData() {
             return this.data.filter( key => {
                 return key.field.toLowerCase().indexOf( this.search.toLowerCase().trim() ) > -1
-                // return keys['fileld'].toLowerCase().indexOf( this.search.toLowerCase() ) > -1
             })
         },
     },
+    methods: {
+        preventDefault(e) {
+            e = e || window.event
+            if (e.preventDefault) e.preventDefault()
+            e.returnValue = false  
+        },
+
+        preventDefaultForScrollKeys(e) {
+            if (this.keys[e.keyCode]) {
+                this.preventDefault(e)
+                return false
+            }
+        },
+
+        disableScroll() {
+            if (window.addEventListener) window.addEventListener('DOMMouseScroll', this.preventDefault, false) // older FF
+            window.onwheel = this.preventDefault // modern standard
+            window.onmousewheel = document.onmousewheel = this.preventDefault // older browsers, IE
+            window.ontouchmove  = this.preventDefault // mobile
+            document.onkeydown  = this.preventDefaultForScrollKeys
+        },
+        
+        enableScroll() {
+            if (window.removeEventListener) window.removeEventListener('DOMMouseScroll', this.preventDefault, false)
+            window.onmousewheel = document.onmousewheel = null
+            window.onwheel = null
+            window.ontouchmove = null
+            document.onkeydown = null
+        }
+    },
     updated() {
         if(this.showSearch)  this.$nextTick(() => this.$refs.search.focus())
-    }
+        if(this.showSearch) this.disableScroll()
+        else this.enableScroll()
+        console.log('updating')
+        document.getElementById('gSearch').style.height = window.innerHeight  + "px"
+    },
 }
 </script>
 
@@ -106,10 +155,10 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    min-height: 100%;
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, .9) 100%, transparent);
     z-index: 9998;
+    width: 100%;
+    overflow: hidden;
 
     .search {
         position: relative;
@@ -133,10 +182,14 @@ export default {
     }
     .results {
         color: #ccc;
-        padding: 2% 17%;
+        padding: 1% 17%;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
 
         .result {
             font-size:24px;
+            margin: 10px;
             a{
                 color: #ccc;
                 cursor: pointer;
@@ -159,7 +212,7 @@ export default {
     .fa-times {
         position: absolute;
         top: 14px;
-        right: 17px;
+        right: 35px;
         z-index: 9999;
     }
 }

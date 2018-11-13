@@ -65,6 +65,12 @@ const markdown = require('markdown-it')({
 })
 Object.defineProperty(Vue.prototype, '$markdown', { get() { return this.$root.markdown } })
 
+import mounting from './mixins/mounting'
+Vue.mixin(mounting)
+
+import chart from 'chart.js'
+Object.defineProperty(Vue.prototype, '$chart', { get() { return this.$root.chart } })
+
 import App from './components/App.vue'
 
 Vue.directive('focus', {

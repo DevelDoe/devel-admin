@@ -45,12 +45,6 @@ export default {
             const imp = this.filteredPosts.filter(post => !post.important)
             return this.filteredPosts.filter(post => post.important).concat(imp)
         }
-    },
-    mounted() {
-        this.$store.dispatch( 'setLocation', 'posts' )
-    },
-    destroyed() {
-        this.$store.dispatch( 'setLocation', '' )
     }
 }
 </script>
