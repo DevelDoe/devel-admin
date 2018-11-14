@@ -208,7 +208,7 @@ export default {
     },
     methods: {
         toggleApplication( app ) {
-            if(this.logged.sec_lvs <= 1) {
+            if(this.logged.sec_lv <= 1) {
                 if(this.data.applications.indexOf( app ) !== -1) this.data.applications.splice(this.data.applications.indexOf( app ), 1)
                 else this.data.applications.push( app )
                 this.$forceUpdate()
@@ -218,7 +218,7 @@ export default {
             }
         },
         toggleAdministrations( admin ) {
-            if(this.logged.sec_lvs <= 1) {
+            if(this.logged.sec_lv <= 1) {
                 if(this.data.administrations.indexOf( admin ) !== -1) this.data.administrations.splice(this.data.administrations.indexOf( admin ), 1)
                 else this.data.administrations.push( admin )
                 this.$forceUpdate()

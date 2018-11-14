@@ -359,6 +359,7 @@ export default {
         Object.keys(this.getCountries).forEach((country, i, s) => {
             countreis.push( { country: country, views: this.getCountries[country] } )
         })
+
         let countires_sorted = countreis.sort((a,b)=>{return b.views - a.views})
 
         let countreis_labels = []
@@ -404,40 +405,41 @@ export default {
 
         // users chart
 
-        let usernames = []
-        let user_views = []
-        let backgrounds = []
-
-        Object.keys(this.getUsers).forEach(key => {
-            
-            let user = {}
+        let users = []
+        Object.keys(this.getUsers).forEach( key => {
             if(key != 'undefined') {
-                user = this.users.find(user => user._id === key) || { username: 'Deleted user' }
-            } else {
-                user.username = 'Anonymous'
-            }
-            if(user.username !== 'Deleted user' ) usernames.push(user.username)
-        })
-
-        Object.keys(this.getUsers).forEach(value => {
-            
-            if(this.users.find(user => user._id === value) || value === 'undefined') {
-                user_views.push(this.getUsers[value])
+                let user = this.users.find(user => user._id === key) || null
+                if(user) users.push( { username: user.username, views: this.getUsers[key] })
+            }  else {
+                users.push( { username: 'Anonymous', views: this.getUsers[key] })
             }
         })
 
-        usernames.forEach((user, i) => {
-            backgrounds.push(`rgba(176,176,212,${1/(i+1)})`)
+        let sortedUsers = users.sort((a,b) => b.views - a.views)
+
+        let users_labes = []
+        sortedUsers.forEach( user => {
+            users_labes.push( user.username )
+        })
+
+        let users_data = []
+        sortedUsers.forEach( user => {
+            users_data.push( user.views )
+        })
+
+        let users_backgrounds = []
+        sortedUsers.forEach( (user, i) => {
+            users_backgrounds.push(`rgba(176,176,212,${1/(i+1)})`)
         })
         
         new Chart(this.$refs.usersCanvas, {
             type: 'horizontalBar',
             data: {
-                labels: usernames,
+                labels: users_labes,
                 datasets: [
                     {
-                        backgroundColor: backgrounds,
-                        data: user_views
+                        backgroundColor: users_backgrounds,
+                        data: users_data
                     }
                 ]
             },
@@ -579,25 +581,31 @@ export default {
 
         let resolutions = []
         Object.keys(this.getResolutions).forEach( key => {
-            if(key !== 'undefined') resolutions.push(key)
+            if(key !== 'undefined') resolutions.push({ 'resolution': key, 'views': this.getResolutions[key] })
         })
 
-        resolutions = resolutions.sort((a, b) => b - a)
+        let resolutions_sorted = resolutions.sort((a, b) => b.views - a.views)
+        
+        let resolutions_labels = []
+        resolutions_sorted.forEach( el => {
+            resolutions_labels.push( el.resolution )
+        })
 
         let resolutions_data = []
-        Object.keys(this.getResolutions).forEach( key => {
-            if(key !== 'undefined') resolutions_data.push(this.getResolutions[key])
+        resolutions_sorted.forEach( el => {
+            resolutions_data.push( el.views )
         })
 
         let resolutions_backgrounds = []
-        resolutions.forEach((page, i) => {
+        resolutions_sorted.forEach((el, i) => {
             resolutions_backgrounds.push(`rgba(176,176,212,${1/(i+1)})`)
         })
+
 
         new Chart(this.$refs.resoCanvas, {
             type: 'horizontalBar',
             data: {
-                labels: resolutions,
+                labels: resolutions_labels,
                 datasets: [
                     {
                         backgroundColor: resolutions_backgrounds,
