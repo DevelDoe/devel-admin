@@ -13,19 +13,6 @@ export default {
 
             this.$store.dispatch('setLocation', this.$options.name +'')
 
-
-            var hidden, visibilityChange;
-            if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support 
-                hidden = "hidden";
-                visibilityChange = "visibilitychange";
-            } else if (typeof document.msHidden !== "undefined") {
-                hidden = "msHidden";
-                visibilityChange = "msvisibilitychange";
-            } else if (typeof document.webkitHidden !== "undefined") {
-                hidden = "webkitHidden";
-                visibilityChange = "webkitvisibilitychange";
-            }
-
             this.socket = new WebSocket(config.web_socket)
 
             
@@ -51,8 +38,6 @@ export default {
                 hidden = "webkitHidden";
                 visibilityChange = "webkitvisibilitychange";
             }
-
-            
             function handleVisibilityChange() {
                 if (document[hidden]) {
                     self.socket.close()
@@ -60,15 +45,12 @@ export default {
                     self.$router.go()
                 }
             }
-            
-
             document.addEventListener(visibilityChange, handleVisibilityChange, false)
         }
     },
     destroyed() {
         
         if (this.$options.name !== 'router-link' && this.$options.name !== 'resource' && this.$options.name !== 'transition' && this.$options.name !== 'keep-alive' && this.$options.name !== undefined && this.$options.name !== 'gSearch' && this.$options.name !== 'DevelToast' && this.$options.name !== 'app' && this.$options.name !== 'gForm') {
-            clearInterval(this.id)
             this.socket.close()
             this.$store.dispatch('setLocation', '')
         }
