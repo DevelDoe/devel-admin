@@ -126,6 +126,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { keySort } from '../../../../util/helperFunc.js'
+import config from '../../../../../config'
 export default {
     name: 'overview',
     data() {
@@ -162,13 +163,18 @@ export default {
             const sorted = keySort(usersPosts, 'updatedAt', true)
             return sorted.slice(0, 6)
         },
+        getViews() {
+            // Which app data
+            console.log(config.app_name)
+            return this.visitors.filter( view => { return view.app === config.app_name })
+        },
         authenticated() {
-            return this.visitors.filter( view => { return view.user_id !== undefined})
+            return this.getViews.filter( view => { return view.user_id !== undefined})
         },
         getCountries() {
             let countries = {}
-            for(var i = 0, len = this.visitors.length; i<len; i++) {
-                var country = this.visitors[i].country
+            for(var i = 0, len = this.getViews.length; i<len; i++) {
+                var country = this.getViews[i].country
                 if( !countries[country] ) countries[country] = 0
                 countries[country]++
             }
@@ -176,8 +182,8 @@ export default {
         },
         getUsers() {
             let users = {}
-            for(var i = 0, len = this.visitors.length; i<len; i++) {
-                var user_id = this.visitors[i].user_id
+            for(var i = 0, len = this.getViews.length; i<len; i++) {
+                var user_id = this.getViews[i].user_id
                 if( !users[user_id] ) users[user_id] = 0
                 users[user_id]++
             }
@@ -185,10 +191,10 @@ export default {
         },
         getPages(){
             let pages = {}
-            for(var i = 0, len = this.visitors.length; i<len; i++) {
-                if(this.visitors[i].page !== undefined) {
-                    var page = this.visitors[i].page
-                    var seconds = this.visitors[i].seconds
+            for(var i = 0, len = this.getViews.length; i<len; i++) {
+                if(this.getViews[i].page !== undefined) {
+                    var page = this.getViews[i].page
+                    var seconds = this.getViews[i].seconds
                     if(page && page.indexOf('-') > 0) page = page.replace('-', '')
                     if( !pages[page] ) {
                         pages[page] = {}
@@ -206,8 +212,8 @@ export default {
         },
         getResolutions() {
             let resolutions = {}
-            for(var i = 0, len = this.visitors.length; i<len; i++) {
-                var resolution = this.visitors[i].resolution || undefined 
+            for(var i = 0, len = this.getViews.length; i<len; i++) {
+                var resolution = this.getViews[i].resolution || undefined 
                 if( !resolutions[resolution] ) resolutions[resolution] = 0
                 resolutions[resolution]++
             }
@@ -221,7 +227,7 @@ export default {
             else return author.email
         },
         views(day) {
-            return this.visitors.filter( visit => {
+            return this.getViews.filter( visit => {
                 return this.$moment.unix(visit.date).format('DD MMMM YY') === this.$moment().subtract(day, "days").format('DD MMMM YY')
             })
         },
@@ -330,7 +336,7 @@ export default {
             type: 'doughnut',
             data: {
                 datasets: [{
-                    data: [this.authenticated.length, this.visitors.length - this.authenticated.length],
+                    data: [this.authenticated.length, this.getViews.length - this.authenticated.length],
                     backgroundColor: ["rgba(176,176,212,1)", "rgba(176,176,212,.3)"],
                     borderWidth: 0
                 }],
