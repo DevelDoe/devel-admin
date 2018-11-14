@@ -166,7 +166,7 @@ export default {
         getViews() {
             // Which app data
             console.log(config.app_name)
-            return this.visitors.filter( view => { return view.app === config.app_name })
+            return this.visitors.filter( view => { return view.app === config.target_site })
         },
         authenticated() {
             return this.getViews.filter( view => { return view.user_id !== undefined})
