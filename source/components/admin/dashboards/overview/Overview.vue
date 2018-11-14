@@ -164,8 +164,6 @@ export default {
             return sorted.slice(0, 6)
         },
         getViews() {
-            // Which app data
-            console.log(config.app_name)
             return this.visitors.filter( view => { return view.app === config.target_site })
         },
         authenticated() {
@@ -183,9 +181,17 @@ export default {
         getUsers() {
             let users = {}
             for(var i = 0, len = this.getViews.length; i<len; i++) {
-                var user_id = this.getViews[i].user_id
-                if( !users[user_id] ) users[user_id] = 0
-                users[user_id]++
+                if (this.getViews[i].user_id) {
+                    var user = this.getViews[i].user_id
+                } else {
+                    var user = this.getViews[i].ip
+                }
+                
+                if( !users[user] ) {
+                    
+                    users[user] = 0
+                } 
+                users[user]++
             }
             return users
         },
@@ -413,12 +419,14 @@ export default {
 
         let users = []
         Object.keys(this.getUsers).forEach( key => {
-            if(key != 'undefined') {
-                let user = this.users.find(user => user._id === key) || null
-                if(user) users.push( { username: user.username, views: this.getUsers[key] })
-            }  else {
-                users.push( { username: 'Anonymous', views: this.getUsers[key] })
+            let user = {}
+            if(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(key)) {
+                user = { username: key }
+            } else {
+                user = this.users.find(user => user._id === key) || null
             }
+            
+            if(user) users.push( { username: user.username, views: this.getUsers[key] } )
         })
 
         let sortedUsers = users.sort((a,b) => b.views - a.views)
