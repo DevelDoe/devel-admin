@@ -213,7 +213,7 @@ export default {
                 else this.data.applications.push( app )
                 this.$forceUpdate()
             } else {
-                this.$bus.$emit('toast', 'No Write permissions: Your on a special guest account, I guess your someone who has an interesst in my work! Please feel free to look around.' )
+                this.$bus.$emit('toast', 'no write permissions, your on a guest account.')
                 setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
             }
         },
@@ -223,7 +223,7 @@ export default {
                 else this.data.administrations.push( admin )
                 this.$forceUpdate()
             } else {
-                this.$bus.$emit('toast', 'No Write permissions: Your on a special guest account, I guess your someone who has an interesst in my work! Please feel free to look around.' )
+                this.$bus.$emit('toast', 'no write permissions, your on a guest account.')
                 setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
             }
         },
@@ -240,7 +240,7 @@ export default {
                     this.valid = false
                 }
             } else {
-                this.$bus.$emit('toast', 'No Write permissions: Your on a special guest account, I guess your someone who has an interesst in my work! Please feel free to look around.' )
+                this.$bus.$emit('toast', 'no write permissions, your on a guest account.')
                 setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
             }
         },
@@ -250,7 +250,7 @@ export default {
                 $('#deleteModal').modal('hide')
                 this.$router.push(`${this.schema}s`)
             } else {
-                this.$bus.$emit('toast', 'No Write permissions: Your on a special guest account, I guess your someone who has an interesst in my work! Please feel free to look around.' )
+                this.$bus.$emit('toast', 'no write permissions, your on a guest account.')
                 setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
                 $('#deleteModal').modal('hide')
             }
@@ -264,7 +264,7 @@ export default {
                     this.valid = false
                 }
             } else {
-                this.$bus.$emit('toast', 'No Write permissions: Your on a special guest account, I guess your someone who has an interesst in my work! Please feel free to look around.' )
+                this.$bus.$emit('toast', 'no write permissions, your on a guest account.')
                 setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
             }
         },
@@ -290,7 +290,7 @@ export default {
                     this.currentStatus = STATUS_FAILED
                 })
             } else {
-                this.$bus.$emit('toast', 'No Write permissions: Your on a special guest account, I guess your someone who has an interesst in my work! Please feel free to look around.' )
+                this.$bus.$emit('toast', 'no write permissions, your on a guest account.')
                 setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
             }
         },

@@ -288,14 +288,14 @@ function readRights( coll ) {
 function writeRights( coll, data ) {
     const accessRights = store.state.logged.sec_lv
     if(coll === 'resource' && accessRights === '9'  || coll === 'user' && accessRights === '9' ) {
-        bus.$emit('toast', 'No Write permissions: Your on a special guest account, I guess your someone who has an interesst in my work! Please feel free to look around.' )
+        bus.$emit('toast', 'no write permissions, your on a guest account.')
         setTimeout( () => { bus.$emit('toast', '' ) }, 8000 )
         API.get( `${coll}` )
         return false
     } else if( coll !== 'resource') {
         const writeRights = store.state.resources.find( resource => resource.name === coll ).write
         if (accessRights === '9') {
-           bus.$emit('toast', 'No Write permissions: Your on a special guest account, I guess your someone who has an interesst in my work! Please feel free to look around.' )
+           bus.$emit('toast', 'no write permissions, your on a guest account.')
            setTimeout( () => { bus.$emit('toast', '' ) }, 8000 )
            return false
         } else if (accessRights <= writeRights ) {

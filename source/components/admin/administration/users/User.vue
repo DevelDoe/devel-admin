@@ -55,10 +55,6 @@ export default {
             Object.keys(pages).forEach(key => {
                 pages[key].avg = pages[key].seconds / pages[key].views
             })
-            const filtered = Object.keys(pages).forEach(page => { 
-                console.log(page)
-                return 
-                })
             return pages
         },
     },
