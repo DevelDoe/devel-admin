@@ -220,7 +220,7 @@ export default {
             if(author.username) return author.username 
             else return author.email
         },
-        visits(day) {
+        views(day) {
             return this.visitors.filter( visit => {
                 return this.$moment.unix(visit.date).format('DD MMMM YY') === this.$moment().subtract(day, "days").format('DD MMMM YY')
             })
@@ -240,7 +240,7 @@ export default {
             if(this.logged.sec_lv != 9) {
                 this.$api.del( schema, obj )
             } else {
-                this.$bus.$emit('toast', 'No Write permissions: Your on a special guest account, I guess your someone who has an interesst in my work! Please feel free to look around.' )
+                this.$bus.$emit('toast', 'no write permissions, your on a guest account.')
                 setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
             }
         },
@@ -253,15 +253,15 @@ export default {
             }, 2000)
         }
 
+        // total views
         var views = []
         for(var i = 30, stop = 0; i>=stop; i--) {
             var view = {}
             view.day = this.$moment().subtract(i, "days").format('dd DD')
-            view.views = this.visits(i).length
+            view.views = this.views(i).length
             views.push(view)
         }
 
-        // sort for pos
         let sorted = []
         sorted = views.sort((a,b)=>{return a.views-b.views})
         sorted.forEach((day, i, s) => {
@@ -283,7 +283,7 @@ export default {
             total_views_backgrounds.push(`rgba(176,176,212,${1/(view.pos+1)})`)
         })
     
-        var visits = new Chart(this.$refs.visitorCanvas, {
+        new Chart(this.$refs.visitorCanvas, {
             type: 'bar',
             data: {
                 labels: days,
@@ -322,7 +322,11 @@ export default {
                 }
             },     
         })
-        var authenticated = new Chart(this.$refs.authenticatedCanvas,{
+
+        //** Authenticated */
+
+
+        new Chart(this.$refs.authenticatedCanvas,{
             type: 'doughnut',
             data: {
                 datasets: [{
@@ -348,25 +352,36 @@ export default {
             }
         })
 
-        let labels = []
-        let data = []
+        
+        //** Countires */ 
 
-        Object.keys(this.getCountries).forEach(country => {
-            labels.push(country)
+        let countreis = []
+        Object.keys(this.getCountries).forEach((country, i, s) => {
+            countreis.push( { country: country, views: this.getCountries[country] } )
         })
+        let countires_sorted = countreis.sort((a,b)=>{return b.views - a.views})
 
-        Object.keys(this.getCountries).forEach(country => {
-            data.push(this.getCountries[country])
+        let countreis_labels = []
+        countires_sorted.forEach( entry => {
+            countreis_labels.push(entry.country)
+        })
+        let countreis_data = []
+        countires_sorted.forEach( entry => {
+            countreis_data.push(entry.views)
+        })
+        let countreis_backgrounds = []
+        countires_sorted.forEach( (entry, i) => {
+            countreis_backgrounds.push(`rgba(176,176,212,${1/(i+1)})`)
         })
         
-        var countries = new Chart(this.$refs.countriesCanvas, {
+        new Chart(this.$refs.countriesCanvas, {
             type: 'horizontalBar',
             data: {
-                labels: labels,
+                labels: countreis_labels,
                 datasets: [
                     {
-                        backgroundColor: ["rgba(176,176,212,1)"],
-                        data: data
+                        backgroundColor: countreis_backgrounds,
+                        data: countreis_data
                     }
                 ]
             },
@@ -415,7 +430,7 @@ export default {
             backgrounds.push(`rgba(176,176,212,${1/(i+1)})`)
         })
         
-        var users = new Chart(this.$refs.usersCanvas, {
+        new Chart(this.$refs.usersCanvas, {
             type: 'horizontalBar',
             data: {
                 labels: usernames,
@@ -472,7 +487,7 @@ export default {
             pages_backgrounds.push(`rgba(176,176,212,${1/(i+1)})`)
         })
 
-        var users = new Chart(this.$refs.pagesCanvas, {
+        new Chart(this.$refs.pagesCanvas, {
             type: 'horizontalBar',
             data: {
                 labels: pages_name,
@@ -510,7 +525,7 @@ export default {
             }
         })
 
-        //  avg time on page chart
+        //** avg time on page chart */
 
         pages = pages.sort((a, b) => b.avg - a.avg)
 
@@ -522,7 +537,7 @@ export default {
             pages_avg.push(page.avg.toFixed(0))
         })
 
-        var users = new Chart(this.$refs.avgCanvas, {
+        new Chart(this.$refs.avgCanvas, {
             type: 'horizontalBar',
             data: {
                 labels: pages_name,
@@ -560,9 +575,8 @@ export default {
             }
         })
 
-        //  resolutions
+        //** resolutions */
 
-        
         let resolutions = []
         Object.keys(this.getResolutions).forEach( key => {
             if(key !== 'undefined') resolutions.push(key)

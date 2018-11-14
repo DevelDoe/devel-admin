@@ -144,7 +144,6 @@ export default {
         if(this.showSearch)  this.$nextTick(() => this.$refs.search.focus())
         if(this.showSearch) this.disableScroll()
         else this.enableScroll()
-        console.log('updating')
         document.getElementById('gSearch').style.height = window.innerHeight  + "px"
     },
 }
