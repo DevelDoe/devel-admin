@@ -129,6 +129,7 @@ import { keySort } from '../../../../util/helperFunc.js'
 import config from '../../../../../config'
 export default {
     name: 'overview',
+    page: 'overview',
     data() {
         return {
             username: ''

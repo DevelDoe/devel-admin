@@ -32,7 +32,8 @@
 import {mapGetters} from 'vuex'
 import { keySort } from '../../../../util/helperFunc.js'
 export default {
-    name: 'blog',
+    name: 'posts',
+    page: 'posts',
     computed: {
         ...mapGetters([ 'posts', 'logged' ]),
         filteredPosts() {

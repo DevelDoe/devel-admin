@@ -58,45 +58,18 @@
                                 <option v-for="(key, i) in Object.keys(accelSecLv)" :value="accelSecLv[key]" >{{key}}</option>
                             </select>
                         </div>
-                        
-                        <!-- fileupload -->
-                        <span v-if=" item.inputType === 'image'">
-                            <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
-                                <div class="dropbox">
-                                    <input type="file" :name="item.name" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length" accept="image/*" class="input-file">
-                                    <p v-if="isInitial"> Drag your avatar here to begin upload<br> or click to browse </p>
-                                    <p v-if="isSaving" class="uploading"> Uploading your avatar,<br> please stand by... </p>
-                                </div>
-                            </form>
-                            <!--SUCCESS-->
-                            <transition name="fade">
-                            <div v-if="isSuccess" class="dropbox-success">
-                                <h2>Uploaded {{ uploadedFile.originalName }} successfully.</h2>
-                                <img :src="uploadedFile.img_src"  :alt="uploadedFile.originalName">
-                                <p> <a href="javascript:void(0)" @click="reset()">Upload again</a> </p>
-                            </div>
-                            <!--FAILED-->
-                            <div v-if="isFailed" class="dropbox-fail">
-                                    <h2>Uploaded failed.</h2>
-                                    <p>{{uploadError}} <br> <a href="javascript:void(0)" @click="reset()">Try again</a> </p>
-                            </div>
-                            </transition>
-                        </span>
 
-                        <!-- <form enctype="multipart/form-data" novalidate v-if="item.inputType === 'image' && (isInitial || isSaving || isSuccess)">
-                            <div class="dropbox">
-                                <input type="file" multiple :name="item.name" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length" accept="image/*" class="input-file">
-                                <p v-if="isInitial"> Drag your file(s) here to begin<br> or click to browse </p>
-                                <p v-if="isSaving"> Uploading {{ fileCount }} files... </p>
-                            </div>
-                        </form> -->
+                        <!-- image -->
+                        <uploadImages v-if="item.inputType === 'images'" :images="data.images"/>
+
+
                     </span>
                 </form>
 
             </div>
 
             <!-- BLOG -->
-            <div class="col-lg-6" id="blogPreview" v-if="data.title || data.title === ''">
+            <div class="col-lg-6" id="blogPreview" v-if="$options.name === 'blog'">
                 <div class="child" id="blogPreviewChild">
                     <header id="header">
                         <h1>{{ data.category}} - {{ data.title }}</h1>
@@ -160,6 +133,7 @@
 import { mapGetters } from 'vuex'
 const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
 import Datepicker from 'vuejs-datepicker'
+import uploadImages from './form/uploadImages.vue'
 export default {
     name: 'gForm',
     props: [ 'schema', 'data', 'select'],
@@ -168,12 +142,8 @@ export default {
             valid: true,
             newPassword:'',
             sec_lvs:  { root: 0, admin: 1, owner: 2, operator: 3, super: 4, user: 5, pleab: 6, anonymous: 7, special: 8, guest: 9 },
-            apps: [ 'tasks', 'notes', 'blog' ],
+            apps: [ 'tasks', 'notes', 'blog', 'images' ],
             admins: [ 'users', 'data' ],
-            uploadedFile: {},
-            currentStatus: null,
-            uploadError: '',
-            selectCounter: 0
         }
     },
     computed: {
@@ -192,18 +162,6 @@ export default {
                 }
             }
             return acces
-        },
-        isInitial() {
-            return this.currentStatus === STATUS_INITIAL;
-        },
-        isSaving() {
-            return this.currentStatus === STATUS_SAVING;
-        },
-        isSuccess() {
-            return this.currentStatus === STATUS_SUCCESS;
-        },
-        isFailed() {
-            return this.currentStatus === STATUS_FAILED;
         }
     },
     methods: {
@@ -306,17 +264,22 @@ export default {
             this.data[itemName] = this.data[itemName].split(',')
         }
     },
+    created() {
+        this.$bus.$on('addImage', payload => { this.data.images.push(payload) })
+        this.$bus.$on('delImage', payload => { this.data.images.splice(payload, 1) })
+    },
     updated() {
         if(document.getElementById("blogPreviewChild")) {
             var body = document.getElementById("blogPreviewChild")
-            body.scrollTop = body.scrollHeight
+            body.scrollTop = body.scrollHeight 
         }
     },
     mounted() {
       this.reset();
     },
     components: {
-        Datepicker
+        Datepicker,
+        uploadImages
     }
 }
 </script>

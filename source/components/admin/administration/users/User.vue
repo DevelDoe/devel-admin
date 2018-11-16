@@ -13,6 +13,7 @@
 import {mapGetters} from 'vuex'
 export default {
     name: 'user',
+    page: 'user',
     computed: {
         ...mapGetters([ 'users', 'visitors' ]),
         user() {

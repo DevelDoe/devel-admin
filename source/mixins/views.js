@@ -1,5 +1,10 @@
 import config from '../../config'
 
+function getPage(vm) {
+    const { page } = vm.$options 
+    if (page) return typeof page === 'function' ? page.call(vm) : page
+}
+
 export default {
     data() {
         return {
@@ -7,17 +12,15 @@ export default {
         }
     },
     mounted() {
-        if (this.$options.name !== 'router-link' && this.$options.name !== 'resource' && this.$options.name !== 'transition' && this.$options.name !== 'keep-alive' && this.$options.name !== undefined && this.$options.name !== 'gSearch' && this.$options.name !== 'gForm' && this.$options.name !== 'DevelToast' && this.$options.name !== 'app') {
-            
+        const page = getPage(this)
+        if(page) {
             var self = this
-
-            this.$store.dispatch('setLocation', this.$options.name +'')
 
             this.socket = new WebSocket(config.web_socket)
 
-            
+
             const visitor = {
-                page: self.$options.name,
+                page,
                 app: config.app_name,
                 resolution: screen.width + 'x' + screen.height
             }
@@ -38,6 +41,7 @@ export default {
                 hidden = "webkitHidden";
                 visibilityChange = "webkitvisibilitychange";
             }
+
             function handleVisibilityChange() {
                 if (document[hidden]) {
                     self.socket.close()
@@ -49,10 +53,9 @@ export default {
         }
     },
     destroyed() {
-        
-        if (this.$options.name !== 'router-link' && this.$options.name !== 'resource' && this.$options.name !== 'transition' && this.$options.name !== 'keep-alive' && this.$options.name !== undefined && this.$options.name !== 'gSearch' && this.$options.name !== 'DevelToast' && this.$options.name !== 'app' && this.$options.name !== 'gForm') {
+        const page = getPage(this)
+        if (page) {
             this.socket.close()
-            this.$store.dispatch('setLocation', '')
         }
     },
 }

@@ -51,6 +51,7 @@ import { mapGetters } from 'vuex'
 
 export default {
     name: 'task',
+    page: 'task',
     data() {
         return {
             newTodo: '',
@@ -131,12 +132,6 @@ export default {
             if( binding.value ) el.focus()
         }
     },
-    mounted() {
-        this.$store.dispatch( 'setLocation', 'tasks' )
-    },
-    destroyed() {
-        this.$store.dispatch( 'setLocation', '' )
-    }
 }
 </script>
 

@@ -26,6 +26,7 @@ import { mapGetters } from 'vuex'
 
 export default {
     name: 'notes',
+    page: 'notes',
     data() {
         return {
             newNote: '',

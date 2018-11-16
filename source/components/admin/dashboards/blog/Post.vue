@@ -9,6 +9,7 @@
 import {mapGetters} from 'vuex'
 export default {
     name: 'post',
+    page: 'post',
     data() {
         return {
             select: {
@@ -40,12 +41,6 @@ export default {
                 }
             }
         },
-    },
-    mounted() {
-        this.$store.dispatch( 'setLocation', 'posts' )
-    },
-    destroyed() {
-        this.$store.dispatch( 'setLocation', '' )
     }
 }
 </script>
