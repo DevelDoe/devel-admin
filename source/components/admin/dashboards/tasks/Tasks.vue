@@ -50,8 +50,8 @@ var filters = {
 import { mapGetters } from 'vuex'
 
 export default {
-    name: 'task',
-    page: 'task',
+    name: 'tasks',
+    page: 'tasks',
     data() {
         return {
             newTodo: '',

@@ -81,7 +81,7 @@ export default {
         },
         login() {
            
-            fetch(`${config.api_url}public/login`, {
+            fetch(`${config.api_url}/public/login`, {
                 method: "POST",
                 mode: "cors",
                 cache: "no-cache",

@@ -9,7 +9,7 @@
 import {mapGetters} from 'vuex'
 export default {
     name: 'post',
-    page: 'post',
+    page: 'new post',
     data() {
         return {
             select: {

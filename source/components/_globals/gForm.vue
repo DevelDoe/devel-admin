@@ -61,6 +61,8 @@
 
                         <!-- image -->
                         <uploadImages v-if="item.inputType === 'images'" :images="data.images"/>
+                        <uploadImage v-if="item.inputType === 'image'" :image="data.img_src"/>
+                        <uploadAvatar v-if="item.inputType === 'avatar'" :image="data.img_src"/>
 
 
                     </span>
@@ -69,7 +71,7 @@
             </div>
 
             <!-- BLOG -->
-            <div class="col-lg-6" id="blogPreview" v-if="$options.name === 'blog'">
+            <div class="col-lg-6" id="blogPreview" v-if="schema === 'post'">
                 <div class="child" id="blogPreviewChild">
                     <header id="header">
                         <h1>{{ data.category}} - {{ data.title }}</h1>
@@ -122,7 +124,8 @@
                 <span v-for="(item, i) in fields" :key="'btn'+i">
                     <button v-if="item.inputType === 'button'" class="btn btn-ctrl" :class="{ 'active': data[item.name] }"  @click="data[item.name] = !data[item.name], $forceUpdate()" >{{item.label}}</button>
                 </span>
-                <button type="button" class="btn" @click="save()">Save</button>
+                <button v-if="valid" type="button" class="btn" @click="save()">Save</button>
+                <button v-else type="button" class="btn"  disabled>Save</button>
             </div>
         </div>
 
@@ -134,6 +137,8 @@ import { mapGetters } from 'vuex'
 const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
 import Datepicker from 'vuejs-datepicker'
 import uploadImages from './form/uploadImages.vue'
+import uploadImage from './form/uploadImage.vue'
+import uploadAvatar from './form/uploadAvatar.vue'
 export default {
     name: 'gForm',
     props: [ 'schema', 'data', 'select'],
@@ -142,7 +147,7 @@ export default {
             valid: true,
             newPassword:'',
             sec_lvs:  { root: 0, admin: 1, owner: 2, operator: 3, super: 4, user: 5, pleab: 6, anonymous: 7, special: 8, guest: 9 },
-            apps: [ 'tasks', 'notes', 'blog', 'images' ],
+            apps: [ 'tasks', 'notes', 'posts', 'images' ],
             admins: [ 'users', 'data' ],
         }
     },
@@ -226,32 +231,6 @@ export default {
                 setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
             }
         },
-        reset() {
-            // reset form to initial state
-            this.currentStatus = STATUS_INITIAL
-            this.uploadedFiles = []
-        },
-        upload(formData) {
-            if(this.logged.sec_lv != 9) {
-                this.currentStatus = STATUS_SAVING
-                this.$api.upload(formData)
-                .then( data => {
-                    if(data.err) {
-                        this.currentStatus = STATUS_FAILED
-                        this.uploadError = data.err
-                        return
-                    }
-                    this.data.img_src = data.img_src
-                    this.uploadedFile = data
-                    this.currentStatus = STATUS_SUCCESS
-                }).catch(err => {
-                    this.currentStatus = STATUS_FAILED
-                })
-            } else {
-                this.$bus.$emit('toast', 'no write permissions, your on a guest account.')
-                setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
-            }
-        },
         filesChange(fieldName, fileList) {
             const formData = new FormData()
             if (!fileList.length) return
@@ -265,8 +244,12 @@ export default {
         }
     },
     created() {
-        this.$bus.$on('addImage', payload => { this.data.images.push(payload) })
-        this.$bus.$on('delImage', payload => { this.data.images.splice(payload, 1) })
+        this.$bus.$on('addImages', payload => { this.data.images.push(payload) })
+        this.$bus.$on('delImages', payload => { this.data.images.splice(payload, 1) })
+        this.$bus.$on('addImage', payload => { this.data.img_src = payload })
+        this.$bus.$on('delImage', () => { this.data.img_src = '' })
+        this.$bus.$on('invalid', () => { this.valid = false })
+        this.$bus.$on('valid', () => { this.valid = true })
     },
     updated() {
         if(document.getElementById("blogPreviewChild")) {
@@ -274,12 +257,11 @@ export default {
             body.scrollTop = body.scrollHeight 
         }
     },
-    mounted() {
-      this.reset();
-    },
     components: {
         Datepicker,
-        uploadImages
+        uploadImages,
+        uploadImage,
+        uploadAvatar
     }
 }
 </script>

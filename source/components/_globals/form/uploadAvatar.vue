@@ -1,34 +1,31 @@
 <template>
-    <div id="uploadImages">
-        <form enctype="multipart/form-data" @submit.prevent="sendFile">
-            <div class="dropzone">
+    <div id="avatar">
+        <form enctype="multipart/form-data" @submit.prevent="sendFile"  >
+            <div class="dropzone" v-if="file === ''">
                 <input 
                     type="file" 
                     class="input-field" 
                     ref="file" 
-                    @change="sendFile" 
-                    v-if="!uploading"
+                    @change="sendFile"
                 />
-                <p v-if="!uploading" class="cta">
-                    Drag your file here, or click to browse
+                <p v-if="!uploading" class="cta" >
+                    Drag your avatar here, or click to browse
                 </p>
                 
                 
             </div>
+
+            <div class="progress" v-if="uploading">
+                <div class="progress-bar bg-info" role="progressbar" :style="'width:'+progress+'%'" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
             
-            <div class="file-list">
-                <div v-for="(file, i) in uploadedFiles" :key="'file'+i" class="file">
+            <div class="file-list" >
+                <div class="file" v-if="file">
                     <div class="image-info">
-                        
-                        <h5 >{{file.name}}<i class="fa fa-times" @click="delImage(i)"></i></h5>
-                        <img :src="api_url+file.src" alt="" style="max-width:200px;">
+                        <img :src="api_url+img.img_src" alt="" style="width:80px;">
+                        <i v-if="img.name" class="fa fa-times" @click="delImage"></i>
                     </div>
-                    <div v-if="file.uploading" class="progress">
-                        <div class="progress-bar bg-info" role="progressbar" :style="'width:'+progress+'%'" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <div v-else class="progress">
-                        <div class="progress-bar bg-info" role="progressbar" :style="'width:100%'" :aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+                    
                 </div>
             </div>
         </form>
@@ -40,74 +37,73 @@ import { mapGetters } from 'vuex'
 import config from '../../../../config'
 export default {
 
-    name: 'uploadImages',
+    name: 'uploadImage',
 
-    props: [ 'images' ],
+    props: [ 'image' ],
     
     data() {
         return {
             uploading: false,
-            uploadedFiles: [
-                ...this.images.map( image => {
-                    const filename = image.substring(image.lastIndexOf('/')+1, image.length)
-                    return { name: filename, src: image}
-                })
-            ],
             progress: 0,
+            file: this.image,
             api_url: config.api_url
         }
     },
 
     computed: {
         ...mapGetters([ 'logged' ]),
+        img() {
+            return {
+                name    : this.image.substring(this.image.lastIndexOf('/')+1, this.image.length),
+                img_src : this.image
+            }
+        }
     },
 
     methods: {
         async sendFile() {
 
-            if(this.logged.sec_lv != 10) {
+            if(this.logged.sec_lv != 9) {
 
                 const file = this.$refs.file.files[0]
+                this.file = file
                 const formData = new FormData()
                 formData.append('file', file)
-                this.uploadedFiles.push(file)
+                this.img.name = null
+                this.img.img_src = null
 
                 try {
-                    this.$bus.$emit('invalid')
                     this.uploading = true
-                    file.uploading = true
                     this.$axios.defaults.headers.common['Authorization'] = `${this.$store.getters.token}`
-                    const res = await this.$axios.post('http://35.210.92.246:4000/image', formData, {
+                    const res = await this.$axios.post('http://35.210.92.246:4000/avatar', formData, {
                         onUploadProgress: e => this.progress = Math.round(e.loaded * 100 / e.total)
                     })
-                    this.progress = 0
-                    file.src = res.data.file
-                    this.$bus.$emit('addImages', res.data.file )
+                    this.img.img_src = res.data.file
+                    this.img.name = res.data.file.substring(res.data.file.lastIndexOf('/')+1, res.data.file.length)
+                    this.$bus.$emit('addImage', res.data.file )
                     this.uploading = false
                     file.uploading = false
-                    this.$bus.$emit('valid')
                 } catch (error) {
-                    this.uploadedFiles.splice(this.uploadedFiles.length -1, 1)
                     this.$bus.$emit('toast', error.response.data.error )
                     setTimeout( () => { this.$bus.$emit('toast', '' ) }, 4000 )
                     this.uploading = false
-                    this.$bus.$emit('valid')
                 }
             } else {
                 this.$bus.$emit('toast', 'no write permissions, your on a guest account.')
                 setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
             }
         },
-        delImage(i) {
-            this.uploadedFiles.splice(i,1)
-            this.$bus.$emit('delImages', i )
+        delImage() {
+            this.file = ''
+            this.progress = 0
+            this.$bus.$emit('delImage' )
         }
     }
 } 
 </script>
 
 <style lang="scss">
-#uploadImages {
+#avatar {
     .dropzone {
         min-height: 50px;
         height: 50px;
@@ -143,30 +139,31 @@ export default {
     .file-list {
 
         .file {
-            padding: 30px 5px;
-            position: relative;
+            padding: 20px 0px;
+            
 
             .image-info {
                 padding: 20px;
-                min-height: 150px;
+                min-height: 20px;
+                position: relative;
 
-                h5 {
-                    margin: 12px 0;
+                img {
+                    border-radius: 50%;
+                }
+
+                .fa {
                     position: absolute;
-                    bottom: 30px;
-                    right: 24px;
-                    font-size: 1rem;
-
-                    .fa {
-                        position: absolute;
-                        line-height: 20px;
-                        font-size: 20px;
-                        right: -20px;
-                    }
+                        top: 5px;
+                        left: 97px;
+                    font-size: 20px;
                 }
             }
 
-            .progress {
+            
+        }
+    }
+
+    .progress {
                 background-color: #272d48;
                 height: 2px;
                 border-radius: 0rem;
@@ -175,8 +172,6 @@ export default {
                     background-color: #384373 !important;
                 }
             }
-        }
-    }
 }
 </style>
 

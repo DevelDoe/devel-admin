@@ -17,18 +17,20 @@
     <transition name="drawer">
     <div :class="{ 'drawer': logged }" v-if="logged">
         <div class="container-fluid">
-            <div class="navbar-user clearfix">
-                <div class="img">
-                    <img :src="logged.img_src " alt="" >
+            <div class="navbar-user clearfix" >
+                <span @click="$router.push(`/admin/user?id=${logged._id}`)" style="cursor: pointer;">
+                    <div class="img">
+                        <img v-if="logged.img_src" :src="api_url + logged.img_src " alt="" >
 
-                </div>
-                <div class="info">
-                    <span>
-                        <h2>{{ logged.username }}</h2>
-                        <h3>{{ logged.fname }} {{ logged.lname }}</h3>
-                    </span>
-                    
-                </div>
+                    </div>
+                    <div class="info">
+                        <span >
+                            <h2>{{ logged.username }}</h2>
+                            <h3>{{ logged.fname }} {{ logged.lname }}</h3>
+                        </span>
+                        
+                    </div>
+                </span>
                 <div class="signout">
                     <i class="fa fa-sign-out"  aria-hidden="true" @click="logout" title="signout"></i>
                 </div>
@@ -46,7 +48,7 @@
                 <li :class="{ 'nav-item': true, active: isActiveNavItem('overview') }">
                     <a href="/#/admin/overview"> Overview </a>
                 </li>
-                <li class="dropdown" :class="{ 'nav-item': true, active: isActiveNavItem('tasks') ||  isActiveNavItem('notes')  }">
+                <li v-if="logged.applications.indexOf('tasks') !== -1 || logged.applications.indexOf('notes') !== -1" class="dropdown" :class="{ 'nav-item': true, active: isActiveNavItem('tasks') ||  isActiveNavItem('notes')  }">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">Productivity <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li v-if="logged.applications.indexOf('tasks') !== -1" >
@@ -58,19 +60,19 @@
                     </ul>
                 </li>
 
-                <li v-if="logged.applications.indexOf('images') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('IMAGE ALBUMS') ||  isActiveNavItem('NEW IMAGE ALBUM')  }">
+                <li v-if="logged.applications.indexOf('images') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('images') ||  isActiveNavItem('new image')  }">
                     <a href="/#/admin/images"> Images </a>
                 </li>
                 
-                <li v-if="logged.applications.indexOf('blog') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('posts') }">
-                    <a href="/#/admin/posts"> Blog </a>
+                <li v-if="logged.applications.indexOf('posts') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('posts') ||  isActiveNavItem('new post') }">
+                    <a href="/#/admin/posts"> Posts </a>
                 </li>
 
-                <li class="nav-caption">Administration</li>
+                <li class="nav-caption" v-if="logged.administrations.indexOf('data') !== -1 || logged.administrations.indexOf('users') !== -1 ">Administration</li>
                 <li v-if="logged.administrations.indexOf('data') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('data') }">
                     <a href="/#/admin/data">Data</a>
                 </li>
-                <li v-if="logged.administrations.indexOf('users') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('users') }">
+                <li v-if="logged.administrations.indexOf('users') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('users') || isActiveNavItem('new user') }">
                     <a href="/#/admin/users">Users</a>
                 </li>
             </ul>
@@ -106,7 +108,7 @@
                     <i class="fa fa-search" aria-hidden="true" @click="$store.dispatch('toggleSearch')"></i>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" style="margin-bottom: 80px">
                 <div class="col">
                     <keep-alive>
                         <transition name="fade" mode="out-in" >
@@ -129,7 +131,8 @@ export default {
         return {
             toast: '',
             showSearch: false,
-            appName: config.app_name
+            appName: config.app_name,
+            api_url: config.api_url
         }
     },
     computed: {
@@ -141,7 +144,7 @@ export default {
         },
         logout: function() {
             
-            fetch(`${config.api_url}public/logout`, {
+            fetch(`${config.api_url}/public/logout`, {
                 method: "POST",
                 mode: "cors",
                 cache: "no-cache",

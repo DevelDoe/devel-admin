@@ -8,7 +8,7 @@
 import {mapGetters} from 'vuex'
 export default {
     name: 'newImgAlbum',
-    page: 'NEW IMAGE ALBUM',
+    page: 'new image',
     computed: {
         ...mapGetters([ 'images', 'logged' ]),
         image() {
@@ -21,7 +21,7 @@ export default {
                     tags: [],
                     published: false,
                     user_id: this.logged._id,
-                    shared: false,
+                    private: false,
                     feat: false,
                     images: []
                 }

@@ -41,7 +41,6 @@ import moment from 'moment'
 Object.defineProperty(Vue.prototype, '$moment', { get() { return this.$root.moment } })
 
 import axios from 'axios'
-if (store.getters.token) axios.defaults.headers.common['Authorization'] = `${store.getters.token}`
 Object.defineProperty(Vue.prototype, '$axios', { get() { return this.$root.axios } })
 
 import hljs from 'highlight.js/lib/highlight'
