@@ -114,7 +114,8 @@ export default {
                                 $('#loginModal').modal('hide')
                                 
                                 if (this.logged.username) {
-                                    this.$bus.$emit('toast', 'Welcome back ' + this.logged.username )
+                                    if(!this.logged.sec_lv == 8) this.$bus.$emit('toast', 'Welcome back ' + this.logged.username )
+                                    else this.$bus.$emit('toast', 'Welcome ' + this.logged.username + '. Please feel free to look around. If you have any questions feel free to put them forward.' )
                                     setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
                                 }
                             }

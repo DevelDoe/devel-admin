@@ -1,6 +1,14 @@
 <template>
     <div id="images" >
         <div class="row" >
+            <div class="col">
+                <ul class="filters" style="padding: 0; margin:0">
+                    <li :class="{ active: filter == 'all' }" @click="filter = 'all'">all</li>
+                    <li :class="{ active: filter == 'user' }" @click="filter = 'user'">my</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row" >
             <div class="album" :class="'col-md-'+cols" v-for="(image, i) in filteredImages" :key="'image'+i" >
                 <router-link :to="{ name: 'image', query: { id: image._id } }" >
                     <div style="overflow:hidden">
@@ -9,17 +17,6 @@
                     <h3>{{image.title}}</h3> 
                     <h4 v-if="image.summary">{{image.summary}}</h4>
                     <h5 v-if="logged.sec_lv < 4">by {{author(image.user_id)}}</h5>
-                    
-                    <!-- <small class="text-muted">
-                        <span class="date" v-if="image.published">Published {{$moment(image.publishedAt).format('DD MMM - YYYY')}}</span>
-                        <span class="date" v-else>{{$moment.unix(image.updatedAt).format('DD MMM - YYYY')}}</span>
-                         
-                    </small>
-                    <div class="marks">
-                        <span v-if="image.published" class="marked">published</span>
-                        <span v-if="image.feat" class="marked">featured</span>  
-                        <span v-if="image.shared" class="marked">shared</span> 
-                    </div> -->
                    
                 </router-link>
             </div>
@@ -38,8 +35,8 @@ var filters = {
     all: function ( images ) {
         return images
     },
-    user: function (images ) {
-        return images.filter( image => { return image.user_id === this.logged._id } )
+    user: function (images, id) {
+        return images.filter( image => { return image.user_id === id } )
     }
 }
 export default {
@@ -57,7 +54,7 @@ export default {
             let images
             // sec_lv 3 = operator
             if(this.logged.sec_lv < 4 || this.logged.sec_lv == 9) {
-                images = this.images
+                images = filters[this.filter](this.images, this.logged._id)
             } else {
                 images = this.images.filter( image => { return image.user_id === this.logged._id })
             }
@@ -121,6 +118,25 @@ export default {
             &:hover {
                 transform: scale(1.1);
             }
+        }
+    }
+
+    .filters {
+
+        li {
+            float: left;
+            margin-right: 5px;
+            list-style: none;
+            color: #b0b0d4;
+
+            &:hover {
+                color: #d1d1e4;
+                cursor: pointer;
+            }
+        }
+
+        .active {
+            color: #eee;
         }
     }
 }

@@ -86,8 +86,8 @@
             </div>
 
             <!-- USER -->
-            <div class="col-4 toggleFeatures" v-if="data.applications && ( logged.sec_lv <= 1 || logged.sec_lv == 9 )" >
-                <div class="row padding">
+            <div class="col-4 toggleFeatures" v-if="schema === 'user' && logged.sec_lv <= 4" >
+                <div class="row padding" v-if="logged.sec_lv <= 4 || logged.sec_lv == 9"> 
                     <div class="col">
                         <h3>Applications</h3>
                         <span v-for="(app, i) in apps">
@@ -95,7 +95,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="row ">
+                <div class="row " v-if="logged.sec_lv <= 2 || logged.sec_lv == 9">
                     <div class="col">
                         <h3>Administration</h3>
                         <span v-for="(admin, i) in admins">

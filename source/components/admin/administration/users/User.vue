@@ -1,7 +1,7 @@
 <template lang="html">
     <div class="admin" id="user">
         <gForm :schema="'user'" :data="user" />
-        <div class="row user-data" >
+        <div class="row user-data" v-if="logged.sec_lv < 4" >
             <div class="col-6">
                 <canvas ref="pagesCanvas" width="400" height="150" ></canvas>
             </div>
@@ -15,7 +15,7 @@ export default {
     name: 'user',
     page: 'new user',
     computed: {
-        ...mapGetters([ 'users', 'visitors' ]),
+        ...mapGetters([ 'users', 'visitors', 'logged' ]),
         user() {
             if(this.$route.query.id)
                 return this.users.find(user => user._id === this.$route.query.id ) || null
@@ -61,64 +61,67 @@ export default {
     },
     mounted() {
         // pages viewd chart
+        if(this.logged.sec_lv < 4){
+            // sort by views
+            let sortableArray = []
+            Object.keys(this.getPages).forEach( key => {
+                sortableArray.push({'name': key, 'views': this.getPages[key].views, 'seconds': this.getPages[key].seconds, 'avg': this.getPages[key].avg})
+            })
 
-        // sort by views
-        let sortableArray = []
-        Object.keys(this.getPages).forEach( key => {
-            sortableArray.push({'name': key, 'views': this.getPages[key].views, 'seconds': this.getPages[key].seconds, 'avg': this.getPages[key].avg})
-        })
+            let pages = sortableArray.sort((a, b) => b.views - a.views)
+            let pages_name = []
+            let pages_views = []
+            let pages_backgrounds = []
 
-        let pages = sortableArray.sort((a, b) => b.views - a.views)
-        let pages_name = []
-        let pages_views = []
-        let pages_backgrounds = []
+            pages.forEach( page => {
+                pages_name.push(page.name)
+                pages_views.push(page.views)
+            })
 
-        pages.forEach( page => {
-            pages_name.push(page.name)
-            pages_views.push(page.views)
-        })
+            pages.forEach((page, i) => {
+                pages_backgrounds.push(`rgba(176,176,212,${1/(i+1)})`)
+            })
 
-        pages.forEach((page, i) => {
-            pages_backgrounds.push(`rgba(176,176,212,${1/(i+1)})`)
-        })
-
-        var users = new Chart(this.$refs.pagesCanvas, {
-            type: 'horizontalBar',
-            data: {
-                labels: pages_name,
-                datasets: [
-                    {
-                        backgroundColor: pages_backgrounds,
-                        data: pages_views
-                    }
-                ]
-            },
-            options: {
-                scales: {
-                    xAxes: [{
-                         ticks: {
-                            beginAtZero:true,
-                        },
-                        display: false,
-                        gridLines: {
-                            display: false,
-                            color: "white"
-                        },
-                    }],
-                    yAxes: [{
-                        display: true,
-                        gridLines: {
-                            color: "transparent",
-                        },
-                    }]
+            var users = new Chart(this.$refs.pagesCanvas, {
+                type: 'horizontalBar',
+                data: {
+                    labels: pages_name,
+                    datasets: [
+                        {
+                            backgroundColor: pages_backgrounds,
+                            data: pages_views
+                        }
+                    ]
                 },
-                legend: { display: false },
-                title: {
-                    display: true,
-                    text: 'PAGE VIEWS'
+                options: {
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                beginAtZero:true,
+                            },
+                            display: false,
+                            gridLines: {
+                                display: false,
+                                color: "white"
+                            },
+                        }],
+                        yAxes: [{
+                            display: true,
+                            gridLines: {
+                                color: "transparent",
+                            },
+                        }]
+                    },
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'PAGE VIEWS'
+                    }
                 }
-            }
-        })
+            })
+        }
+
+        
     },
 }
 </script>
