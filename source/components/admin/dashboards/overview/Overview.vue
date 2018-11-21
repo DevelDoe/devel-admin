@@ -121,10 +121,10 @@
             </div>
         </div>
 
-         <div class="row padding paper">
-            <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1 && filteredTasks.length > 0">
+         <div class="row padding paper" v-if="(logged.applications.indexOf('tasks') !== -1 && filteredTasks.length > 0) || (logged.applications.indexOf('tasks') !== -1 && filterNotes.length > 0)">
+            <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1">
                 <div class="paper">
-                    <h3>{{ filteredTasks.length | pluralize }} <span class="task-count" v-show="filteredTasks.length" v-cloak> <strong>({{ filteredTasks.length }}</strong>  remaining)</span></h3>
+                    <h3>{{ filteredTasks.length | pluralizeTask }} <span class="task-count" v-show="filteredTasks.length" v-cloak> <strong>({{ filteredTasks.length }}</strong>  remaining)</span></h3>
                     <ul class="todo-list">
                         <li v-for="(task, index) in filteredTasks" class="task" :key=" 'task' + index"  >
                             {{ task.title }}
@@ -135,7 +135,7 @@
             </div>
             <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1" >
                 <div class="paper">
-                    <h3>NOTES</h3>
+                    <h3>{{ filterNotes.length | pluralizeNote }} <span class="task-count" v-show="filterNotes.length" v-cloak> <strong>({{ filterNotes.length }}</strong>  remaining)</span></h3>
                     <ul class="todo-list">
                         <li v-for="(note, index) in filterNotes" class="task" :key=" 'note' + index"  >
                             {{ note.title }}
@@ -164,8 +164,11 @@ export default {
         }
     },
     filters: {
-        pluralize: function( n ) {
+        pluralizeTask: function( n ) {
             return n === 1 ? 'TASK' : 'TASKS'
+        },
+        pluralizeNote: function( n ) {
+            return n === 1 ? 'NOTE' : 'NOTES'
         }
     },
     computed: {
