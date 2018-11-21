@@ -22,129 +22,145 @@
             </div>
         </div>
 
-        <div class="row padding paper" v-if="this.logged.sec_lv < 3 || this.logged.sec_lv == 9">
-
-            <div class="col-12 heading">
-                <h3>PAGE VIEWS</h3>
-            </div>
-            
-            <div class="col-12">
-                <div class="paper">
-                    <canvas ref="visitorCanvas" width="400" height="60" ></canvas>
-                </div>
-            </div>
-
+        <div class="row">
             <div class="col-6">
-                <div class="paper">
-                    <canvas ref="countriesCanvas" width="400" height="50" ></canvas>
-                </div>
-            </div>
-
-             <div class="col-6">
-                <div class="paper">
-                    <canvas ref="authenticatedCanvas" width="400" height="70" ></canvas>
-                </div>
-            </div>
-
-            <div class="col-6">
-                <div class="paper">
-                    <canvas ref="usersCanvas" width="400" height="80" ></canvas>
-                </div>
-            </div>
-
-            <div class="col-6">
-                <div class="paper">
-                    <canvas ref="resoCanvas" width="400" height="80" ></canvas>
-                </div>
-            </div>
-
-            <div class="col-6">
-                <div class="paper">
-                    <canvas ref="pagesCanvas" width="400" height="140" ></canvas>
-                </div>
-            </div>
-
-            <div class="col-6">
-                <div class="paper">
-                    <canvas ref="avgCanvas" width="400" height="140" ></canvas>
-                </div>
-            </div>
-            
-            
-            
-        </div>
-        <div class="row padding paper" v-if="logged.applications.indexOf('posts') !== -1">
-            <div class="col-12 heading">
-                <h3>LATEST POSTS</h3>
-            </div>
-            <div class="col-6" v-for="(post, index) in filteredPosts"  :key=" 'post' + index" >
-                <div class="paper">
-                    <router-link :to="{ name: 'post', query: { id: post._id } }" v-if="post.user_id === logged._id">
-                        <small  class=" text-muted">{{$moment.unix(post.updatedAt).format('DD MMM YYYY')}}</small>
-                        <h4>{{post.title}}</h4>
-                        <p>{{post.summary}}</p>
-                        <small  class="text-muted author">by {{author(post.user_id)}}</small>
-                    </router-link>
-                    <span v-else>
-                        <small  class=" text-muted">{{$moment.unix(post.updatedAt).format('DD MMM YYYY')}}</small>
-                        <h4>{{post.title}}</h4>
-                        <p>{{post.summary}}</p>
-                        <small  class="text-muted author">by {{author(post.user_id)}}</small>
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        <div class="row padding paper images" v-if="logged.applications.indexOf('images') !== -1 && filteredImages.length > 0">
-            <div class="col-12 heading">
-                <h3>LATEST IMAGES</h3>
-            </div>
-            <div class="col-6" v-for="(image, index) in filteredImages"  :key=" 'image' + index" >
-                <div class="paper">
-                    <router-link :to="{ name: 'image', query: { id: image._id } }" v-if="image.user_id === logged._id">
-                        <div style="overflow:hidden">
-                            <div class="cover" :src="api_url + image.images[0]" alt="" style="width:100%; height: 200px" :style="'background: url('+api_url + replaceWhiteSpace(image.images[0])+'); background-size: cover; background-position: 50% 50%'" :title="image.title"></div>
+                <div class="row padding paper" v-if="logged.applications.indexOf('posts') !== -1">
+                    <div class="col-12 heading">
+                        <h3>LATEST POSTS</h3>
+                    </div>
+                    <div class="col-12 pm" style="margin: 0 15px 15px !important" v-for="(post, index) in filteredPosts"  :key=" 'post' + index" >
+                        <div class="paper pm" style="margin: 0 15px 15px !important">
+                            <router-link :to="{ name: 'post', query: { id: post._id } }" v-if="post.user_id === logged._id">
+                                <small style="font-size: 9px;" class=" text-muted">{{$moment.unix(post.updatedAt).format('DD MMM YYYY')}}</small>
+                                <h4 style="font-size: 18px;">{{post.title}}</h4>
+                                <p style="font-size: 14px;">{{post.summary}}</p>
+                                <small  style="font-size: 9px;" class="text-muted author">by {{author(post.user_id)}}</small>
+                            </router-link>
+                            <span v-else>
+                                <small style="font-size: 9px;"  class=" text-muted">{{$moment.unix(post.updatedAt).format('DD MMM YYYY')}}</small>
+                                <h4 style="font-size: 18px;">{{post.title}}</h4>
+                                <p style="font-size: 14px;">{{post.summary}}</p>
+                                <small style="font-size: 9px;"  class="text-muted author">by {{author(post.user_id)}}</small>
+                            </span>
                         </div>
-                        <h4>{{image.title}}</h4> 
-                        <h5 v-if="image.summary">{{image.summary}}</h5>
-                        <h6 >by {{author(image.user_id)}}</h6>
-                    </router-link>
-                    <span v-else>
-                        <div style="overflow:hidden">
-                            <div class="cover" :src="api_url + image.images[0]" alt="" style="width:100%; height: 200px" :style="'background: url('+api_url + replaceWhiteSpace(image.images[0])+'); background-size: cover; background-position: 50% 50%'" :title="image.title"></div>
+                    </div>
+                </div>
+
+                <!-- images -->
+                <div class="row padding paper images" v-if="logged.applications.indexOf('images') !== -1 && filteredImages.length > 0">
+                    <div class="col-12 heading">
+                        <h3>LATEST IMAGES</h3>
+                    </div>
+                    <div class="col-6" v-for="(image, index) in filteredImages"  :key=" 'image' + index" >
+                        <div class="paper">
+                            <router-link :to="{ name: 'image', query: { id: image._id } }" v-if="image.user_id === logged._id">
+                                <div style="overflow:hidden">
+                                    <div class="cover" :src="api_url + image.images[0]" alt="" style="width:100%; height: 200px" :style="'background: url('+api_url + replaceWhiteSpace(image.images[0])+'); background-size: cover; background-position: 50% 50%'" :title="image.title"></div>
+                                </div>
+                                <h4>{{image.title}}</h4> 
+                                <h6 >by {{author(image.user_id)}}</h6>
+                            </router-link>
+                            <span v-else>
+                                <div style="overflow:hidden">
+                                    <div class="cover" :src="api_url + image.images[0]" alt="" style="width:100%; height: 200px" :style="'background: url('+api_url + replaceWhiteSpace(image.images[0])+'); background-size: cover; background-position: 50% 50%'" :title="image.title"></div>
+                                </div>
+                                <h4>{{image.title}}</h4> 
+                                <h6 >by {{author(image.user_id)}}</h6>
+                            </span>
                         </div>
-                        <h4>{{image.title}}</h4> 
-                        <h5 v-if="image.summary">{{image.summary}}</h5>
-                        <h6 >by {{author(image.user_id)}}</h6>
-                    </span>
+                    </div>
                 </div>
             </div>
+            <div class="col-6">
+                <div class="row padding paper" v-if="this.logged.sec_lv < 3 || this.logged.sec_lv == 9">
+
+                    <div class="col-12 heading">
+                        <h3>PAGE VIEWS</h3>
+                    </div>
+                    
+                    <div class="col-12">
+                        <div class="paper">
+                            <canvas ref="visitorCanvas" width="400" height="100" ></canvas>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="paper">
+                            <canvas ref="pagesCanvas" width="400" height="300" ></canvas>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="paper">
+                            <canvas ref="avgCanvas" width="400" height="300" ></canvas>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="paper">
+                            <canvas ref="countriesCanvas" width="400" height="50" ></canvas>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="paper">
+                            <canvas ref="authenticatedCanvas" width="400" height="100" ></canvas>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="paper">
+                            <canvas ref="usersCanvas" width="400" height="200" ></canvas>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="paper">
+                            <canvas ref="resoCanvas" width="400" height="170" ></canvas>
+                        </div>
+                    </div>
+
+                    
+                    
+                </div>
+
+                <div class="row padding paper" v-if="(logged.applications.indexOf('tasks') !== -1 && filteredTasks.length > 0) || (logged.applications.indexOf('tasks') !== -1 && filterNotes.length > 0)">
+                    <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1">
+                        <div class="paper">
+                            <h3>{{ filteredTasks.length | pluralizeTask }} <span class="task-count" v-show="filteredTasks.length" v-cloak> <strong>({{ filteredTasks.length }}</strong>  remaining)</span></h3>
+                            <ul class="todo-list">
+                                <li v-for="(task, index) in filteredTasks" class="task" :key=" 'task' + index"  >
+                                    {{ task.title }}
+                                    <i class="fa fa-times" aria-hidden="true" @click="remove('task', task)"></i>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1" >
+                        <div class="paper">
+                            <h3>{{ filterNotes.length | pluralizeNote }} <span class="task-count" v-show="filterNotes.length" v-cloak> <strong>({{ filterNotes.length }}</strong>  remaining)</span></h3>
+                            <ul class="todo-list">
+                                <li v-for="(note, index) in filterNotes" class="task" :key=" 'note' + index"  >
+                                    {{ note.title }}
+                                    <i class="fa fa-times" aria-hidden="true" @click="remove('note', note)"></i>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            
         </div>
 
-         <div class="row padding paper" v-if="(logged.applications.indexOf('tasks') !== -1 && filteredTasks.length > 0) || (logged.applications.indexOf('tasks') !== -1 && filterNotes.length > 0)">
-            <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1">
-                <div class="paper">
-                    <h3>{{ filteredTasks.length | pluralizeTask }} <span class="task-count" v-show="filteredTasks.length" v-cloak> <strong>({{ filteredTasks.length }}</strong>  remaining)</span></h3>
-                    <ul class="todo-list">
-                        <li v-for="(task, index) in filteredTasks" class="task" :key=" 'task' + index"  >
-                            {{ task.title }}
-                            <i class="fa fa-times" aria-hidden="true" @click="remove('task', task)"></i>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1" >
-                <div class="paper">
-                    <h3>{{ filterNotes.length | pluralizeNote }} <span class="task-count" v-show="filterNotes.length" v-cloak> <strong>({{ filterNotes.length }}</strong>  remaining)</span></h3>
-                    <ul class="todo-list">
-                        <li v-for="(note, index) in filterNotes" class="task" :key=" 'note' + index"  >
-                            {{ note.title }}
-                            <i class="fa fa-times" aria-hidden="true" @click="remove('note', note)"></i>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        
+
+        
+
+        
+
+         
         
         
     </div>
@@ -309,7 +325,7 @@ export default {
         if(this.logged.sec_lv < 3 || this.logged.sec_lv == 9) {
                 // total views
             var views = []
-            for(var i = 30, stop = 0; i>=stop; i--) {
+            for(var i = 14, stop = 0; i>=stop; i--) {
                 var view = {}
                 view.day = this.$moment().subtract(i, "days").format('dd DD')
                 view.views = this.views(i).length
@@ -372,7 +388,7 @@ export default {
                     legend: { display: false },
                     title: {
                         display: true,
-                        text: 'TOTAL VIEWS LAST 30 DAYS'
+                        text: 'TOTAL VIEWS LAST 15 DAYS'
                     }
                 },     
             })
@@ -714,7 +730,6 @@ export default {
             padding: 10px;
             width: 100%;
             font-size: 1.2rem;
-            text-align: center;
         }
     }
 
@@ -731,7 +746,6 @@ export default {
             padding: 10px;
             width: 100%;
             font-size: 1.2rem;
-            text-align: center;
         }
 
         p {
@@ -771,6 +785,7 @@ export default {
         }
     .task {
         position: relative;
+        font-size: 14px;
 
         .fa-times {
             position: absolute;
@@ -797,16 +812,16 @@ export default {
 
 
         h4 {
-            font-size: 1.2rem;
+            font-size: 18px;
         }
 
         h5 {
-            font-size: .8rem;
+            font-size: 14px;
             padding-top: 0;
         }
 
         h6 {
-            font-size: .6rem;
+            font-size: 9px;
             padding-top: 0;
         }
 
