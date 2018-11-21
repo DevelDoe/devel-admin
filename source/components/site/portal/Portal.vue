@@ -67,8 +67,8 @@ export default {
     page: 'portal',
     data() {
         return {
-            email: 'guest@company.domain',
-            password: 'password',
+            email: '',
+            password: '',
             appName: config.app_name,
         }
     },
