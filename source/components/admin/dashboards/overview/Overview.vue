@@ -95,7 +95,7 @@
             </div>
         </div>
 
-        <div class="row padding paper images" v-if="logged.applications.indexOf('images') !== -1">
+        <div class="row padding paper images" v-if="logged.applications.indexOf('images') !== -1 && filteredImages.length > 0">
             <div class="col-12 heading">
                 <h3>LATEST IMAGES</h3>
             </div>
