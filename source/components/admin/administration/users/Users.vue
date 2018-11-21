@@ -41,6 +41,7 @@
 import {mapGetters} from 'vuex'
 export default {
     name: 'users',
+    page: 'users',
     computed: {
         ...mapGetters(['users','logged']),
     },

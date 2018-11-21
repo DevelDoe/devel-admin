@@ -64,6 +64,7 @@ import { mapGetters } from 'vuex'
 
 export default {
     name: 'portal',
+    page: 'portal',
     data() {
         return {
             email: 'guest@company.domain',
@@ -80,7 +81,7 @@ export default {
         },
         login() {
            
-            fetch(`${config.api_url}public/login`, {
+            fetch(`${config.api_url}/public/login`, {
                 method: "POST",
                 mode: "cors",
                 cache: "no-cache",
@@ -97,24 +98,60 @@ export default {
             }).then( res => {
                 res.json().then( data => {
                     if(data.token) {
+
                         this.$store.dispatch('setToken', data.token)
-                        this.$api.get( 'user', () => {
-                            var user = this.users.find( user => user.email === this.email )
-                            this.$store.dispatch('setLogged', user )
-                            if (this.logged.username) {
-                                this.$bus.$emit('toast', 'Welcome back ' + user.username )
-                                setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
+
+                        let user
+                        let resource
+                        let task 
+                        let note 
+                        let post 
+                        let visitor 
+                        let photo
+
+                        const update = () => {
+                            if( resource, task, note, post, visitor, photo, user ) {
+                                $('#loginModal').modal('hide')
+                                
+                                if (this.logged.username) {
+                                    this.$bus.$emit('toast', 'Welcome back ' + this.logged.username )
+                                    setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
+                                }
                             }
-                            $('#loginModal').modal('hide')
-                            this.$api.get( 'resource', () => {
-                                this.$api.get( 'task' )
-                                this.$api.get( 'note' )
-                                this.$api.get( 'post' )
-                                this.$api.get( 'visitor', () => {
-                                    this.$router.push({ name: 'overview'})
-                                })
-                            })
+                        }
+
+                        this.$api.get( 'user', () => {
+                            var logged = this.users.find( user => user.email === this.email )
+                            this.$store.dispatch('setLogged', logged )
+                            user = true
+                            update()
                         })
+
+                        this.$api.get( 'resource', () => {
+                            resource = true
+                            update()
+                        })
+                        this.$api.get( 'task', () => {
+                            task = true
+                            update()
+                        })
+                        this.$api.get( 'note', () => {
+                            note = true
+                            update()
+                        })
+                        this.$api.get( 'post', () => {
+                            post = true
+                            update()
+                        })
+                        this.$api.get( 'visitor', () => {
+                            visitor = true
+                            update()
+                        })
+                        this.$api.get( 'image', () => {
+                            photo = true
+                            update()
+                        })
+            
                         
                     } else {
                         this.$bus.$emit('toast', data.msg )

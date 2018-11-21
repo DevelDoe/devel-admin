@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <div class="row padding paper">
+        <div class="row padding paper" v-if="this.logged.sec_lv < 3 || this.logged.sec_lv == 9">
 
             <div class="col-12 heading">
                 <h3>PAGE VIEWS</h3>
@@ -73,31 +73,58 @@
             
             
         </div>
-        <div class="row padding paper" v-if="logged.applications.indexOf('blog') !== -1">
+        <div class="row padding paper" v-if="logged.applications.indexOf('posts') !== -1">
             <div class="col-12 heading">
                 <h3>LATEST POSTS</h3>
             </div>
             <div class="col-6" v-for="(post, index) in filteredPosts"  :key=" 'post' + index" >
                 <div class="paper">
                     <router-link :to="{ name: 'post', query: { id: post._id } }" v-if="post.user_id === logged._id">
-                        <small  class=" text-muted">{{$moment.unix(post.updatedAt).format('DD MMM - YYYY')}}</small>
-                        <h3>{{post.title}}</h3>
+                        <small  class=" text-muted">{{$moment.unix(post.updatedAt).format('DD MMM YYYY')}}</small>
+                        <h4>{{post.title}}</h4>
                         <p>{{post.summary}}</p>
                         <small  class="text-muted author">by {{author(post.user_id)}}</small>
                     </router-link>
                     <span v-else>
-                        <small  class=" text-muted">{{$moment.unix(post.updatedAt).format('DD MMM - YYYY')}}</small>
-                        <h3>{{post.title}}</h3>
+                        <small  class=" text-muted">{{$moment.unix(post.updatedAt).format('DD MMM YYYY')}}</small>
+                        <h4>{{post.title}}</h4>
                         <p>{{post.summary}}</p>
                         <small  class="text-muted author">by {{author(post.user_id)}}</small>
                     </span>
                 </div>
             </div>
         </div>
+
+        <div class="row padding paper images" v-if="logged.applications.indexOf('images') !== -1">
+            <div class="col-12 heading">
+                <h3>LATEST IMAGES</h3>
+            </div>
+            <div class="col-6" v-for="(image, index) in filteredImages"  :key=" 'image' + index" >
+                <div class="paper">
+                    <router-link :to="{ name: 'image', query: { id: image._id } }" v-if="image.user_id === logged._id">
+                        <div style="overflow:hidden">
+                            <div class="cover" :src="api_url + image.images[0]" alt="" style="width:100%; height: 200px" :style="'background: url('+api_url + replaceWhiteSpace(image.images[0])+'); background-size: cover; background-position: 50% 50%'" :title="image.title"></div>
+                        </div>
+                        <h4>{{image.title}}</h4> 
+                        <h5 v-if="image.summary">{{image.summary}}</h5>
+                        <h6 >by {{author(image.user_id)}}</h6>
+                    </router-link>
+                    <span v-else>
+                        <div style="overflow:hidden">
+                            <div class="cover" :src="api_url + image.images[0]" alt="" style="width:100%; height: 200px" :style="'background: url('+api_url + replaceWhiteSpace(image.images[0])+'); background-size: cover; background-position: 50% 50%'" :title="image.title"></div>
+                        </div>
+                        <h4>{{image.title}}</h4> 
+                        <h5 v-if="image.summary">{{image.summary}}</h5>
+                        <h6 >by {{author(image.user_id)}}</h6>
+                    </span>
+                </div>
+            </div>
+        </div>
+
          <div class="row padding paper">
             <div class="col-lg-6" v-if="logged.applications.indexOf('tasks') !== -1 && filteredTasks.length > 0">
                 <div class="paper">
-                    <h3>{{ filteredTasks.length | pluralize }} <span class="task-count" v-show="filteredTasks.length" v-cloak> <strong>{{ filteredTasks.length }}</strong>  remaining</span></h3>
+                    <h3>{{ filteredTasks.length | pluralize }} <span class="task-count" v-show="filteredTasks.length" v-cloak> <strong>({{ filteredTasks.length }}</strong>  remaining)</span></h3>
                     <ul class="todo-list">
                         <li v-for="(task, index) in filteredTasks" class="task" :key=" 'task' + index"  >
                             {{ task.title }}
@@ -129,9 +156,11 @@ import { keySort } from '../../../../util/helperFunc.js'
 import config from '../../../../../config'
 export default {
     name: 'overview',
+    page: 'overview',
     data() {
         return {
-            username: ''
+            username: '',
+            api_url: config.api_url,
         }
     },
     filters: {
@@ -140,7 +169,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters([ 'tasks', 'logged', 'notes', 'posts', 'users', 'visitors' ]),
+        ...mapGetters([ 'tasks', 'logged', 'notes', 'posts', 'users', 'visitors', 'images' ]),
         filteredTasks() {
             // this users tasks
             const users = this.tasks.filter( todo => {  return todo.user_id === this.logged._id  })
@@ -157,10 +186,15 @@ export default {
             })
         },
         filteredPosts() {
-            const usersPosts = this.posts.filter( post => {
+            const posts = this.posts.filter( post => {
                 return post.user_id === this.logged._id || post.shared
             })
-            const sorted = keySort(usersPosts, 'updatedAt', true)
+            const sorted = keySort(posts, 'updatedAt', true)
+            return sorted.slice(0, 6)
+        },
+        filteredImages() {
+            const images = this.images.filter( image => { return !image.private })
+            const sorted = images.sort((a,b)=> {return b.updatedAt - a.updatedAt})
             return sorted.slice(0, 6)
         },
         getViews() {
@@ -256,6 +290,10 @@ export default {
                 setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
             }
         },
+        replaceWhiteSpace( url ) {
+            var replaced = url.split(' ').join('%20');
+            return replaced
+        }
     },
     mounted() {
         
@@ -265,394 +303,396 @@ export default {
             }, 2000)
         }
 
-        // total views
-        var views = []
-        for(var i = 30, stop = 0; i>=stop; i--) {
-            var view = {}
-            view.day = this.$moment().subtract(i, "days").format('dd DD')
-            view.views = this.views(i).length
-            views.push(view)
-        }
-
-        let sorted = []
-        sorted = views.sort((a,b)=>{return a.views-b.views})
-        sorted.forEach((day, i, s) => {
-            day.pos = s.length - i
-        })
-
-        let days = []
-        views.forEach(view => {
-            days.push(view.day)
-        })
-        
-        let views_views = []
-        views.forEach(view => {
-            views_views.push(view.views)
-        })
-
-        let total_views_backgrounds = []
-        views.forEach(view => {
-            total_views_backgrounds.push(`rgba(176,176,212,${1/(view.pos+1)})`)
-        })
-    
-        new Chart(this.$refs.visitorCanvas, {
-            type: 'bar',
-            data: {
-                labels: days,
-                datasets: [{
-                    label: 'views',
-                    data: views_views,
-                    backgroundColor: total_views_backgrounds,
-                    borderColor: 'rgba(176,176,212,1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        
-                        display : false,
-                        ticks: {
-                            beginAtZero:true,
-                        },
-                        gridLines: {
-                            display : false,
-                            color: "transparent",
-                        }
-                    }],
-                    xAxes: [{
-                        gridLines: {
-                            display : false,
-                            color: "transparent",
-                        }
-                    }]
-                },
-                legend: { display: false },
-                title: {
-                    display: true,
-                    text: 'TOTAL VIEWS LAST 30 DAYS'
-                }
-            },     
-        })
-
-        //** Authenticated */
-
-
-        new Chart(this.$refs.authenticatedCanvas,{
-            type: 'doughnut',
-            data: {
-                datasets: [{
-                    data: [this.authenticated.length, this.getViews.length - this.authenticated.length],
-                    backgroundColor: ["rgba(176,176,212,1)", "rgba(176,176,212,.3)"],
-                    borderWidth: 0
-                }],
-
-                // These labels appear in the legend and in the tooltips when hovering different arcs
-                labels: [
-                    'authenticated',
-                    'anonymous',
-                ]
-            },
-            options: {
-                legend: { 
-                    display: false,
-                },
-                title: {
-                    display: true,
-                    text: 'AUTHENTICATED',
-                }
+        if(this.logged.sec_lv < 3 || this.logged.sec_lv == 9) {
+                // total views
+            var views = []
+            for(var i = 30, stop = 0; i>=stop; i--) {
+                var view = {}
+                view.day = this.$moment().subtract(i, "days").format('dd DD')
+                view.views = this.views(i).length
+                views.push(view)
             }
-        })
-
-        
-        //** Countires */ 
-
-        let countreis = []
-        Object.keys(this.getCountries).forEach((country, i, s) => {
-            countreis.push( { country: country, views: this.getCountries[country] } )
-        })
-
-        let countires_sorted = countreis.sort((a,b)=>{return b.views - a.views})
-
-        let countreis_labels = []
-        countires_sorted.forEach( entry => {
-            countreis_labels.push(entry.country)
-        })
-        let countreis_data = []
-        countires_sorted.forEach( entry => {
-            countreis_data.push(entry.views)
-        })
-        let countreis_backgrounds = []
-        countires_sorted.forEach( (entry, i) => {
-            countreis_backgrounds.push(`rgba(176,176,212,${1/(i+1)})`)
-        })
-        
-        new Chart(this.$refs.countriesCanvas, {
-            type: 'horizontalBar',
-            data: {
-                labels: countreis_labels,
-                datasets: [
-                    {
-                        backgroundColor: countreis_backgrounds,
-                        data: countreis_data
-                    }
-                ]
-            },
-            options: {
-                scales: {
-                    xAxes: [{
-                         ticks: {
-                            beginAtZero:true,
-                        },
-                        display: false,
-                    }]
-                },
-                legend: { display: false },
-                title: {
-                    display: true,
-                    text: 'COUNTRIES'
-                }
-            }
-        })
-
-        // users chart
-
-        let users = []
-        Object.keys(this.getUsers).forEach( key => {
-            let user = {}
-            if(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(key)) {
-                user = { username: key }
-            } else {
-                user = this.users.find(user => user._id === key) || null
-            }
+           
+            let days = []
+            views.forEach(view => {
+                days.push(view.day)
+            })
             
-            if(user) users.push( { username: user.username, views: this.getUsers[key] } )
-        })
+            let views_views = []
+            views.forEach(view => {
+                views_views.push(view.views)
+            })
 
-        let sortedUsers = users.sort((a,b) => b.views - a.views)
+            let sorted = []
+            sorted = views.sort((a,b)=>{return a.views-b.views})
+            sorted.forEach((day, i, s) => {
+                day.pos = s.length - i
+            })
 
-        let users_labes = []
-        sortedUsers.forEach( user => {
-            users_labes.push( user.username )
-        })
-
-        let users_data = []
-        sortedUsers.forEach( user => {
-            users_data.push( user.views )
-        })
-
-        let users_backgrounds = []
-        sortedUsers.forEach( (user, i) => {
-            users_backgrounds.push(`rgba(176,176,212,${1/(i+1)})`)
-        })
+            let total_views_backgrounds = []
+            views.forEach(view => {
+                total_views_backgrounds.push(`rgba(176,176,212,${1/(view.pos+1)})`)
+            })
         
-        new Chart(this.$refs.usersCanvas, {
-            type: 'horizontalBar',
-            data: {
-                labels: users_labes,
-                datasets: [
-                    {
-                        backgroundColor: users_backgrounds,
-                        data: users_data
-                    }
-                ]
-            },
-            options: {
-                scales: {
-                    display: false,
-                    xAxes: [{
-                         ticks: {
-                            beginAtZero:true,
-                        },
-                        display: false,
-                    }],
-                    yAxes: [{
-                        display: true,
-                        gridLines: {
-                            color: "transparent",
-                        },
+            new Chart(this.$refs.visitorCanvas, {
+                type: 'bar',
+                data: {
+                    labels: days,
+                    datasets: [{
+                        label: 'views',
+                        data: views_views,
+                        backgroundColor: total_views_backgrounds,
+                        borderColor: 'rgba(176,176,212,1)',
+                        borderWidth: 1
                     }]
                 },
-                legend: { display: false },
-                title: {
-                    display: true,
-                    text: 'USERS'
-                }
-            }
-        })
-
-        // pages viewd chart
-
-        // sort by views
-        let sortableArray = []
-        Object.keys(this.getPages).forEach( key => {
-            sortableArray.push({'name': key, 'views': this.getPages[key].views, 'seconds': this.getPages[key].seconds, 'avg': this.getPages[key].avg})
-        })
-
-        let pages = sortableArray.sort((a, b) => b.views - a.views)
-        let pages_name = []
-        let pages_views = []
-        let pages_backgrounds = []
-
-        pages.forEach( page => {
-            pages_name.push(page.name)
-            pages_views.push(page.views)
-        })
-
-        pages.forEach((page, i) => {
-            pages_backgrounds.push(`rgba(176,176,212,${1/(i+1)})`)
-        })
-
-        new Chart(this.$refs.pagesCanvas, {
-            type: 'horizontalBar',
-            data: {
-                labels: pages_name,
-                datasets: [
-                    {
-                        backgroundColor: pages_backgrounds,
-                        data: pages_views
+                options: {
+                    scales: {
+                        yAxes: [{
+                            
+                            display : false,
+                            ticks: {
+                                beginAtZero:true,
+                            },
+                            gridLines: {
+                                display : false,
+                                color: "transparent",
+                            }
+                        }],
+                        xAxes: [{
+                            gridLines: {
+                                display : false,
+                                color: "transparent",
+                            }
+                        }]
+                    },
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'TOTAL VIEWS LAST 30 DAYS'
                     }
-                ]
-            },
-            options: {
-                scales: {
-                    xAxes: [{
-                         ticks: {
-                            beginAtZero:true,
-                        },
+                },     
+            })
+
+            //** Authenticated */
+
+
+            new Chart(this.$refs.authenticatedCanvas,{
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [this.authenticated.length, this.getViews.length - this.authenticated.length],
+                        backgroundColor: ["rgba(176,176,212,1)", "rgba(176,176,212,.3)"],
+                        borderWidth: 0
+                    }],
+
+                    // These labels appear in the legend and in the tooltips when hovering different arcs
+                    labels: [
+                        'authenticated',
+                        'anonymous',
+                    ]
+                },
+                options: {
+                    legend: { 
                         display: false,
-                        gridLines: {
+                    },
+                    title: {
+                        display: true,
+                        text: 'AUTHENTICATED',
+                    }
+                }
+            })
+
+            
+            //** Countires */ 
+
+            let countreis = []
+            Object.keys(this.getCountries).forEach((country, i, s) => {
+                countreis.push( { country: country, views: this.getCountries[country] } )
+            })
+
+            let countires_sorted = countreis.sort((a,b)=>{return b.views - a.views})
+
+            let countreis_labels = []
+            countires_sorted.forEach( entry => {
+                countreis_labels.push(entry.country)
+            })
+            let countreis_data = []
+            countires_sorted.forEach( entry => {
+                countreis_data.push(entry.views)
+            })
+            let countreis_backgrounds = []
+            countires_sorted.forEach( (entry, i) => {
+                countreis_backgrounds.push(`rgba(176,176,212,${1/(i+1)})`)
+            })
+            
+            new Chart(this.$refs.countriesCanvas, {
+                type: 'horizontalBar',
+                data: {
+                    labels: countreis_labels,
+                    datasets: [
+                        {
+                            backgroundColor: countreis_backgrounds,
+                            data: countreis_data
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                beginAtZero:true,
+                            },
                             display: false,
-                            color: "white"
-                        },
-                    }],
-                    yAxes: [{
+                        }]
+                    },
+                    legend: { display: false },
+                    title: {
                         display: true,
-                        gridLines: {
-                            color: "transparent",
-                        },
-                    }]
-                },
-                legend: { display: false },
-                title: {
-                    display: true,
-                    text: 'PAGE VIEWS'
-                }
-            }
-        })
-
-        //** avg time on page chart */
-
-        pages = pages.sort((a, b) => b.avg - a.avg)
-
-        let pages_avg = []
-        pages_name = []
-
-        pages.forEach( page => {
-            pages_name.push(page.name)
-            pages_avg.push(page.avg.toFixed(0))
-        })
-
-        new Chart(this.$refs.avgCanvas, {
-            type: 'horizontalBar',
-            data: {
-                labels: pages_name,
-                datasets: [
-                    {
-                        backgroundColor: pages_backgrounds,
-                        data: pages_avg
+                        text: 'COUNTRIES'
                     }
-                ]
-            },
-            options: {
-                scales: {
-                    xAxes: [{
-                         ticks: {
-                            beginAtZero:true,
-                        },
-                        display: false,
-                        gridLines: {
-                            display: false,
-                            color: "white"
-                        },
-                    }],
-                    yAxes: [{
-                        display: true,
-                        gridLines: {
-                            color: "transparent",
-                        },
-                    }]
-                },
-                legend: { display: false },
-                title: {
-                    display: true,
-                    text: 'AVERAGE SECONDS SPENT'
                 }
-            }
-        })
+            })
 
-        //** resolutions */
+            // users chart
 
-        let resolutions = []
-        Object.keys(this.getResolutions).forEach( key => {
-            if(key !== 'undefined') resolutions.push({ 'resolution': key, 'views': this.getResolutions[key] })
-        })
+            let users = []
+            Object.keys(this.getUsers).forEach( key => {
+                let user = {}
+                if(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(key)) {
+                    user = { username: key }
+                } else {
+                    user = this.users.find(user => user._id === key) || null
+                }
+                
+                if(user) users.push( { username: user.username, views: this.getUsers[key] } )
+            })
 
-        let resolutions_sorted = resolutions.sort((a, b) => b.views - a.views)
-        
-        let resolutions_labels = []
-        resolutions_sorted.forEach( el => {
-            resolutions_labels.push( el.resolution )
-        })
+            let sortedUsers = users.sort((a,b) => b.views - a.views)
 
-        let resolutions_data = []
-        resolutions_sorted.forEach( el => {
-            resolutions_data.push( el.views )
-        })
+            let users_labes = []
+            sortedUsers.forEach( user => {
+                users_labes.push( user.username )
+            })
 
-        let resolutions_backgrounds = []
-        resolutions_sorted.forEach((el, i) => {
-            resolutions_backgrounds.push(`rgba(176,176,212,${1/(i+1)})`)
-        })
+            let users_data = []
+            sortedUsers.forEach( user => {
+                users_data.push( user.views )
+            })
 
-
-        new Chart(this.$refs.resoCanvas, {
-            type: 'horizontalBar',
-            data: {
-                labels: resolutions_labels,
-                datasets: [
-                    {
-                        backgroundColor: resolutions_backgrounds,
-                        data: resolutions_data
+            let users_backgrounds = []
+            sortedUsers.forEach( (user, i) => {
+                users_backgrounds.push(`rgba(176,176,212,${1/(i+1)})`)
+            })
+            
+            new Chart(this.$refs.usersCanvas, {
+                type: 'horizontalBar',
+                data: {
+                    labels: users_labes,
+                    datasets: [
+                        {
+                            backgroundColor: users_backgrounds,
+                            data: users_data
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        display: false,
+                        xAxes: [{
+                            ticks: {
+                                beginAtZero:true,
+                            },
+                            display: false,
+                        }],
+                        yAxes: [{
+                            display: true,
+                            gridLines: {
+                                color: "transparent",
+                            },
+                        }]
+                    },
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'USERS'
                     }
-                ]
-            },
-            options: {
-                scales: {
-                    xAxes: [{
-                         ticks: {
-                            beginAtZero:true,
-                        },
-                        display: false,
-                        gridLines: {
-                            display: false,
-                            color: "white"
-                        },
-                    }],
-                    yAxes: [{
-                        display: true,
-                        gridLines: {
-                            color: "transparent",
-                        },
-                    }]
-                },
-                legend: { display: false },
-                title: {
-                    display: true,
-                    text: 'RESOLUTIONS'
                 }
-            }
-        })
+            })
+
+            // pages viewd chart
+
+            // sort by views
+            let sortableArray = []
+            Object.keys(this.getPages).forEach( key => {
+                sortableArray.push({'name': key, 'views': this.getPages[key].views, 'seconds': this.getPages[key].seconds, 'avg': this.getPages[key].avg})
+            })
+
+            let pages = sortableArray.sort((a, b) => b.views - a.views)
+            let pages_name = []
+            let pages_views = []
+            let pages_backgrounds = []
+
+            pages.forEach( page => {
+                pages_name.push(page.name)
+                pages_views.push(page.views)
+            })
+
+            pages.forEach((page, i) => {
+                pages_backgrounds.push(`rgba(176,176,212,${1/(i+1)})`)
+            })
+
+            new Chart(this.$refs.pagesCanvas, {
+                type: 'horizontalBar',
+                data: {
+                    labels: pages_name,
+                    datasets: [
+                        {
+                            backgroundColor: pages_backgrounds,
+                            data: pages_views
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                beginAtZero:true,
+                            },
+                            display: false,
+                            gridLines: {
+                                display: false,
+                                color: "white"
+                            },
+                        }],
+                        yAxes: [{
+                            display: true,
+                            gridLines: {
+                                color: "transparent",
+                            },
+                        }]
+                    },
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'PAGE VIEWS'
+                    }
+                }
+            })
+
+            //** avg time on page chart */
+
+            pages = pages.sort((a, b) => b.avg - a.avg)
+
+            let pages_avg = []
+            pages_name = []
+
+            pages.forEach( page => {
+                pages_name.push(page.name)
+                pages_avg.push(page.avg.toFixed(0))
+            })
+
+            new Chart(this.$refs.avgCanvas, {
+                type: 'horizontalBar',
+                data: {
+                    labels: pages_name,
+                    datasets: [
+                        {
+                            backgroundColor: pages_backgrounds,
+                            data: pages_avg
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                beginAtZero:true,
+                            },
+                            display: false,
+                            gridLines: {
+                                display: false,
+                                color: "white"
+                            },
+                        }],
+                        yAxes: [{
+                            display: true,
+                            gridLines: {
+                                color: "transparent",
+                            },
+                        }]
+                    },
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'AVERAGE SECONDS SPENT'
+                    }
+                }
+            })
+
+            //** resolutions */
+
+            let resolutions = []
+            Object.keys(this.getResolutions).forEach( key => {
+                if(key !== 'undefined') resolutions.push({ 'resolution': key, 'views': this.getResolutions[key] })
+            })
+
+            let resolutions_sorted = resolutions.sort((a, b) => b.views - a.views)
+            
+            let resolutions_labels = []
+            resolutions_sorted.forEach( el => {
+                resolutions_labels.push( el.resolution )
+            })
+
+            let resolutions_data = []
+            resolutions_sorted.forEach( el => {
+                resolutions_data.push( el.views )
+            })
+
+            let resolutions_backgrounds = []
+            resolutions_sorted.forEach((el, i) => {
+                resolutions_backgrounds.push(`rgba(176,176,212,${1/(i+1)})`)
+            })
+
+
+            new Chart(this.$refs.resoCanvas, {
+                type: 'horizontalBar',
+                data: {
+                    labels: resolutions_labels,
+                    datasets: [
+                        {
+                            backgroundColor: resolutions_backgrounds,
+                            data: resolutions_data
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                beginAtZero:true,
+                            },
+                            display: false,
+                            gridLines: {
+                                display: false,
+                                color: "white"
+                            },
+                        }],
+                        yAxes: [{
+                            display: true,
+                            gridLines: {
+                                color: "transparent",
+                            },
+                        }]
+                    },
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'RESOLUTIONS'
+                    }
+                }
+            })
+        }
     }
 }
 </script>
@@ -665,6 +705,13 @@ export default {
 
         h3 {
             margin-bottom: 0;
+            background: #212740;
+            color: #b0b0d4;
+            margin:0;
+            padding: 10px;
+            width: 100%;
+            font-size: 1.2rem;
+            text-align: center;
         }
     }
 
@@ -672,6 +719,17 @@ export default {
 
         margin: 15px;
         padding: 15px;
+
+        h3 {
+            margin-bottom: 0;
+            background: #212740;
+            color: #b0b0d4;
+            margin:0;
+            padding: 10px;
+            width: 100%;
+            font-size: 1.2rem;
+            text-align: center;
+        }
 
         p {
             padding: 0;
@@ -705,7 +763,7 @@ export default {
         }
     }
     .task-count {
-            font-size: 11px;
+            font-size: 9px;
             color: #b0b0d4;
         }
     .task {
@@ -723,6 +781,42 @@ export default {
             }
         }
     }
-    
+
+    .images {
+
+        h4, 
+        h5,
+        h6 {
+            margin:0;
+            padding: 10px;
+            width: 100%;
+        }
+
+
+        h4 {
+            font-size: 1.2rem;
+        }
+
+        h5 {
+            font-size: .8rem;
+            padding-top: 0;
+        }
+
+        h6 {
+            font-size: .6rem;
+            padding-top: 0;
+        }
+
+        .cover {
+            transform: scale(1);
+            transition: transform 0.3s ease-in-out;
+            overflow: hidden;
+
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+
+    }
 }
 </style>

@@ -146,6 +146,7 @@ import { mapGetters } from 'vuex'
 import Resources from './_Resources.vue'
 export default {
     name: 'data-',
+    page: 'data',
     data() {
         return {
             newResource : {
@@ -153,7 +154,7 @@ export default {
                 details: false,
                 fields: [],
             },
-            inputTypes: [  'text', 'textarea', 'none', 'select', 'checkbox', 'password', 'email', 'sec_lv', 'button', 'image', 'array', 'date' ],
+            inputTypes: [ 'none', 'text', 'textarea', 'select', 'checkbox', 'password', 'email', 'sec_lv', 'button', 'array', 'date', 'image', 'images', 'avatar'],
             dbTypes: [ 'String', 'Boolean', 'Number', 'Date', 'Buffer', 'Mixed', 'ObjectId', 'Array', 'Decimal128', 'Map' ],
             levels: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
         }

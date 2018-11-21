@@ -40,6 +40,9 @@ Object.defineProperty(Vue.prototype, '$bus', { get() { return this.$root.api.bus
 import moment from 'moment'
 Object.defineProperty(Vue.prototype, '$moment', { get() { return this.$root.moment } })
 
+import axios from 'axios'
+Object.defineProperty(Vue.prototype, '$axios', { get() { return this.$root.axios } })
+
 import hljs from 'highlight.js/lib/highlight'
 import javascript from 'highlight.js/lib/languages/javascript'
 hljs.registerLanguage('javascript', javascript)
@@ -65,8 +68,10 @@ const markdown = require('markdown-it')({
 })
 Object.defineProperty(Vue.prototype, '$markdown', { get() { return this.$root.markdown } })
 
-import mounting from './mixins/mounting'
-Vue.mixin(mounting)
+import location from './mixins/location'
+Vue.mixin(location)
+import views from './mixins/views'
+Vue.mixin(views)
 
 import chart from 'chart.js'
 Object.defineProperty(Vue.prototype, '$chart', { get() { return this.$root.chart } })
@@ -83,7 +88,7 @@ new Vue({
     el: '#app',
     store: store,
     data () {
-     let data = { api, moment, markdown }
+     let data = { api, moment, markdown, axios }
      return data
    },
    render (h) {

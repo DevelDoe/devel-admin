@@ -10,8 +10,10 @@ const Portal = () => import('../components/site/portal/Portal.vue')
 const Overview = () => import('../components/admin/dashboards/overview/Overview.vue')
 const Tasks = () => import('../components/admin/dashboards/tasks/Tasks.vue')
 const Notes = () => import('../components/admin/dashboards/notes/Notes.vue')
-const Posts = () => import('../components/admin/dashboards/blog/Posts.vue')
-const Post = () => import('../components/admin/dashboards/blog/Post.vue')
+const Posts = () => import('../components/admin/dashboards/posts/Posts.vue')
+const Post = () => import('../components/admin/dashboards/posts/Post.vue')
+const Images = () => import('../components/admin/dashboards/images/Images.vue')
+const Image = () => import('../components/admin/dashboards/images/Image.vue')
 const Data = () => import('../components/admin/administration/data/Data.vue')
 const Users = () => import('../components/admin/administration/users/Users.vue')
 const User = () => import('../components/admin/administration/users/User.vue')
@@ -72,6 +74,16 @@ export default [{
         name: 'user',
         beforeEnter: authenticate
     },{
+        path: '/admin/images',
+        component: Images,
+        name: 'images',
+        beforeEnter: authenticate
+    },{
+        path: '/admin/image',
+        component: Image,
+        name: 'image',
+        beforeEnter: authenticate
+    }, {
       path: '*',
       component: Portal,
       name: 'portal'

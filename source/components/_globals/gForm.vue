@@ -58,45 +58,20 @@
                                 <option v-for="(key, i) in Object.keys(accelSecLv)" :value="accelSecLv[key]" >{{key}}</option>
                             </select>
                         </div>
-                        
-                        <!-- fileupload -->
-                        <span v-if=" item.inputType === 'image'">
-                            <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
-                                <div class="dropbox">
-                                    <input type="file" :name="item.name" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length" accept="image/*" class="input-file">
-                                    <p v-if="isInitial"> Drag your avatar here to begin upload<br> or click to browse </p>
-                                    <p v-if="isSaving" class="uploading"> Uploading your avatar,<br> please stand by... </p>
-                                </div>
-                            </form>
-                            <!--SUCCESS-->
-                            <transition name="fade">
-                            <div v-if="isSuccess" class="dropbox-success">
-                                <h2>Uploaded {{ uploadedFile.originalName }} successfully.</h2>
-                                <img :src="uploadedFile.img_src"  :alt="uploadedFile.originalName">
-                                <p> <a href="javascript:void(0)" @click="reset()">Upload again</a> </p>
-                            </div>
-                            <!--FAILED-->
-                            <div v-if="isFailed" class="dropbox-fail">
-                                    <h2>Uploaded failed.</h2>
-                                    <p>{{uploadError}} <br> <a href="javascript:void(0)" @click="reset()">Try again</a> </p>
-                            </div>
-                            </transition>
-                        </span>
 
-                        <!-- <form enctype="multipart/form-data" novalidate v-if="item.inputType === 'image' && (isInitial || isSaving || isSuccess)">
-                            <div class="dropbox">
-                                <input type="file" multiple :name="item.name" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length" accept="image/*" class="input-file">
-                                <p v-if="isInitial"> Drag your file(s) here to begin<br> or click to browse </p>
-                                <p v-if="isSaving"> Uploading {{ fileCount }} files... </p>
-                            </div>
-                        </form> -->
+                        <!-- image -->
+                        <uploadImages v-if="item.inputType === 'images'" :images="data.images"/>
+                        <uploadImage v-if="item.inputType === 'image'" :image="data.img_src"/>
+                        <uploadAvatar v-if="item.inputType === 'avatar'" :image="data.img_src"/>
+
+
                     </span>
                 </form>
 
             </div>
 
             <!-- BLOG -->
-            <div class="col-lg-6" id="blogPreview" v-if="data.title || data.title === ''">
+            <div class="col-lg-6" id="blogPreview" v-if="schema === 'post'">
                 <div class="child" id="blogPreviewChild">
                     <header id="header">
                         <h1>{{ data.category}} - {{ data.title }}</h1>
@@ -149,7 +124,8 @@
                 <span v-for="(item, i) in fields" :key="'btn'+i">
                     <button v-if="item.inputType === 'button'" class="btn btn-ctrl" :class="{ 'active': data[item.name] }"  @click="data[item.name] = !data[item.name], $forceUpdate()" >{{item.label}}</button>
                 </span>
-                <button type="button" class="btn" @click="save()">Save</button>
+                <button v-if="valid" type="button" class="btn" @click="save()">Save</button>
+                <button v-else type="button" class="btn"  disabled>Save</button>
             </div>
         </div>
 
@@ -160,6 +136,9 @@
 import { mapGetters } from 'vuex'
 const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
 import Datepicker from 'vuejs-datepicker'
+import uploadImages from './form/uploadImages.vue'
+import uploadImage from './form/uploadImage.vue'
+import uploadAvatar from './form/uploadAvatar.vue'
 export default {
     name: 'gForm',
     props: [ 'schema', 'data', 'select'],
@@ -168,12 +147,8 @@ export default {
             valid: true,
             newPassword:'',
             sec_lvs:  { root: 0, admin: 1, owner: 2, operator: 3, super: 4, user: 5, pleab: 6, anonymous: 7, special: 8, guest: 9 },
-            apps: [ 'tasks', 'notes', 'blog' ],
+            apps: [ 'tasks', 'notes', 'posts', 'images' ],
             admins: [ 'users', 'data' ],
-            uploadedFile: {},
-            currentStatus: null,
-            uploadError: '',
-            selectCounter: 0
         }
     },
     computed: {
@@ -192,18 +167,6 @@ export default {
                 }
             }
             return acces
-        },
-        isInitial() {
-            return this.currentStatus === STATUS_INITIAL;
-        },
-        isSaving() {
-            return this.currentStatus === STATUS_SAVING;
-        },
-        isSuccess() {
-            return this.currentStatus === STATUS_SUCCESS;
-        },
-        isFailed() {
-            return this.currentStatus === STATUS_FAILED;
         }
     },
     methods: {
@@ -268,32 +231,6 @@ export default {
                 setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
             }
         },
-        reset() {
-            // reset form to initial state
-            this.currentStatus = STATUS_INITIAL
-            this.uploadedFiles = []
-        },
-        upload(formData) {
-            if(this.logged.sec_lv != 9) {
-                this.currentStatus = STATUS_SAVING
-                this.$api.upload(formData)
-                .then( data => {
-                    if(data.err) {
-                        this.currentStatus = STATUS_FAILED
-                        this.uploadError = data.err
-                        return
-                    }
-                    this.data.img_src = data.img_src
-                    this.uploadedFile = data
-                    this.currentStatus = STATUS_SUCCESS
-                }).catch(err => {
-                    this.currentStatus = STATUS_FAILED
-                })
-            } else {
-                this.$bus.$emit('toast', 'no write permissions, your on a guest account.')
-                setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
-            }
-        },
         filesChange(fieldName, fileList) {
             const formData = new FormData()
             if (!fileList.length) return
@@ -306,17 +243,25 @@ export default {
             this.data[itemName] = this.data[itemName].split(',')
         }
     },
+    created() {
+        this.$bus.$on('addImages', payload => { this.data.images.push(payload) })
+        this.$bus.$on('delImages', payload => { this.data.images.splice(payload, 1) })
+        this.$bus.$on('addImage', payload => { this.data.img_src = payload })
+        this.$bus.$on('delImage', () => { this.data.img_src = '' })
+        this.$bus.$on('invalid', () => { this.valid = false })
+        this.$bus.$on('valid', () => { this.valid = true })
+    },
     updated() {
         if(document.getElementById("blogPreviewChild")) {
             var body = document.getElementById("blogPreviewChild")
-            body.scrollTop = body.scrollHeight
+            body.scrollTop = body.scrollHeight 
         }
     },
-    mounted() {
-      this.reset();
-    },
     components: {
-        Datepicker
+        Datepicker,
+        uploadImages,
+        uploadImage,
+        uploadAvatar
     }
 }
 </script>
