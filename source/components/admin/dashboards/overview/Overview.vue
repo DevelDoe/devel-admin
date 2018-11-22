@@ -24,7 +24,7 @@
 
         <div class="row">
             <div class="col-6">
-                <div class="row padding paper" v-if="logged.applications.indexOf('posts') !== -1">
+                <div class="row padding paper" v-if="logged.applications.indexOf('posts') !== -1 && filteredPosts.length > 0">
                     <div class="col-12 heading">
                         <h3>LATEST POSTS</h3>
                     </div>
