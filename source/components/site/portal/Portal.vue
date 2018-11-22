@@ -38,7 +38,7 @@
                 <div id="fixed" :class="{ logged: logged}">
                     <div class="carousel-caption">
                         <h1 class="display-2">{{ appName }}</h1>
-                        <h5>Fully featured web administration application, built with Vue 2.0. Please sign in with guest account and have a look around!</h5>
+                        <h5>Acuar is a platform for artists. A place for our artists to showcase and sell their art.</h5>
                         <a href="https://github.com/DevelDoe/devel-admin"><button type="button" class="btn btn-outline-secondary btn-lg">GitHub</button> </a>
                     </div>
                 </div>
@@ -122,36 +122,41 @@ export default {
                         }
 
                         this.$api.get( 'user', () => {
+                            
                             var logged = this.users.find( user => user.email === this.email )
                             this.$store.dispatch('setLogged', logged )
                             user = true
+
+
+                            this.$api.get( 'resource', () => {
+                                resource = true
+                                update()
+                            })
+                            this.$api.get( 'task', () => {
+                                task = true
+                                update()
+                            })
+                            this.$api.get( 'note', () => {
+                                note = true
+                                update()
+                            })
+                            this.$api.get( 'post', () => {
+                                post = true
+                                update()
+                            })
+                            this.$api.get( 'visitor', () => {
+                                visitor = true
+                                update()
+                            })
+                            this.$api.get( 'image', () => {
+                                photo = true
+                                update()
+                            })
+
                             update()
                         })
 
-                        this.$api.get( 'resource', () => {
-                            resource = true
-                            update()
-                        })
-                        this.$api.get( 'task', () => {
-                            task = true
-                            update()
-                        })
-                        this.$api.get( 'note', () => {
-                            note = true
-                            update()
-                        })
-                        this.$api.get( 'post', () => {
-                            post = true
-                            update()
-                        })
-                        this.$api.get( 'visitor', () => {
-                            visitor = true
-                            update()
-                        })
-                        this.$api.get( 'image', () => {
-                            photo = true
-                            update()
-                        })
+                        
             
                         
                     } else {
