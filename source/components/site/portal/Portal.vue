@@ -122,34 +122,37 @@ export default {
                         }
 
                         this.$api.get( 'user', () => {
+                            
                             var logged = this.users.find( user => user.email === this.email )
                             this.$store.dispatch('setLogged', logged )
                             user = true
-                            update()
-                        })
 
-                        this.$api.get( 'resource', () => {
-                            resource = true
-                            update()
-                        })
-                        this.$api.get( 'task', () => {
-                            task = true
-                            update()
-                        })
-                        this.$api.get( 'note', () => {
-                            note = true
-                            update()
-                        })
-                        this.$api.get( 'post', () => {
-                            post = true
-                            update()
-                        })
-                        this.$api.get( 'visitor', () => {
-                            visitor = true
-                            update()
-                        })
-                        this.$api.get( 'image', () => {
-                            photo = true
+
+                            this.$api.get( 'resource', () => {
+                                resource = true
+                                update()
+                            })
+                            this.$api.get( 'task', () => {
+                                task = true
+                                update()
+                            })
+                            this.$api.get( 'note', () => {
+                                note = true
+                                update()
+                            })
+                            this.$api.get( 'post', () => {
+                                post = true
+                                update()
+                            })
+                            this.$api.get( 'visitor', () => {
+                                visitor = true
+                                update()
+                            })
+                            this.$api.get( 'image', () => {
+                                photo = true
+                                update()
+                            })
+
                             update()
                         })
             
