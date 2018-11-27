@@ -67,8 +67,8 @@ export default {
     page: 'portal',
     data() {
         return {
-            email: 'guest@company.domain',
-            password: 'password',
+            email: '',
+            password: '',
             appName: config.app_name,
         }
     },
@@ -114,7 +114,7 @@ export default {
                                 $('#loginModal').modal('hide')
                                 
                                 if (this.logged.username) {
-                                    if(!this.logged.sec_lv == 8) this.$bus.$emit('toast', 'Welcome back ' + this.logged.username )
+                                    if(this.logged.sec_lv != 9) this.$bus.$emit('toast', 'Welcome ' + this.logged.username )
                                     else this.$bus.$emit('toast', 'Welcome ' + this.logged.username + '. Please feel free to look around. If you have any questions feel free to put them forward.' )
                                     setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
                                 }

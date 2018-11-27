@@ -74,7 +74,7 @@
             <div class="col-lg-6" id="blogPreview" v-if="schema === 'post'">
                 <div class="child" id="blogPreviewChild">
                     <header id="header">
-                        <h1>{{ data.category}} - {{ data.title }}</h1>
+                        <h1>{{ data.title }}</h1>
                     </header>
                     <div id="summary">
                         <small>{{ data.summary }}</small>

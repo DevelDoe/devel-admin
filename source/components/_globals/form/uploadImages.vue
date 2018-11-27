@@ -77,7 +77,7 @@ export default {
                     this.uploading = true
                     file.uploading = true
                     this.$axios.defaults.headers.common['Authorization'] = `${this.$store.getters.token}`
-                    const res = await this.$axios.post('http://35.210.92.246:4000/image', formData, {
+                    const res = await this.$axios.post(`${this.api_url}/image`, formData, {
                         onUploadProgress: e => this.progress = Math.round(e.loaded * 100 / e.total)
                     })
                     this.progress = 0
