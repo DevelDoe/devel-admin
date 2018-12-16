@@ -11,7 +11,6 @@
 
 import Vue from 'vue'
 
-import develLS from 'devel-localstorage'
 
 
 
@@ -30,16 +29,19 @@ const router = new VueRouter({ routes })
 
 import store from './store/store'
 
+import develLS from 'devel-localstorage'
+
 var ls = develLS.get('version')
-if(!ls || ls.version < 1.3) {
+if (!ls || ls.version < 1.3) {
     console.log('clearing out localstorage')
     localStorage.clear()
     store.dispatch('delToken')
     store.dispatch('delLogged')
 }
 
-develLS.set('version',{ version: 1.3})
-
+develLS.set('version', {
+    version: 1.3
+})
 
 import api from './util/api'
 Object.defineProperty(Vue.prototype, '$api', { get() { return this.$root.api } } )
