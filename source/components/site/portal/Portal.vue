@@ -135,7 +135,7 @@ export default {
                             this.$store.dispatch('setLogged', logged )
                             user = true
 
-                            if( !this.$socket.readyState === 1 ) {
+                            if( this.$socket.readyState !== 1 ) {
 
                                 this.$socket = new WebSocket(config.web_socket)
                                 if (debugSocket) console.log('portal: new')
