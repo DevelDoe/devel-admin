@@ -11,6 +11,15 @@
 
 import Vue from 'vue'
 
+import develLS from 'devel-localstorage'
+
+var ls = develLS.get('version')
+if(!ls || ls.version < 0.1) {
+    console.log('clearing out localstorage')
+    localStorage.clear()
+}
+
+develLS.set('version',{ version: 1.1})
 
 // Alternatively, you may import plugins individually as needed:
 // import 'bootstrap/js/dist/util';
