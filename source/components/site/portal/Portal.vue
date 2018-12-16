@@ -59,7 +59,7 @@
 </template>
 
 <script>
-const debugSocket = true
+const debugSocket = false
 import config from '../../../../config'
 import { mapGetters } from 'vuex'
 import Vue from 'vue'
@@ -135,7 +135,7 @@ export default {
                             this.$store.dispatch('setLogged', logged )
                             user = true
 
-                            if( this.$socket.readyState === 3 ) {
+                            if( !this.$socket.readyState === 1 ) {
 
                                 this.$socket = new WebSocket(config.web_socket)
                                 if (debugSocket) console.log('portal: new')

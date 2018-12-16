@@ -1,6 +1,6 @@
 import config from '../../config'
 
-var debugSocket = true
+var debugSocket = false
 
 function getPage(vm) {
     const { page } = vm.$options 
@@ -30,8 +30,18 @@ export default {
             }
             if (this.$store.getters.logged) this.visitor.user_id = this.$store.getters.logged._id
             
-            this.$socket.send(JSON.stringify(this.visitor))
+            if (this.$socket.readyState === 1) this.$socket.send(JSON.stringify(this.visitor))
+            else {
+                let interval = setInterval(()=>{
+                    if (this.$socket.readyState === 1) {
+                        this.$socket.send(JSON.stringify(this.visitor))
+                        clearInterval(interval)
+                    } 
+                }, 300)
+            }
             if (debugSocket) console.log('view(mounted): view')
+
+            
             
 
             if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support 
