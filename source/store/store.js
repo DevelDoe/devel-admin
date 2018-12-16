@@ -28,7 +28,8 @@ const store = new Vux.Store({
         loading: false,
         posts: [],
         visitors: [],
-        images: []
+        images: [],
+        messages: [],
     },
     getters: {
         appName: state => {
@@ -69,6 +70,9 @@ const store = new Vux.Store({
         },
         images: state => {
             return state.images
+        },
+        messages: state => {
+            return state.messages
         }
     },
     mutations: {
@@ -175,6 +179,14 @@ const store = new Vux.Store({
             })
         },
 
+        setMessages: (state, payload) => {
+            state.messages = payload
+        },
+        addMessage: (state, payload) => {
+            state.messages.push(payload)
+        },
+
+
     },
     actions: {
         setAppName: (ctx, payload) => {
@@ -267,6 +279,14 @@ const store = new Vux.Store({
         delImage: (ctx, payload) => {
             ctx.commit('delImage', payload)
         },
+
+        setMessages: (ctx, payload) => {
+            ctx.commit('setMessages', payload)
+        },
+        addMessage: (ctx, payload) => {
+            ctx.commit('addMessage', payload)
+        },
+
     }
 })
 

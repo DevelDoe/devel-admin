@@ -59,9 +59,10 @@
 </template>
 
 <script>
+const debugSocket = true
 import config from '../../../../config'
 import { mapGetters } from 'vuex'
-
+import Vue from 'vue'
 export default {
     name: 'portal',
     page: 'portal',
@@ -101,6 +102,8 @@ export default {
 
                         this.$store.dispatch('setToken', data.token)
 
+                        $('#loginModal').modal('hide')
+
                         let user
                         let resource
                         let task 
@@ -108,17 +111,22 @@ export default {
                         let post 
                         let visitor 
                         let photo
+                        let message
 
                         const update = () => {
-                            if( resource, task, note, post, visitor, photo, user ) {
-                                $('#loginModal').modal('hide')
-                                
+                            
+                            if( resource, task, note, post, visitor, photo, user, message ) {
+
                                 if (this.logged.username) {
-                                    if(!this.logged.sec_lv == 8) this.$bus.$emit('toast', 'Welcome back ' + this.logged.username )
+                                
+                                    if(this.logged.sec_lv != 9) this.$bus.$emit('toast', 'Welcome back ' + this.logged.username )
                                     else this.$bus.$emit('toast', 'Welcome ' + this.logged.username + '. Please feel free to look around. If you have any questions feel free to put them forward.' )
                                     setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
+                                
                                 }
+
                             }
+
                         }
 
                         this.$api.get( 'user', () => {
@@ -127,7 +135,37 @@ export default {
                             this.$store.dispatch('setLogged', logged )
                             user = true
 
+                            if( this.$socket.readyState === 3 ) {
 
+                                this.$socket = new WebSocket(config.web_socket)
+                                if (debugSocket) console.log('portal: new')
+
+                                this.$socket.onopen = () => {
+                                    this.$socket.send(JSON.stringify({ type: 'setUser', user: this.logged._id }))
+                                }
+
+                                this.$socket.onmessage = e => {
+
+                                    const parsed = JSON.parse(e.data)
+
+                                    if( parsed.type === 'online' ) {
+                                        let user = this.$store.getters.users.find( u => u._id === parsed.id )
+                                        user.online = parsed.online
+                                        this.$store.dispatch('delUser', user._id)
+                                        this.$store.dispatch('addUser', user)
+                                    }
+
+                                    if (parsed.type === 'message') this.$store.dispatch(`addMessage`, parsed.message)
+
+                                }
+                            } else {
+                                this.$socket.send(JSON.stringify({ type: 'setUser', user: this.logged._id }))
+                                if (debugSocket) console.log('portal: setuser')
+                            }
+                            
+                            
+                            
+                            
                             this.$api.get( 'resource', () => {
                                 resource = true
                                 update()
@@ -150,6 +188,10 @@ export default {
                             })
                             this.$api.get( 'image', () => {
                                 photo = true
+                                update()
+                            })
+                            this.$api.get( 'message', () => {
+                                message = true
                                 update()
                             })
 

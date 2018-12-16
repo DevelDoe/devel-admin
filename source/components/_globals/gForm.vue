@@ -95,11 +95,27 @@
                         </span>
                     </div>
                 </div>
-                <div class="row " v-if="logged.sec_lv <= 2 || logged.sec_lv == 9">
+                <div class="row padding" v-if="logged.sec_lv <= 2 || logged.sec_lv == 9">
                     <div class="col">
                         <h3>Administration</h3>
                         <span v-for="(admin, i) in admins">
                             <button type="button" class="btn btn-dark" :class="{ 'active': data.administrations.indexOf(admin) !== -1 } " @click="toggleAdministrations(admin)" style="margin-bottom:10px;">{{admin}}</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="row padding" v-if="logged.sec_lv <= 2 || logged.sec_lv == 9">
+                    <div class="col">
+                        <h3>Support</h3>
+                        <span v-for="(support, i) in supports">
+                            <button type="button" class="btn btn-dark" :class="{ 'active': data.supports.indexOf(support) !== -1 } " @click="toggleSupports(support)" style="margin-bottom:10px;">{{support}}</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="row padding" v-if="logged.sec_lv <= 2 || logged.sec_lv == 9">
+                    <div class="col">
+                        <h3>Forum</h3>
+                        <span v-for="(room, i) in forums">
+                            <button type="button" class="btn btn-dark" :class="{ 'active': data.forums && data.forums.indexOf(room) !== -1 }" @click="toggleForums(room)" style="margin-bottom:10px;">{{room}}</button>
                         </span>
                     </div>
                 </div>
@@ -149,6 +165,8 @@ export default {
             sec_lvs:  { root: 0, admin: 1, owner: 2, operator: 3, super: 4, user: 5, pleab: 6, anonymous: 7, special: 8, guest: 9 },
             apps: [ 'tasks', 'notes', 'posts', 'images' ],
             admins: [ 'users', 'data' ],
+            supports: [ 'issue council' ],
+            forums: [ 'general' ]
         }
     },
     computed: {
@@ -176,7 +194,7 @@ export default {
                 else this.data.applications.push( app )
                 this.$forceUpdate()
             } else {
-                this.$bus.$emit('toast', 'no write permissions, your on a guest account.')
+                this.$bus.$emit('toast', 'no write permissions, please contact administrator.')
                 setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
             }
         },
@@ -186,7 +204,28 @@ export default {
                 else this.data.administrations.push( admin )
                 this.$forceUpdate()
             } else {
-                this.$bus.$emit('toast', 'no write permissions, your on a guest account.')
+                this.$bus.$emit('toast', 'no write permissions, please contact administrator.')
+                setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
+            }
+        },
+        toggleSupports( support ) {
+            if(this.logged.sec_lv <= 1) {
+                if(this.data.supports.indexOf( support ) !== -1) this.data.supports.splice(this.data.supports.indexOf( support ), 1)
+                else this.data.supports.push( support )
+                this.$forceUpdate()
+            } else {
+                this.$bus.$emit('toast', 'no write permissions, please contact administrator.')
+                setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
+            }
+        },
+        toggleForums( room ) {
+            if( !this.data.forums ) this.data.forums = []
+            if(this.logged.sec_lv <= 1) {
+                if(this.data.forums.indexOf( room ) !== -1) this.data.forums.splice(this.data.forums.indexOf( room ), 1)
+                else this.data.forums.push( room )
+                this.$forceUpdate()
+            } else {
+                this.$bus.$emit('toast', 'no write permissions, please contact administrator.')
                 setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
             }
         },
@@ -250,6 +289,7 @@ export default {
         this.$bus.$on('delImage', () => { this.data.img_src = '' })
         this.$bus.$on('invalid', () => { this.valid = false })
         this.$bus.$on('valid', () => { this.valid = true })
+        if(!this.data.supports) this.data.supports = []
     },
     updated() {
         if(document.getElementById("blogPreviewChild")) {
