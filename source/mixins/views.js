@@ -1,6 +1,6 @@
 import config from '../../config'
 
-var debug = false
+var debugSocket = true
 
 function getPage(vm) {
     const { page } = vm.$options 
@@ -11,7 +11,6 @@ function getPage(vm) {
 export default {
     data() {
         return {
-            socket: null,
             handleVisibilityChange: null,
             visibilityChange: '',
             hidden: '',
@@ -21,23 +20,19 @@ export default {
     mounted() {
         const page = getPage(this)
         if(page) {
-            if (debug) console.log('page:', page)
             var self = this
 
-            this.socket = new WebSocket(config.web_socket)
-            if (debug) console.log('new socket:', self.socket)
-
             this.visitor = {
+                type: 'view',
                 page,
                 app: config.app_name,
                 resolution: screen.width + 'x' + screen.height
             }
-            if (self.$store.getters.logged) this.visitor.user_id = self.$store.getters.logged._id
-
-            this.socket.onopen = () => {
-                if (debug) console.log('socket send:', this.visitor)
-                this.socket.send(JSON.stringify(this.visitor))
-            }
+            if (this.$store.getters.logged) this.visitor.user_id = this.$store.getters.logged._id
+            
+            this.$socket.send(JSON.stringify(this.visitor))
+            if (debugSocket) console.log('view(mounted): view')
+            
 
             if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support 
                 this.hidden = "hidden";
@@ -53,15 +48,38 @@ export default {
 
             this.handleVisibilityChange = function () {
                 if (this.hidden) {
-                    if (debug) console.log('socket close:', self.socket)
-                    self.socket.close()
+                    if (debugSocket) console.log('view(HVC): hidden')
+                    self.$socket.send(JSON.stringify({type:'endview'}))
+                    if (debugSocket) console.log('view(HVC): endview')
+                    self.$socket.close()
+                    if (debugSocket) console.log('view(HVC): close')
                 } else {
-                    self.socket = new WebSocket(config.web_socket)
-                    if (debug) console.log('new socket:', self.socket)
+                    if (debugSocket) console.log('view(HVC): !hidden')
+                    self.$socket = new WebSocket(config.web_socket)
+                    if (debugSocket) console.log('view(HVC): new')
 
-                    self.socket.onopen = () => {
-                        self.socket.send(JSON.stringify(self.visitor))
-                        if (debug) console.log('socket send:', self.visitor)
+                    self.$socket.onopen = () => {
+                        if(self.logged) {
+                            self.$socket.send(JSON.stringify({ type: 'setUser', user: self.logged._id }))
+                            if (debugSocket) console.log('view(HVC): setUser')
+                        } 
+                        
+                        self.$socket.send(JSON.stringify(self.visitor))
+                        if (debugSocket) console.log('view(HVC): view')
+                    }
+
+                    self.$socket.onmessage = e => {
+
+                        const parsed = JSON.parse(e.data)
+
+                        if (parsed.type === 'online') {
+                            let user = self.$store.getters.users.find(u => u._id === parsed.id)
+                            user.online = parsed.online
+                            self.$store.dispatch('delUser', user._id)
+                            self.$store.dispatch('addUser', user)
+                        }
+
+                        if (parsed.type === 'message') self.$store.dispatch(`addMessage`, parsed.message)
                     }
                 }
             }
@@ -72,9 +90,9 @@ export default {
     destroyed() {
         const page = getPage(this)
         if (page) {
-            if (debug) console.log('destroyed() socket close:', this.socket)
-            this.socket.close()
-            if (debug) console.log('removeEventListener', this.visibilityChange)
+            if( this.$socket.readyState === 1 ) { this.$socket.send(JSON.stringify({type:'endview'} )) }
+            if (debugSocket) console.log('view(destroy): endview')
+            if (debugSocket) console.log('view(destroy): removeEventListener', this.visibilityChange)
             document.removeEventListener(this.visibilityChange, this.handleVisibilityChange, false)
         }
     },

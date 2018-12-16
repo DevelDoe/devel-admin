@@ -29,7 +29,9 @@ export default {
                     img_src: '',
                     sec_lv: '',
                     applications: [],
-                    administrations: []
+                    administrations: [],
+                    supports: [],
+                    forums: []
                 }
             }
         },

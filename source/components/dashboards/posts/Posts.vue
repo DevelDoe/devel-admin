@@ -30,7 +30,7 @@
 </template>
 <script>
 import {mapGetters} from 'vuex'
-import { keySort } from '../../../../util/helperFunc.js'
+import { keySort } from '../../../util/helperFunc.js'
 export default {
     name: 'posts',
     page: 'posts',
