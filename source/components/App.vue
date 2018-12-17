@@ -60,8 +60,8 @@
                 <li v-if="logged.administrations.indexOf('data') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('data') }" @click="$router.push('/admin/data')"> <a>Data</a> </li>
                 <li v-if="logged.administrations.indexOf('users') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('users') || isActiveNavItem('new user') }" @click="$router.push('/admin/users')"> <a>Users</a> </li>
 
-                <li class="nav-caption" v-if="logged.supports.indexOf('forum') !== -1 ">Forum</li>
-                <li v-if="logged.supports.indexOf('forum') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('general') }" @click="$router.push('/admin/forum/general')"> <a>general</a> </li>
+                <li class="nav-caption" v-if="logged.supports.indexOf('tickets') !== -1 ">Support</li>
+                <li v-if="logged.supports.indexOf('tickets') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('tickets') }" @click="$router.push('/admin/support/tickets')"> <a>tickets</a> </li>
 
             </ul>
         </div>
@@ -96,7 +96,7 @@
                     <i class="fa fa-search" aria-hidden="true" @click="$store.dispatch('toggleSearch')"></i>
                 </div>
             </div>
-            <div class="row" style="height: calc(100% - 80px);">
+            <div class="row" style="height: 100%">
                 <div class="col">
                     <keep-alive>
                         <transition name="fade" mode="out-in" >

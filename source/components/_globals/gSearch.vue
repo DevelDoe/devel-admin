@@ -1,5 +1,5 @@
 <template lang="html">
-    <div id="gSearch" v-show="showSearch" v-cloak scroll="no" style="overflow: hidden">
+    <div id="gSearch" v-show="showSearch" v-cloak scroll="no" style="overflow: hidden" >
         <div class="search">
             <input type="search"  value="" placeholder="Search" class="search-input" ref='search' autofocus v-model="search" @keydown.esc="$store.dispatch('toggleSearch'), search = ''">
         </div>
@@ -141,10 +141,12 @@ export default {
         }
     },
     updated() {
+        
         if(this.showSearch)  this.$nextTick(() => this.$refs.search.focus())
         if(this.showSearch) this.disableScroll()
         else this.enableScroll()
         document.getElementById('gSearch').style.height = window.innerHeight  + "px"
+  
     },
 }
 </script>

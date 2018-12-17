@@ -30,6 +30,7 @@ const store = new Vux.Store({
         visitors: [],
         images: [],
         messages: [],
+        tickets: []
     },
     getters: {
         appName: state => {
@@ -73,6 +74,9 @@ const store = new Vux.Store({
         },
         messages: state => {
             return state.messages
+        },
+        tickets: state => {
+            return state.tickets
         }
     },
     mutations: {
@@ -186,6 +190,18 @@ const store = new Vux.Store({
             state.messages.push(payload)
         },
 
+        setTickets: (state, payload) => {
+            state.tickets = payload
+        },
+        addTicket: (state, payload) => {
+            state.tickets.push(payload)
+        },
+        delTicket: (state, payload) => {
+            state.tickets = state.tickets.filter(ticket => {
+                return ticket._id != payload
+            })
+        },
+
 
     },
     actions: {
@@ -285,6 +301,16 @@ const store = new Vux.Store({
         },
         addMessage: (ctx, payload) => {
             ctx.commit('addMessage', payload)
+        },
+
+        setTickets: (ctx, payload) => {
+            ctx.commit('setTickets', payload)
+        },
+        addTicket: (ctx, payload) => {
+            ctx.commit('addTicket', payload)
+        },
+        delTicket: (ctx, payload) => {
+            ctx.commit('delTicket', payload)
         },
 
     }

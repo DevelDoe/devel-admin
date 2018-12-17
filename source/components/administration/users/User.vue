@@ -129,8 +129,8 @@ export default {
 </script>
 <style lang="scss">
 #user {
+    height: calc(100% + 80px);
     .user-data {
-        height: 100%;
         margin-top: -60px;
         padding: 20px 20px 20px 0;
     }

@@ -112,6 +112,7 @@ export default {
                         let visitor 
                         let photo
                         let message
+                        let ticket
 
                         const update = () => {
                             
@@ -192,6 +193,10 @@ export default {
                             })
                             this.$api.get( 'message', () => {
                                 message = true
+                                update()
+                            })
+                            this.$api.get( 'ticket', () => {
+                                ticket = true
                                 update()
                             })
 
