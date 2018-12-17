@@ -117,6 +117,14 @@
         }
 
         .active {
+            background-color: #242a46;
+
+            a {
+                color: #8b90a4;
+            }
+        }
+
+        .activePortal {
             background-color: #b0b0d4;
 
             a {

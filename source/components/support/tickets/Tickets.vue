@@ -8,6 +8,10 @@
                               <span class="date" v-else>{{$moment.unix(ticket.created_at).format('DD MMM - YYYY')}}</span>
                          </small>
 
+                         <div class="marks">
+                              <span class="marked">{{ticket.category}}</span>
+                         </div>
+
                          <h3>{{ticket.title}}</h3>
                     </router-link>
                </section>
