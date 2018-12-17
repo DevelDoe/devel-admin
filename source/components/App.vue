@@ -39,7 +39,7 @@
             <ul class="nav nav-stacked clearfix">
 
                 <li class="nav-caption">Site</li>
-                <li :class="{ 'nav-item': true, active: isActiveNavItem('portal') || isActiveNavItem('stack') || isActiveNavItem('about') || isActiveNavItem('code') || isActiveNavItem('connect') }" @click="$router.push('/')"><a> Portal </a></li>
+                <li :class="{ 'nav-item': true, activePortal: isActiveNavItem('portal') || isActiveNavItem('stack') || isActiveNavItem('about') || isActiveNavItem('code') || isActiveNavItem('connect') }" @click="$router.push('/')"><a> Portal </a></li>
 
                 <li class="nav-caption">Dashboards</li>
                 <li :class="{ 'nav-item': true, active: isActiveNavItem('overview') }" @click="$router.push('/admin/overview')"> <a> Overview </a> </li>
@@ -88,7 +88,7 @@
    
     <div id="admin" :class="{ 'content': true, 'admin-open': token }">
         <div class="container-fluid">
-            <div class="row heading" v-if="logged">
+            <div class="row heading" v-if="logged && location !== 'portal'">
                 <div class="col-12">
                     <i class="fa fa-angle-left" aria-hidden="true" @click="$router.go(-1)"></i>
                     <i class="fa fa-angle-right" aria-hidden="true" @click="$router.go(1)"></i>
@@ -96,7 +96,7 @@
                     <i class="fa fa-search" aria-hidden="true" @click="$store.dispatch('toggleSearch')"></i>
                 </div>
             </div>
-            <div class="row" style="height: 100%">
+            <div class="row" style="height: calc(100% - 80px)">
                 <div class="col">
                     <keep-alive>
                         <transition name="fade" mode="out-in" >
