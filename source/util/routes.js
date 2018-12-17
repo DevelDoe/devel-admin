@@ -18,6 +18,8 @@ const Data      = () => import('../components/administration/data/Data.vue')
 const Users     = () => import('../components/administration/users/Users.vue')
 const User      = () => import('../components/administration/users/User.vue')
 const General   = () => import('../components/forum/General.vue')
+const Tickets   = () => import('../components/support/tickets/Tickets.vue')
+const Ticket    = () => import('../components/support/tickets/Ticket.vue')
 
 import store from '../store/store'
 
@@ -88,6 +90,16 @@ export default [{
         path: '/admin/forum/general',
         component: General,
         name: 'general',
+        beforeEnter: authenticate
+    }, {
+        path: '/admin/support/tickets',
+        component: Tickets,
+        name: 'tickets',
+        beforeEnter: authenticate
+    }, {
+        path: '/admin/support/ticket',
+        component: Ticket,
+        name: 'ticket',
         beforeEnter: authenticate
     }, {
       path: '*',

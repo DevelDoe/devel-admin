@@ -12,8 +12,6 @@
 import Vue from 'vue'
 
 
-
-
 // Alternatively, you may import plugins individually as needed:
 // import 'bootstrap/js/dist/util';
 // import 'bootstrap/js/dist/dropdown';
@@ -32,7 +30,7 @@ import store from './store/store'
 import develLS from 'devel-localstorage'
 
 var ls = develLS.get('version')
-if (!ls || ls.version < 1.3) {
+if (!ls || ls.version < 1.4) {
     console.log('clearing out localstorage')
     localStorage.clear()
     store.dispatch('delToken')
@@ -40,7 +38,7 @@ if (!ls || ls.version < 1.3) {
 }
 
 develLS.set('version', {
-    version: 1.3
+    version: 1.4
 })
 
 import api from './util/api'
