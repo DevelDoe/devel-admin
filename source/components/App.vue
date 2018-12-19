@@ -21,7 +21,6 @@
                 <span @click="$router.push(`/admin/user?id=${logged._id}`)" style="cursor: pointer;">
                     <div class="img">
                         <img v-if="logged.img_src" :src="api_url + logged.img_src " alt="" >
-
                     </div>
                     <div class="info">
                         <span >
@@ -40,41 +39,30 @@
             <ul class="nav nav-stacked clearfix">
 
                 <li class="nav-caption">Site</li>
-                <li :class="{ 'nav-item': true, active: isActiveNavItem('portal') || isActiveNavItem('stack') || isActiveNavItem('about') || isActiveNavItem('code') || isActiveNavItem('connect') }">
-                    <a href="/#/"> Portal </a>
-                </li>
+                <li :class="{ 'nav-item': true, activePortal: isActiveNavItem('portal') || isActiveNavItem('stack') || isActiveNavItem('about') || isActiveNavItem('code') || isActiveNavItem('connect') }" @click="$router.push('/')"><a> Portal </a></li>
 
                 <li class="nav-caption">Dashboards</li>
-                <li :class="{ 'nav-item': true, active: isActiveNavItem('overview') }">
-                    <a href="/#/admin/overview"> Overview </a>
-                </li>
+                <li :class="{ 'nav-item': true, active: isActiveNavItem('overview') }" @click="$router.push('/admin/overview')"> <a> Overview </a> </li>
                 <li v-if="logged.applications.indexOf('tasks') !== -1 || logged.applications.indexOf('notes') !== -1" class="dropdown" :class="{ 'nav-item': true, active: isActiveNavItem('tasks') ||  isActiveNavItem('notes')  }">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">Productivity <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li v-if="logged.applications.indexOf('tasks') !== -1" >
-                            <a href="/#/admin/tasks"> Tasks </a>
-                        </li>
-                        <li v-if="logged.applications.indexOf('notes') !== -1" >
-                            <a href="/#/admin/notes"> Notes </a>
-                        </li>
+                        <li v-if="logged.applications.indexOf('tasks') !== -1" @click="$router.push('/admin/tasks')"> <a> Tasks </a> </li>
+                        <li v-if="logged.applications.indexOf('notes') !== -1" @click="$router.push('/admin/notes')"> <a > Notes </a> </li>
                     </ul>
                 </li>
+                <li v-if="logged.applications.indexOf('images') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('images') ||  isActiveNavItem('new image')  }" @click="$router.push('/admin/images')"> <a>Images</a> </li>
+                <li v-if="logged.applications.indexOf('posts') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('posts') ||  isActiveNavItem('new post') }" @click="$router.push('/admin/posts')"> <a>Posts</a> </li>
 
-                <li v-if="logged.applications.indexOf('images') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('images') ||  isActiveNavItem('new image')  }">
-                    <a href="/#/admin/images"> Images </a>
-                </li>
+                <li class="nav-caption" v-if="logged.forums.indexOf('general') !== -1 ">Forum</li>
+                <li v-if="logged.forums.indexOf('general') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('general') }" @click="$router.push('/admin/forum/general')"> <a>general</a> </li>
                 
-                <li v-if="logged.applications.indexOf('posts') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('posts') ||  isActiveNavItem('new post') }">
-                    <a href="/#/admin/posts"> Posts </a>
-                </li>
-
                 <li class="nav-caption" v-if="logged.administrations.indexOf('data') !== -1 || logged.administrations.indexOf('users') !== -1 ">Administration</li>
-                <li v-if="logged.administrations.indexOf('data') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('data') }">
-                    <a href="/#/admin/data">Data</a>
-                </li>
-                <li v-if="logged.administrations.indexOf('users') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('users') || isActiveNavItem('new user') }">
-                    <a href="/#/admin/users">Users</a>
-                </li>
+                <li v-if="logged.administrations.indexOf('data') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('data') }" @click="$router.push('/admin/data')"> <a>Data</a> </li>
+                <li v-if="logged.administrations.indexOf('users') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('users') || isActiveNavItem('new user') }" @click="$router.push('/admin/users')"> <a>Users</a> </li>
+
+                <li class="nav-caption" v-if="logged.supports.indexOf('tickets') !== -1 ">Support</li>
+                <li v-if="logged.supports.indexOf('tickets') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('tickets') }" @click="$router.push('/admin/support/tickets')"> <a>tickets</a> </li>
+
             </ul>
         </div>
 
@@ -100,7 +88,7 @@
    
     <div id="admin" :class="{ 'content': true, 'admin-open': token }">
         <div class="container-fluid">
-            <div class="row heading" v-if="logged">
+            <div class="row heading" v-if="logged && location !== 'portal'">
                 <div class="col-12">
                     <i class="fa fa-angle-left" aria-hidden="true" @click="$router.go(-1)"></i>
                     <i class="fa fa-angle-right" aria-hidden="true" @click="$router.go(1)"></i>
@@ -108,7 +96,7 @@
                     <i class="fa fa-search" aria-hidden="true" @click="$store.dispatch('toggleSearch')"></i>
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 80px">
+            <div class="row" style="height: calc(100% - 80px)">
                 <div class="col">
                     <keep-alive>
                         <transition name="fade" mode="out-in" >
@@ -125,6 +113,7 @@
 <script>
 import config from '../../config'
 import { mapGetters } from 'vuex'
+const debugSocket = true
 export default {
     name: 'app',
     data() {
@@ -160,6 +149,9 @@ export default {
                     if(data.msg === 'Loged out') {
                         this.$store.dispatch('delToken')
                         this.$store.dispatch('delLogged')
+                        this.$socket.send(JSON.stringify({type:'endview'}))
+                        this.$socket.close()
+                        if (debugSocket) console.log('app(logout): close')
                         this.$router.push('/')
                     }
                 })

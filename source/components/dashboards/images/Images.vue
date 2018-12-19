@@ -1,6 +1,6 @@
 <template>
     <div id="images" >
-        <div class="row" >
+        <div class="row" v-if="logged.sec_lv < 4">
             <div class="col">
                 <ul class="filters" style="padding: 0; margin:0">
                     <li :class="{ active: filter == 'all' }" @click="filter = 'all'">all</li>
@@ -30,7 +30,7 @@
 </template>
 <script>
 import {mapGetters} from 'vuex'
-import config from '../../../../../config'
+import config from '../../../../config'
 var filters = {
     all: function ( images ) {
         return images

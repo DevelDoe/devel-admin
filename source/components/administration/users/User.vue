@@ -29,7 +29,9 @@ export default {
                     img_src: '',
                     sec_lv: '',
                     applications: [],
-                    administrations: []
+                    administrations: [],
+                    supports: [],
+                    forums: []
                 }
             }
         },
@@ -127,8 +129,8 @@ export default {
 </script>
 <style lang="scss">
 #user {
+    height: calc(100% + 80px);
     .user-data {
-        height: 100%;
         margin-top: -60px;
         padding: 20px 20px 20px 0;
     }

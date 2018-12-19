@@ -13,6 +13,8 @@ $fa-font-path: "~font-awesome/fonts";
 @import '_loading-animation';
 @import './components/_app';
 @import './components/_posts';
+@import './components/_messages';
+@import './components/_tickets';
 @import '_hl';
 
 // Alternatively, you may import parts of Boostrap individually as needed.

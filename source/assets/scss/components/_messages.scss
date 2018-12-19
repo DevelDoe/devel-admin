@@ -1,0 +1,113 @@
+#general {
+     height: 100%;
+     width: 100%;
+     overflow: hidden;
+     position: relative;
+
+     .messages {
+          position: absolute;
+          top: 0;
+          bottom: 0px;
+          left: 47px;
+          right: -17px;
+          /* Increase/Decrease this value for cross-browser compatibility */
+          overflow-y: scroll;
+          width: calc(100% - 30px);
+
+          .message {
+
+               background: #212740;
+               padding: 15px;
+               margin-bottom: 5px;
+
+               .image {
+                    margin: 0 auto;
+                    width: 50%;
+
+                    img {
+                         width: 100%;
+                         border-radius: 50%;
+                    }
+               }
+
+
+
+               .message-user {
+
+                    h3 {
+                         display: inline;
+                         line-height: 25px;
+                    }
+               }
+
+               .message-msg {
+                    p {
+                         padding: 10px;
+                    }
+               }
+
+               p {
+                    margin-bottom: 0;
+               }
+          }
+          .element::-webkit-scrollbar {
+               display: none;
+          }
+
+          .bottom {
+
+               width: 100%;
+               border-top: 1px solid hsla(0, 0%, 100%, .06);
+               padding: 10px 0;
+               transition: opacity .2s ease;
+               width: 100%;
+
+               .input {
+                    background-color: rgba(255, 255, 255, 0.01);
+                    border-radius: 5px;
+                    position: relative;
+                    display: flex;
+
+                    .textarea {
+                         color: hsla(0, 0%, 100%, .7);
+                         -moz-appearance: none;
+                         -webkit-appearance: none;
+                         appearance: none;
+                         background-color: transparent;
+                         border: none;
+                         font-size: 1rem;
+                         font-weight: 400;
+                         line-height: 1.25rem;
+                         margin: 2px 2px 2px 0;
+                         max-height: 144px;
+                         min-height: 22px;
+                         padding: 10px;
+                         resize: none;
+                         width: 100%;
+                    }
+               }
+          }
+     }
+
+     .users {
+          .online {
+               padding: 15px;
+
+               .user {
+                    padding: 10px 0;
+
+                    .image {
+                         display: inline;
+
+                         img {
+                              width: 50px;
+                              border-radius: 50%;
+                         }
+                    }
+               }
+          }
+          
+     }
+
+}
+

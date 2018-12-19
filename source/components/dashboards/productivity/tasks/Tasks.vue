@@ -23,7 +23,7 @@
                     <li :class="{ selected: visibility == 'active' }" @click="visibility = 'active'">Active</li>
                     <li :class="{ selected: visibility == 'completed' }" @click="visibility = 'completed'">Completed</li>
                 </ul>
-                <button class="clear-completed" @click="removeCompleted()" v-show="tasks.length > remaining" v-cloak>Clear completed</button>
+                <button class="clear-completed" @click="removeCompleted()" v-show="filteredTodos.length > remaining" v-cloak>Clear completed</button>
             </footer>
         </section>
     </div>
@@ -71,7 +71,7 @@ export default {
             return f.sort((a, b) => a.title.localeCompare(b.title))
         },
         remaining: function() {
-            return filters.active( this.tasks ).length
+            return filters.active( this.filteredTodos ).length
         },
         ...mapGetters([ 'tasks', 'logged' ])
     },

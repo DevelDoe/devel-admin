@@ -29,31 +29,47 @@
 
                 <form id="userForm" class="needs-validation" :class="{ 'needs-validation': !valid }" novalidate onsubmit="return false;">
                     <span  v-for="(item, i) in fields" :key="i">
+
                         <div class="form-group" v-if="item.inputType === 'date' && data.published">
-                            <datepicker :placeholder="item.label" v-model="data[item.name]"></datepicker>
+                            <label>{{item.label}}</label>
+                            <datepicker :placeholder="`enter a ${item.label} here`" v-model="data[item.name]"></datepicker>
                         </div>
+
                         <div class="form-group" v-if="item.inputType === 'text'">
-                            <input type="text" class="form-control" :id="item.name"  :placeholder="item.label" v-model="data[item.name]" @keydown="$forceUpdate()">
+                            <label>{{item.label}}</label>
+                            <input type="text" class="form-control" :id="item.name"  :placeholder="`enter a ${item.label} here`" v-model="data[item.name]" @keydown="$forceUpdate()">
                         </div>
+
                         <div class="form-group" v-if="item.inputType === 'password'">
-                            <input type="password" class="form-control" :id="item.name"  :placeholder="item.label" v-model="data[item.name]">
+                            <label>{{item.label}}</label>
+                            <input type="password" class="form-control" :id="item.name"  :placeholder="`enter a ${item.label} here`" v-model="data[item.name]">
                         </div>
+
                         <div class="form-group" v-if="item.inputType === 'email'">
-                            <input type="email" class="form-control" :id="item.name" :placeholder="item.label" v-model="data[item.name]"  >
+                            <label>{{item.label}}</label>
+                            <input type="email" class="form-control" :id="item.name" :placeholder="`enter a ${item.label} here`" v-model="data[item.name]"  >
                         </div>
+
                         <div class="form-group" v-if="item.inputType === 'textarea'">
-                            <textarea class="form-control" :id="item.name" :placeholder="item.label" v-model="data[item.name]" @keydown="$forceUpdate()" ></textarea>
+                            <label>{{item.label}}</label>
+                            <textarea class="form-control" :id="item.name" :placeholder="`enter a ${item.label} here`" v-model="data[item.name]" @keydown="$forceUpdate()" ></textarea>
                         </div>
+
                         <div class="form-group" v-if="item.inputType === 'select' ">
+                            <label>{{item.label}}</label>
                             <select class="form-control"  v-model="data[item.name]" @blur="$forceUpdate()">
                                 <option disabled value="">{{item.label}}</option>
                                 <option v-for="(key, i) in select[item.name]" :value="key" >{{key}}</option>
                             </select>
                         </div>
+
                         <div class="form-group" v-if="item.inputType === 'array'">
-                            <input type="text" class="form-control" :id="item.name" :placeholder="item.label" v-model="data[item.name]" @blur="split(item.name)" @keyup.enter="split(item.name)">
+                            <label>{{item.label}}</label>
+                            <input type="text" class="form-control" :id="item.name" :placeholder="`enter a ${item.label} here`" v-model="data[item.name]" @blur="split(item.name)" @keyup.enter="split(item.name)">
                         </div>
+
                         <div class="form-group" v-if="item.inputType === 'sec_lv' && ( data._id !== logged._id && logged.sec_lv < data.sec_lv ) || (item.inputType === 'sec_lv' && data.sec_lv === '') ">
+                            <label>{{item.label}}</label>
                             <select class="form-control"  v-model="data.sec_lv">
                                 <option v-for="(key, i) in Object.keys(accelSecLv)" :value="accelSecLv[key]" >{{key}}</option>
                             </select>
@@ -63,6 +79,20 @@
                         <uploadImages v-if="item.inputType === 'images'" :images="data.images"/>
                         <uploadImage v-if="item.inputType === 'image'" :image="data.img_src"/>
                         <uploadAvatar v-if="item.inputType === 'avatar'" :image="data.img_src"/>
+
+                        <div class="form-group" v-if="item.inputType === 'adder'">
+                            <label>{{item.label}}</label><br>
+                            <div class="row" v-for="(step, index) in data[item.name]" :key="'item'+ index">
+                                <div class="col-md-10" >
+                                    <input type="text" class="form-control" :placeholder="`enter a ${item.label} here`" v-model="step.step" >
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-primary" @click="data[item.name].splice(index, 1); $forceUpdate()" >&#xd7;</button>
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-primary" @click="data[item.name].push({step: ''}); $forceUpdate()">add step</button>
+                        </div>
 
 
                     </span>
@@ -95,11 +125,27 @@
                         </span>
                     </div>
                 </div>
-                <div class="row " v-if="logged.sec_lv <= 2 || logged.sec_lv == 9">
+                <div class="row padding" v-if="logged.sec_lv <= 2 || logged.sec_lv == 9">
                     <div class="col">
                         <h3>Administration</h3>
                         <span v-for="(admin, i) in admins">
                             <button type="button" class="btn btn-dark" :class="{ 'active': data.administrations.indexOf(admin) !== -1 } " @click="toggleAdministrations(admin)" style="margin-bottom:10px;">{{admin}}</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="row padding" v-if="logged.sec_lv <= 2 || logged.sec_lv == 9">
+                    <div class="col">
+                        <h3>Support</h3>
+                        <span v-for="(support, i) in supports">
+                            <button type="button" class="btn btn-dark" :class="{ 'active': data.supports.indexOf(support) !== -1 } " @click="toggleSupports(support)" style="margin-bottom:10px;">{{support}}</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="row padding" v-if="logged.sec_lv <= 2 || logged.sec_lv == 9">
+                    <div class="col">
+                        <h3>Forum</h3>
+                        <span v-for="(room, i) in forums">
+                            <button type="button" class="btn btn-dark" :class="{ 'active': data.forums && data.forums.indexOf(room) !== -1 }" @click="toggleForums(room)" style="margin-bottom:10px;">{{room}}</button>
                         </span>
                     </div>
                 </div>
@@ -149,6 +195,8 @@ export default {
             sec_lvs:  { root: 0, admin: 1, owner: 2, operator: 3, super: 4, user: 5, pleab: 6, anonymous: 7, special: 8, guest: 9 },
             apps: [ 'tasks', 'notes', 'posts', 'images' ],
             admins: [ 'users', 'data' ],
+            supports: [ 'tickets' ],
+            forums: [ 'general' ]
         }
     },
     computed: {
@@ -176,7 +224,7 @@ export default {
                 else this.data.applications.push( app )
                 this.$forceUpdate()
             } else {
-                this.$bus.$emit('toast', 'no write permissions, your on a guest account.')
+                this.$bus.$emit('toast', 'no write permissions, please contact administrator.')
                 setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
             }
         },
@@ -186,7 +234,28 @@ export default {
                 else this.data.administrations.push( admin )
                 this.$forceUpdate()
             } else {
-                this.$bus.$emit('toast', 'no write permissions, your on a guest account.')
+                this.$bus.$emit('toast', 'no write permissions, please contact administrator.')
+                setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
+            }
+        },
+        toggleSupports( support ) {
+            if(this.logged.sec_lv <= 1) {
+                if(this.data.supports.indexOf( support ) !== -1) this.data.supports.splice(this.data.supports.indexOf( support ), 1)
+                else this.data.supports.push( support )
+                this.$forceUpdate()
+            } else {
+                this.$bus.$emit('toast', 'no write permissions, please contact administrator.')
+                setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
+            }
+        },
+        toggleForums( room ) {
+            if( !this.data.forums ) this.data.forums = []
+            if(this.logged.sec_lv <= 1) {
+                if(this.data.forums.indexOf( room ) !== -1) this.data.forums.splice(this.data.forums.indexOf( room ), 1)
+                else this.data.forums.push( room )
+                this.$forceUpdate()
+            } else {
+                this.$bus.$emit('toast', 'no write permissions, please contact administrator.')
                 setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
             }
         },
@@ -209,7 +278,13 @@ export default {
         },
         remove: function() {
             if(this.logged.sec_lv != 9) {
-                this.$api.del( this.schema, this.data )
+                if( this.data.deleted === false ) {
+                    this.data.deleted = true
+                    this.$store.dispatch('delTicket', this.data._id)
+                    this.update()
+                } else {
+                    this.$api.del( this.schema, this.data )
+                }
                 $('#deleteModal').modal('hide')
                 this.$router.push(`${this.schema}s`)
             } else {
@@ -261,7 +336,7 @@ export default {
         Datepicker,
         uploadImages,
         uploadImage,
-        uploadAvatar
+        uploadAvatar,
     }
 }
 </script>
@@ -272,6 +347,8 @@ export default {
     padding-bottom: 50px;
 
     .form-group {
+        padding: 20px;
+
         .form-control {
             color: #ccc;
             background-color: rgba(255, 255, 255, 0.01);
@@ -283,10 +360,25 @@ export default {
             padding: 17px !important;
             height: 59px;
         }
+        label {
+            font-weight: 300;
+        }
         option {
             color:  #252830;
             font-weight:bold;
             padding:5px
+        }
+        ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+            text-transform: lowercase;
+        }
+        ::-moz-placeholder { /* Firefox 19+ */
+        text-transform: lowercase;
+        }
+        :-ms-input-placeholder { /* IE 10+ */
+            text-transform: lowercase;
+        }
+        :-moz-placeholder { /* Firefox 18- */
+            text-transform: lowercase;
         }
         #summary {
             height: 66px;

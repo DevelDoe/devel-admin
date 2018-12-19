@@ -7,6 +7,8 @@
  * @Last modified time: 08-05-2018
  */
 
+
+
 import Vue from 'vue'
 
 
@@ -25,6 +27,19 @@ const router = new VueRouter({ routes })
 
 import store from './store/store'
 
+import develLS from 'devel-localstorage'
+
+var ls = develLS.get('version')
+if (!ls || ls.version < 1.4) {
+    console.log('clearing out localstorage')
+    localStorage.clear()
+    store.dispatch('delToken')
+    store.dispatch('delLogged')
+}
+
+develLS.set('version', {
+    version: 1.4
+})
 
 import api from './util/api'
 Object.defineProperty(Vue.prototype, '$api', { get() { return this.$root.api } } )
@@ -38,6 +53,7 @@ Vue.use(Globals)
 Object.defineProperty(Vue.prototype, '$bus', { get() { return this.$root.api.bus } })
 
 import moment from 'moment'
+moment.locale('en-gb')
 Object.defineProperty(Vue.prototype, '$moment', { get() { return this.$root.moment } })
 
 import axios from 'axios'
@@ -72,9 +88,45 @@ import location from './mixins/location'
 Vue.mixin(location)
 import views from './mixins/views'
 Vue.mixin(views)
+import logged from './mixins/logged'
+Vue.mixin(logged)
 
 import chart from 'chart.js'
 Object.defineProperty(Vue.prototype, '$chart', { get() { return this.$root.chart } })
+
+
+const debugSocket = false
+import config from '../config'
+
+let socket = new WebSocket(config.web_socket)
+if (debugSocket) console.log('root: new')
+
+socket.onopen = () => {
+    if (store.getters.logged) {
+        socket.send(JSON.stringify({ type: 'setUser', user: store.getters.logged._id }))
+        if (debugSocket) console.log('root: setUser')
+    }
+}
+
+socket.onmessage = e => {
+
+    const parsed = JSON.parse(e.data)
+
+    if( parsed.type === 'online' ) {
+        let user = store.getters.users.find( u => u._id === parsed.id )
+        user.online = parsed.online
+        store.dispatch('delUser', user._id)
+        store.dispatch('addUser', user)
+    }
+
+    if (parsed.type === 'message') store.dispatch(`addMessage`, parsed.message)
+}
+
+Object.defineProperty(Vue.prototype, '$socket', { 
+    get() { return this.$root.socket },
+    set(newValue) { this.$root.socket = newValue; },
+})
+
 
 import App from './components/App.vue'
 
@@ -88,7 +140,7 @@ new Vue({
     el: '#app',
     store: store,
     data () {
-     let data = { api, moment, markdown, axios }
+     let data = { api, moment, markdown, axios, socket }
      return data
    },
    render (h) {

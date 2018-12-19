@@ -24,7 +24,7 @@
 
         <div class="row">
             <div class="col-6">
-                <div class="row padding paper" v-if="logged.applications.indexOf('posts') !== -1">
+                <div class="row padding paper" v-if="logged.applications.indexOf('posts') !== -1 && filteredPosts.length > 0">
                     <div class="col-12 heading">
                         <h3>LATEST POSTS</h3>
                     </div>
@@ -168,8 +168,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { keySort } from '../../../../util/helperFunc.js'
-import config from '../../../../../config'
+import { keySort } from '../../../util/helperFunc.js'
+import config from '../../../../config'
 export default {
     name: 'overview',
     page: 'overview',
@@ -191,8 +191,8 @@ export default {
         ...mapGetters([ 'tasks', 'logged', 'notes', 'posts', 'users', 'visitors', 'images' ]),
         filteredTasks() {
             // this users tasks
-            const users = this.tasks.filter( todo => {  return todo.user_id === this.logged._id  })
-            const completed = users.filter( todo => { return todo.completed === false  })
+            const user = this.tasks.filter( todo => {  return todo.user_id === this.logged._id  })
+            const completed = user.filter( todo => { return todo.completed === false  })
             const sorted = completed.sort((a, b) => a.title.localeCompare(b.title) )
             return sorted
         },
@@ -721,6 +721,7 @@ export default {
 
     .heading {
         padding-bottom: 0;
+        background: transparent;
 
         h3 {
             margin-bottom: 0;

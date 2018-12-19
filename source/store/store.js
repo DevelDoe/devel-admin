@@ -28,7 +28,9 @@ const store = new Vux.Store({
         loading: false,
         posts: [],
         visitors: [],
-        images: []
+        images: [],
+        messages: [],
+        tickets: []
     },
     getters: {
         appName: state => {
@@ -69,6 +71,12 @@ const store = new Vux.Store({
         },
         images: state => {
             return state.images
+        },
+        messages: state => {
+            return state.messages
+        },
+        tickets: state => {
+            return state.tickets
         }
     },
     mutations: {
@@ -175,6 +183,26 @@ const store = new Vux.Store({
             })
         },
 
+        setMessages: (state, payload) => {
+            state.messages = payload
+        },
+        addMessage: (state, payload) => {
+            state.messages.push(payload)
+        },
+
+        setTickets: (state, payload) => {
+            state.tickets = payload
+        },
+        addTicket: (state, payload) => {
+            state.tickets.push(payload)
+        },
+        delTicket: (state, payload) => {
+            state.tickets = state.tickets.filter(ticket => {
+                return ticket._id != payload
+            })
+        },
+
+
     },
     actions: {
         setAppName: (ctx, payload) => {
@@ -267,6 +295,24 @@ const store = new Vux.Store({
         delImage: (ctx, payload) => {
             ctx.commit('delImage', payload)
         },
+
+        setMessages: (ctx, payload) => {
+            ctx.commit('setMessages', payload)
+        },
+        addMessage: (ctx, payload) => {
+            ctx.commit('addMessage', payload)
+        },
+
+        setTickets: (ctx, payload) => {
+            ctx.commit('setTickets', payload)
+        },
+        addTicket: (ctx, payload) => {
+            ctx.commit('addTicket', payload)
+        },
+        delTicket: (ctx, payload) => {
+            ctx.commit('delTicket', payload)
+        },
+
     }
 })
 
