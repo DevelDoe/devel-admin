@@ -100,7 +100,7 @@ export default {
     destroyed() {
         const page = getPage(this)
         if (page) {
-            if( this.$socket.readyState === 1 ) { this.$socket.send(JSON.stringify({type:'endview'} )) }
+            if( this.$socket.readyState === 1 ) { this.$socket.send(JSON.stringify({ type:'endview'})) }
             if (debugSocket) console.log('view(destroy): endview')
             if (debugSocket) console.log('view(destroy): removeEventListener', this.visibilityChange)
             document.removeEventListener(this.visibilityChange, this.handleVisibilityChange, false)
