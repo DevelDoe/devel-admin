@@ -100,6 +100,8 @@ const API = {
                         if( process.env.NODE_ENV === 'development' ) console.log('Fetch Error :-S', err)
                         store.dispatch('setLoading', false)
                     })
+            } else {
+                return 'not valid'
             }
         }  else {
             store.dispatch('setLoading', false)
@@ -202,7 +204,9 @@ const API = {
                         if( process.env.NODE_ENV === 'development' ) console.log('Fetch Error :-S', err)
                         store.dispatch('setLoading', false)
                     })
-            } 
+            } else {
+                return 'not valid'
+            }
         } else {
             store.dispatch('setLoading', false)
         }

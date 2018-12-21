@@ -55,14 +55,14 @@
                         <div class="paper">
                             <router-link :to="{ name: 'image', query: { id: image._id } }" v-if="image.user_id === logged._id">
                                 <div style="overflow:hidden">
-                                    <div class="cover" :src="api_url + image.images[0]" alt="" style="width:100%; height: 200px" :style="'background: url('+api_url + replaceWhiteSpace(image.images[0])+'); background-size: cover; background-position: 50% 50%'" :title="image.title"></div>
+                                    <div class="cover" :src="api_url + image.images[0]" alt="" style="width:100%; height: 200px" :style="'background: url('+api_url + image.images[0]+'); background-size: cover; background-position: 50% 50%'" :title="image.title"></div>
                                 </div>
                                 <h4>{{image.title}}</h4> 
                                 <h6 >by {{author(image.user_id)}}</h6>
                             </router-link>
                             <span v-else>
                                 <div style="overflow:hidden">
-                                    <div class="cover" :src="api_url + image.images[0]" alt="" style="width:100%; height: 200px" :style="'background: url('+api_url + replaceWhiteSpace(image.images[0])+'); background-size: cover; background-position: 50% 50%'" :title="image.title"></div>
+                                    <div class="cover" :src="api_url + image.images[0]" alt="" style="width:100%; height: 200px" :style="'background: url('+api_url + image.images[0]+'); background-size: cover; background-position: 50% 50%'" :title="image.title"></div>
                                 </div>
                                 <h4>{{image.title}}</h4> 
                                 <h6 >by {{author(image.user_id)}}</h6>
