@@ -12,7 +12,7 @@
             <div class="album" :class="'col-md-'+cols" v-for="(image, i) in filteredImages" :key="'image'+i" >
                 <router-link :to="{ name: 'image', query: { id: image._id } }" >
                     <div style="overflow:hidden">
-                        <div class="cover" :src="api_url + image.images[0]" alt="" style="width:100%; height: 200px" :style="'background: url('+api_url + replaceWhiteSpace(image.images[0])+'); background-size: cover; background-position: 50% 50%'" :title="image.title"></div>
+                        <div class="cover" :src="api_url + image.images[0]" alt="" style="width:100%; height: 200px" :style="'background: url('+api_url + image.images[0]+'); background-size: cover; background-position: 50% 50%'" :title="image.title"></div>
                     </div>
                     <h3>{{image.title}}</h3> 
                     <h4 v-if="image.summary">{{image.summary}}</h4>
