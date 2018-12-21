@@ -296,6 +296,7 @@ export default {
         save: function () {
             if(this.logged.sec_lv != 9) {
                 const valid = this.$api.save( this.schema, this.data )
+                console.log(valid)
                 if( valid === undefined ) {
                     this.$router.push(`${this.schema}s`)
                 } else {
