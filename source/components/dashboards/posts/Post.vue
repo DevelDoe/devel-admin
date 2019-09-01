@@ -13,7 +13,7 @@ export default {
     data() {
         return {
             select: {
-                category: [ 'HTML', 'CSS', 'JavaScript', 'Linux', 'MongoDB', 'Git', 'Vue', 'Webpack', 'Node', 'Design' ],
+                category: [ 'HTML', 'CSS', 'JavaScript', 'Linux', 'MongoDB', 'Git', 'Vue', 'Webpack', 'Node', 'Design', 'Electronics' ],
                 lang: [ 'en', 'sv']
             }
         }

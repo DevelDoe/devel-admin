@@ -64,6 +64,10 @@ npm run dev
 npm run build
 ```
 
+## login
+user: root
+pswd: toor
+
 ## License
 
 MIT
