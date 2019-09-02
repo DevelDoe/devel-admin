@@ -77,18 +77,27 @@
                 background-color:  #c15353;
             }
         }
+
+        .btn-primary {
+            text-transform: uppercase;
+            background-color: $btn-primary-light !important;
+            &:hover {
+                background-color: $btn-primary !important;
+            }
+        }
     }
     .paper {
-        padding: 2rem;
+        margin: 15px;
+        padding: 15px;
         background:$primary-dark;
         h3 {
             font-weight: 200;
         }
     }
     .fa {
-        color: #666;
         cursor: pointer;
         font-size: 33px;
+        color: $primary-light;
         &:hover {
             color: #ccc;
         }

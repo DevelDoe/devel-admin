@@ -68,8 +68,8 @@ export default {
     page: 'portal',
     data() {
         return {
-            email: 'guest@company.domain',
-            password: 'password',
+            email: 'guest@develadmin.nu',
+            password: 'guest',
             appName: config.app_name,
         }
     },
@@ -113,10 +113,11 @@ export default {
                         let photo
                         let message
                         let ticket
+                        let exercise
 
                         const update = () => {
                             
-                            if( resource, task, note, post, visitor, photo, user, message ) {
+                            if( resource, task, note, post, visitor, photo, user, message, exercise ) {
 
                                 if (this.logged.username) {
                                 
@@ -197,6 +198,10 @@ export default {
                             })
                             this.$api.get( 'ticket', () => {
                                 ticket = true
+                                update()
+                            })
+                            this.$api.get( 'exercise', () => {
+                                exercise = true
                                 update()
                             })
 
@@ -292,9 +297,6 @@ export default {
         width: 100%;
         height: 600px;
         margin: 0!important;
-    }
-    .fixed-wrap {
-
     }
     #fixed {
         background-image: url('../../../assets/img/bg.jpg');
@@ -406,9 +408,9 @@ export default {
                 padding: 1.2rem;
             }
         }
-        #login {
-            display: none;
-        }
+        // #login {
+        //     display: none;
+        // }
     }
     @media (max-width: 576px) {
         .carousel-caption {

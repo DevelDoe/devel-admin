@@ -161,3 +161,9 @@ small {
         }
     }
 }
+@media (max-width: 768px) {
+    .controls {
+        left: 0;
+        width: calc(100% + 30px);
+    }
+}

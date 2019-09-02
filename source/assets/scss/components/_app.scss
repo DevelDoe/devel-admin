@@ -39,21 +39,30 @@
 
     .heading {
         position: relative;
-        background: #242a46;
+        background: $primary-dark;
         z-index: 9;
+        height: 80px;
+
+        [class*="col-"] {
+            padding: 1rem 0;
+        }
 
         h2 {
-            position: absolute;
-            top: 12px;
-            left: 57px;
             font-size: 33px;
-            color: #ccc;
+            text-align: center;
         }
 
         .fa-search {
             float: right;
             font-size: 24px;
             padding-right: 1rem;
+            line-height: 43px;
+        }
+        .fa-angle-left {
+            float: left;
+            font-size: 44px;
+            padding-left: 10px;
+            line-height: 45px;
         }
     }
 
