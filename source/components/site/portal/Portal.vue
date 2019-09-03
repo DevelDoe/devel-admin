@@ -166,8 +166,6 @@ export default {
                             }
                             
                             
-                            
-                            
                             this.$api.get( 'resource', () => {
                                 resource = true
                                 update()
@@ -408,9 +406,6 @@ export default {
                 padding: 1.2rem;
             }
         }
-        // #login {
-        //     display: none;
-        // }
     }
     @media (max-width: 576px) {
         .carousel-caption {

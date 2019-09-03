@@ -73,7 +73,7 @@
     
     </transition >
 
-    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top" v-if="!logged">
+    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top" v-if="!logged" >
         <div class="container-fluid">
             <a class="navbar-brand" href="#"> {{ appName }} </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
@@ -148,7 +148,7 @@ export default {
             return this.location === location
         },
         closeDrawer() {
-            console.log('hel')
+            // 
             this.mobile === true ? this.drawer = false : this.drawer = true
         },
         logout: function() {
@@ -194,56 +194,3 @@ export default {
     }
 }
 </script>
-<style lang="scss" scoped>
-@media (max-width: 768px) {
-    .navbar-user {
-        background-color: #b0b0d4;
-    }
-    .drawer {
-        width: 100%;
-
-        .img {
-            width: 65px !important;
-        }
-
-        .info{
-            width: 70% !important;
-            line-height: 61px !important;
-            height: 60px !important;
-            padding-left: 5px;
-
-            h2 {
-                font-size: 20px !important;
-                color:#212740 !important;
-            }
-
-            h3 {
-                font-size: 12px !important;
-                color:#212740 !important;
-            }
-        }
-
-        
-        .signout i {
-            font-size: 40px !important;
-            margin-top: 28px !important;
-            font-size: 30px !important;
-            color:#212740 !important;
-        }
-    }
-    .burger {
-            line-height: 60px !important;
-            text-align: center;
-        .fa {
-            padding: 3px;
-        }
-    }
-
-    .signout {
-            position: absolute !important;
-            right: 21px !important;
-            top: 0px !important;
-    }
-
-}
-</style>
