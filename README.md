@@ -34,8 +34,10 @@ Complete featured web administration application. built with Vue 2.0 + vue-route
   * Blogging Feature
   * Dynamic Search
   * Rich file transfer
+* 3.0
+  * feature Weights
+  * minor mobile adjustments
 
- 
 
 
 ## Build Setup

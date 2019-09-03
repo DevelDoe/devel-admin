@@ -101,6 +101,7 @@ const API = {
                         store.dispatch('setLoading', false)
                     })
             } else {
+                store.dispatch('setLoading', false)
                 return 'not valid'
             }
         }  else {
@@ -237,7 +238,12 @@ function empty( data ) {
 function readRights( coll ) {
 
     if( coll !== 'user' && coll !== 'resource' ) {
-        const readRights = store.state.resources.find( resource => resource.name === coll ).read
+        try {
+            const readRights = store.state.resources.find( resource => resource.name === coll ).read
+        } catch (error) {
+            store.dispatch('setLoading', false)
+        }
+        
         const accessRights = store.state.logged.sec_lv
         if (accessRights <= readRights) {
             return true
@@ -257,7 +263,13 @@ function writeRights( coll, data ) {
         API.get( `${coll}` )
         return false
     } else if( coll !== 'resource') {
-        const writeRights = store.state.resources.find( resource => resource.name === coll ).write
+        
+        try {
+            const writeRights = store.state.resources.find( resource => resource.name === coll ).write
+        } catch (error) {
+            store.dispatch('setLoading', false)
+        }
+        
         if (accessRights === '9') {
            bus.$emit('toast', 'no write permissions, your on a guest account.')
            setTimeout( () => { bus.$emit('toast', '' ) }, 8000 )
@@ -285,7 +297,7 @@ function validate( coll, data ) {
         if( key !== '_id' && key !== '__v' ) {
 
             const field = schema.fields.find( field => field.name === key )
-
+            
             if( field.required )
                 if( empty( data[key] ) ) {
                     valid = false
