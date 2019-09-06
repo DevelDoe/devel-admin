@@ -197,7 +197,7 @@
         <!-- !lvUpModal -->
 
         <!-- exercises -->
-        <div id="exercises" class="row padding paper" v-for="(ex, i) in sortedExercises" :key="'exercise'+i" >
+        <div id="exercises" class="row padding paper" v-for="(ex, i) in uniqueExercises" :key="'exercise'+i" >
             <div class="col-12">
                 <h4>{{ex.group}}</h4>
                 <h3>{{ex.name}} <b>{{ex.weight}}kg</b></h3>
@@ -249,13 +249,29 @@ export default {
     },
     computed: {
         ...mapGetters([ 'exercises', 'logged' ]),
+        usersExercises() {
+            return this.exercises.filter(ex => ex.user_id === this.logged._id)
+        },
         sortedExercises() {
-            return  keySort(this.exercises, 'created_at', true)
-        }
+            return keySort(this.usersExercises, 'created_at', true)
+        },
+        uniqueExercises() {
+            var unique = []
+            this.sortedExercises.map(ex => {
+                let isInExercises = '' 
+                isInExercises = unique.find(e => e.name === ex.name )
+                
+                if(!isInExercises) unique.push(ex)
+            })
+            console.log(unique)
+            return unique
+        },
+
     },
     methods: {
         saveExercise() {
             this.exercise.user_id = this.logged._id
+            this.exercise.name = this.exercise.name.trim() 
             this.$api.save('exercise', this.exercise )
             this.exercise.name = ''
             this.exercise.weight = ''
@@ -266,12 +282,10 @@ export default {
             $('#deleteModal').modal('hide')
         },
         updateExercise(exercise) {
-            if(!exercise.user_id) exercise.user_id = this.logged._id
             this.$api.update( 'exercise', exercise )
         },
         setRepetition(ex, i) {
             ex.repetitions = i
-            if(!ex.user_id) { ex.user_id = this.logged._id } 
             if(ex.target === i) {
                 this.lvEx = JSON.parse(JSON.stringify(ex))
                 this.lvEx.weight = ''
@@ -280,7 +294,6 @@ export default {
             this.updateExercise(ex)
         },
         lvExercise() {
-            if(!this.lvEx.level) this.lvEx.level = 1
             this.lvEx.level++
             this.$api.save('exercise', this.lvEx )
         }
