@@ -68,8 +68,10 @@ export default {
     page: 'portal',
     data() {
         return {
-            email: 'guest@develadmin.nu',
-            password: 'guest',
+            // email: 'guest@develadmin.nu',
+            // password: 'guest',
+            email: 'root',
+            password: 'toor',
             appName: config.app_name,
         }
     },

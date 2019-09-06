@@ -30,7 +30,7 @@ import store from './store/store'
 import develLS from 'devel-localstorage'
 
 var ls = develLS.get('version')
-if (!ls || ls.version > 3.5) {
+if (!ls || ls.version > 3.6) {
     console.log('clearing out localstorage')
     localStorage.clear()
     store.dispatch('delToken')
