@@ -10,4 +10,5 @@ module.exports = {
     social_instagram:'',
     social_website: '',
     social_github: '',
+    portal_btn: ''
 }

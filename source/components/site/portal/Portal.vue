@@ -11,7 +11,7 @@
                     </div>
                     <div class="modal-body text-center">
                         <form class="form-signin" id="loginForm" onsubmit="return false;">
-                            <h1>Devel Admin</h1>
+                            <h1>{{appName}}</h1>
                             <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
                             <label for="inputEmail" class="sr-only">Email address</label>
                             <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="" v-model="email">
@@ -77,7 +77,7 @@ export default {
             socialGithub: config.social_github,
             socialInstagram: config.social_instagram,
             socialWebsite: config.social_website,
-            portalBtn: config.portal_button
+            portalBtn: config.portal_btn
         }
     },
     computed: {
