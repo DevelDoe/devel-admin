@@ -38,8 +38,8 @@
 
             <ul class="nav nav-stacked clearfix">
 
-
-                <li :class="{ 'nav-item': true, active: isActiveNavItem('overview') }" @click="closeDrawer; $router.push('/admin/overview')"> <a> Dashboard </a> </li>
+                <br/>
+                <!-- <li :class="{ 'nav-item': true, active: isActiveNavItem('overview') }" @click="closeDrawer; $router.push('/admin/overview')"> <a> Dashboard </a> </li> -->
                 <li v-if="logged.applications.indexOf('tasks') !== -1 || logged.applications.indexOf('notes') !== -1" class="dropdown" :class="{ 'nav-item': true, active: isActiveNavItem('tasks') ||  isActiveNavItem('notes')  }">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">Productivity <b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -83,7 +83,7 @@
         <div class="container-fluid">
             <div class="row heading" v-if="logged && location !== 'portal'">
                 <div class="col-2">
-                    <i class="fa fa-angle-left" aria-hidden="true" @click="$router.go(-1)"></i>
+                    <!-- <i class="fa fa-angle-left" aria-hidden="true" @click="$router.go(-1)"></i> -->
                 </div>
                 <div class="col-8"> 
                     <div v-if="mobile" class="burger" @click="drawer = true">
