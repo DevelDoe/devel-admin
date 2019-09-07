@@ -98,7 +98,7 @@
 
                     <div class="col-6">
                         <div class="paper">
-                            <canvas ref="countriesCanvas" width="400" height="50" ></canvas>
+                            <canvas ref="countriesCanvas" width="400" height="100" ></canvas>
                         </div>
                     </div>
 

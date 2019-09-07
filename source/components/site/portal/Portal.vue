@@ -38,25 +38,13 @@
                 <div id="fixed" :class="{ logged: logged}">
                     <div class="carousel-caption">
                         <h1 class="display-2">{{ appName }}</h1>
-<<<<<<< HEAD
-                        <h5>Keep track of your progress</h5>
-=======
                         <h5>{{intro}}</h5>
-                        <a href="https://github.com/DevelDoe/devel-admin"><button type="button" class="btn btn-outline-secondary btn-lg">GitHub</button> </a>
->>>>>>> master
+                        <a v-if="portalBtn" :href="portalBtn"><button type="button" class="btn btn-outline-secondary btn-lg">GitHub</button> </a>
                     </div>
                 </div>
             </div>
         </figure>
 
-<<<<<<< HEAD
-       <!-- <div class="social">
-            <a href="https://www.facebook.com/develdoe"><i class="fa fa-facebook"></i></a>
-            <a href="https://www.github.com/develdoe"><i class="fa fa-github"></i></a>
-            <a href="https://www.instagram.com/develdoe"><i class="fa fa-instagram"></i></a>
-            <a href="http://andreeray.se"><i class="fa fa-home"></i></a>
-        </div> -->
-=======
        <div class="social" v-if="socialFacebook !== '' || socialGithub !== '' || socialInstagram !== '' || socialTwitter !== '' || socialWebsite !== ''">
             <a v-if="socialFacebook" :href="socialFacebook"><i class="fa fa-facebook"></i></a>
             <a v-if="socialGithub" :href="socialGithub"><i class="fa fa-github"></i></a>
@@ -64,7 +52,6 @@
             <a v-if="socialTwitter" :href="socialTwitter"><i class="fa fa-twitter"></i></a>
             <a v-if="socialWebsite" :href="socialWebsite"><i class="fa fa-home"></i></a>
         </div>
->>>>>>> master
 
     </div>
 </template>
@@ -81,15 +68,16 @@ export default {
         return {
             // email: 'guest@develadmin.nu',
             // password: 'guest',
-            email: 'root',
-            password: 'toor',
+            email: '',
+            password: '',
             appName: config.app_name,
             intro: config.app_intro,
             socialFacebook: config.social_facebook,
             socialTwitter: config.social_twitter,
             socialGithub: config.social_github,
             socialInstagram: config.social_instagram,
-            socialWebsite: config.social_website
+            socialWebsite: config.social_website,
+            portalBtn: config.portal_button
         }
     },
     computed: {
