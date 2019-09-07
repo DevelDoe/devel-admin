@@ -120,16 +120,19 @@ export default {
                         let message
                         let ticket
                         let exercise
+                        let setting
 
                         const update = () => {
                             
-                            if( resource, task, note, post, visitor, photo, user, message, exercise ) {
+                            if( resource, task, note, post, visitor, photo, user, message, exercise, setting ) {
+
+                                this.$router.push('/overview')
 
                                 if (this.logged.username) {
                                 
                                     if(this.logged.sec_lv != 9) this.$bus.$emit('toast', 'Welcome back ' + this.logged.username )
                                     else this.$bus.$emit('toast', 'Welcome ' + this.logged.username + '. Please feel free to look around. If you have any questions feel free to put them forward.' )
-                                    setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
+                                    setTimeout( () => { this.$bus.$emit('toast', '' ) }, 4000 )
                                 
                                 }
 
@@ -206,6 +209,10 @@ export default {
                             })
                             this.$api.get( 'exercise', () => {
                                 exercise = true
+                                update()
+                            })
+                            this.$api.get( 'setting', () => {
+                                setting = true
                                 update()
                             })
 

@@ -31,7 +31,8 @@ const store = new Vux.Store({
         images: [],
         messages: [],
         tickets: [],
-        exercises: []
+        exercises: [],
+        settings: []
     },
     getters: {
         appName: state => {
@@ -81,6 +82,9 @@ const store = new Vux.Store({
         },
         exercises: state => {
             return state.exercises
+        },
+        settings: state => {
+            return state.settings
         }
     },
     mutations: {
@@ -216,7 +220,19 @@ const store = new Vux.Store({
             state.exercises = state.exercises.filter(exercise => {
                 return exercise._id != payload
             })
-        }
+        },
+
+        setSettings: (state, payload) => {
+            state.settings = payload
+        },
+        addSetting: (state, payload) =>  {
+            state.settings.push( payload )
+        },
+        delSetting: (state, payload) =>  {
+            state.settings = state.settings.filter(setting => {
+                return setting._id != payload
+            })
+        },
 
 
     },
@@ -337,6 +353,16 @@ const store = new Vux.Store({
         },
         delExercise: (ctx, payload) => {
             ctx.commit('delExercise', payload)
+        },
+
+        setSettings: (ctx, payload) => {
+            ctx.commit('setSettings', payload)
+        },
+        addSetting: (ctx, payload) => {
+            ctx.commit('addSetting', payload)
+        },
+        delSetting: (ctx, payload) => {
+            ctx.commit('delSetting', payload)
         },
 
     }
