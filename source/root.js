@@ -37,7 +37,7 @@ if (!ls || ls.version > 3.6) {
     store.dispatch('delLogged')
 }
 
-develLS.set('version', { version: 3.6 })
+develLS.set('version', { version: 3.5 })
 
 import api from './util/api'
 Object.defineProperty(Vue.prototype, '$api', { get() { return this.$root.api } } )
