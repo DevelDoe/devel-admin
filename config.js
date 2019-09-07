@@ -9,4 +9,5 @@ module.exports = {
     social_instagram:'https://www.instagram.com/develdoe',
     social_website: 'http://wimse.se',
     social_github: 'https://www.github.com/develdoe',
+    portal_btn: 'https://github.com/DevelDoe/devel-admin'
 }

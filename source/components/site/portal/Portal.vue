@@ -11,7 +11,7 @@
                     </div>
                     <div class="modal-body text-center">
                         <form class="form-signin" id="loginForm" onsubmit="return false;">
-                            <h1>Devel Admin</h1>
+                            <h1>{{appName}}</h1>
                             <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
                             <label for="inputEmail" class="sr-only">Email address</label>
                             <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="" v-model="email">
@@ -39,7 +39,7 @@
                     <div class="carousel-caption">
                         <h1 class="display-2">{{ appName }}</h1>
                         <p>{{intro}}</p>
-                        <a href="https://github.com/DevelDoe/devel-admin"><button type="button" class="btn btn-outline-secondary btn-lg">GitHub</button> </a>
+                        <a v-if="portalBtn" :href="portalBtn"><button type="button" class="btn btn-outline-secondary btn-lg">GitHub</button> </a>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,8 @@ export default {
             socialTwitter: config.social_twitter,
             socialGithub: config.social_github,
             socialInstagram: config.social_instagram,
-            socialWebsite: config.social_website
+            socialWebsite: config.social_website,
+            portalBtn: config.portal_btn
         }
     },
     computed: {
