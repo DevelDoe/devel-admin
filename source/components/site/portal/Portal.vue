@@ -38,14 +38,14 @@
                 <div id="fixed" :class="{ logged: logged}">
                     <div class="carousel-caption">
                         <h1 class="display-2">{{ appName }}</h1>
-                        <h5>Fully featured web administration application, built with Vue 2.0. Please sign in with guest account and have a look around!</h5>
+                        <h5>{{intro}}</h5>
                         <a href="https://github.com/DevelDoe/devel-admin"><button type="button" class="btn btn-outline-secondary btn-lg">GitHub</button> </a>
                     </div>
                 </div>
             </div>
         </figure>
 
-       <div class="social">
+       <div class="social" v-if="socialFacebook !== '' || socialGithub !== '' || socialInstagram !== '' || socialTwitter !== '' || socialWebsite !== ''">
             <a href="https://www.facebook.com/develdoe"><i class="fa fa-facebook"></i></a>
             <a href="https://www.github.com/develdoe"><i class="fa fa-github"></i></a>
             <a href="https://www.instagram.com/develdoe"><i class="fa fa-instagram"></i></a>
@@ -73,6 +73,12 @@ export default {
             email: 'root',
             password: 'toor',
             appName: config.app_name,
+            intro: config.app_intro,
+            socialFacebook: config.social_facebook,
+            socialTwitter: config.social_twitter,
+            socialGithub: config.social_github,
+            socialInstagram: config.social_instagram,
+            socialWebsite: config.social_website
         }
     },
     computed: {
