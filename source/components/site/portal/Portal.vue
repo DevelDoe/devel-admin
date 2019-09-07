@@ -39,6 +39,7 @@
                     <div class="carousel-caption">
                         <h1 class="display-2">{{ appName }}</h1>
                         <h5>{{intro}}</h5>
+                        <a href="https://github.com/DevelDoe/devel-admin"><button type="button" class="btn btn-outline-secondary btn-lg">GitHub</button> </a>
                     </div>
                 </div>
             </div>
