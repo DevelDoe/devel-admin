@@ -45,10 +45,10 @@
         </figure>
 
        <div class="social" v-if="socialFacebook !== '' || socialGithub !== '' || socialInstagram !== '' || socialTwitter !== '' || socialWebsite !== ''">
-            <a href="https://www.facebook.com/develdoe"><i class="fa fa-facebook"></i></a>
-            <a href="https://www.github.com/develdoe"><i class="fa fa-github"></i></a>
-            <a href="https://www.instagram.com/develdoe"><i class="fa fa-instagram"></i></a>
-            <a href="http://andreeray.se"><i class="fa fa-home"></i></a>
+            <a :href="socialFacebook"><i class="fa fa-facebook"></i></a>
+            <a :href="socialGithub"><i class="fa fa-github"></i></a>
+            <a :href="socialInstagram"><i class="fa fa-instagram"></i></a>
+            <a :href="socialWebsite"><i class="fa fa-home"></i></a>
         </div>
 
     </div>
