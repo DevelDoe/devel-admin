@@ -45,10 +45,11 @@
         </figure>
 
        <div class="social" v-if="socialFacebook !== '' || socialGithub !== '' || socialInstagram !== '' || socialTwitter !== '' || socialWebsite !== ''">
-            <a :href="socialFacebook"><i class="fa fa-facebook"></i></a>
-            <a :href="socialGithub"><i class="fa fa-github"></i></a>
-            <a :href="socialInstagram"><i class="fa fa-instagram"></i></a>
-            <a :href="socialWebsite"><i class="fa fa-home"></i></a>
+            <a v-if="socialFacebook" :href="socialFacebook"><i class="fa fa-facebook"></i></a>
+            <a v-if="socialGithub" :href="socialGithub"><i class="fa fa-github"></i></a>
+            <a v-if="socialInstagram" :href="socialInstagram"><i class="fa fa-instagram"></i></a>
+            <a v-if="socialTwitter" :href="socialTwitter"><i class="fa fa-twitter"></i></a>
+            <a v-if="socialWebsite" :href="socialWebsite"><i class="fa fa-home"></i></a>
         </div>
 
     </div>
