@@ -12,7 +12,7 @@
                     <div class="modal-body text-center">
                         <form class="form-signin" id="loginForm" onsubmit="return false;">
                             <h1>{{appName}}</h1>
-                            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+                            <p class="h3 mb-3 font-weight-normal">sign in</p>
                             <label for="inputEmail" class="sr-only">Email address</label>
                             <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="" v-model="email">
                             <label for="inputPassword" class="sr-only">Password</label>
