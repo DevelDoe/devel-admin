@@ -20,21 +20,21 @@
         border-radius: 0;
 
         a {
-            color: $background;
+            color: $primary-light;
         }
     }
     .btn-danger {
-        color: #5b6477;
+        color: $primary;
         border: none;
-        background-color: #191d31;
+        background-color: #8a4a4a;
 
         &:hover {
             background-color: #c15353;
-            color: #eee;
         }
     }
     .btn-primary {
         background-color: $btn-primary;
+        color: $primary-dark;
         border: none;
         
         
@@ -52,7 +52,7 @@
     }
     .btn-dark.active {
         color: $primary;
-        background-color: #b0b0d4 !important;
+        background-color: $primary;
     }
     .selectPlaceholder {
         color: #ccc;
@@ -76,7 +76,6 @@
         
         .btn-danger {
             color: #fff;
-            background-color: #c19f9f;
             &:hover {
                 background-color:  #c15353;
             }
