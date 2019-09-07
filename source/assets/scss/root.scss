@@ -5,12 +5,14 @@ $fa-font-path: "~font-awesome/fonts";
 @import '~font-awesome/scss/font-awesome.scss';
 @import '_fixes';
 @import '_bootstrap-fixes';
-@import '_develstrap';
-@import '_admin';
+@import '_global';
+@import '_app';
 @import '_drawer';
 @import '_transitions';
 @import '_loading-animation';
-@import './components/_app';
+
+@import './components/_portal';
+@import './components/_dashboard';
 @import './components/_posts';
 @import './components/_messages';
 @import './components/_tickets';

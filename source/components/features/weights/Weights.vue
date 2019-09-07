@@ -263,7 +263,6 @@ export default {
                 
                 if(!isInExercises) unique.push(ex)
             })
-            console.log(unique)
             return unique
         },
 

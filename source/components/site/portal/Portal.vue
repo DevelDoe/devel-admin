@@ -110,6 +110,7 @@ export default {
                         this.$store.dispatch('setToken', data.token)
 
                         $('#loginModal').modal('hide')
+                        this.$router.push('overview')
 
                         let user
                         let resource
@@ -230,6 +231,7 @@ export default {
         }
     }
 }
+<<<<<<< HEAD
 </script>
 <style lang="scss">
 
@@ -448,3 +450,6 @@ export default {
 }
 
 </style>
+=======
+</script>
+>>>>>>> master

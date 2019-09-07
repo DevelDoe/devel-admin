@@ -38,30 +38,28 @@
 
             <ul class="nav nav-apps nav-stacked clearfix">
 
-                <li v-if="logged.applications.indexOf( 'overview' )  !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('overview') }" @click="closeDrawer; $router.push('/overview')"> <a> Dashboard </a> </li>
-                <li v-if="logged.applications.indexOf( 'settings' )  !== -1" :class="{ 'nav-item': true, active: isActiveNavItem( 'settings' )  }" @click="closeDrawer; $router.push('/settings')"> <a>Settings</a> </li>
+                <li v-if="logged.applications.indexOf( 'overview' )  !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('overview') }" @click="closeDrawer(); $router.push('/overview')"> <a> Dashboard </a> </li>
+                <li v-if="logged.applications.indexOf( 'settings' )  !== -1" :class="{ 'nav-item': true, active: isActiveNavItem( 'settings' )  }" @click="closeDrawer(); $router.push('/settings')"> <a>Settings</a> </li>
                 <li v-if="logged.applications.indexOf('tasks') !== -1 || logged.applications.indexOf('notes') !== -1" class="dropdown" :class="{ 'nav-item': true, active: isActiveNavItem('tasks') ||  isActiveNavItem('notes')  }">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">Productivity <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li v-if="logged.applications.indexOf('tasks') !== -1" @click="closeDrawer; $router.push('/tasks')"> <a> Tasks </a> </li>
-                        <li v-if="logged.applications.indexOf('notes') !== -1" @click="closeDrawer; $router.push('/notes')"> <a > Notes </a> </li>
+                        <li v-if="logged.applications.indexOf('tasks') !== -1" @click="closeDrawer(); $router.push('/tasks')"> <a> Tasks </a> </li>
+                        <li v-if="logged.applications.indexOf('notes') !== -1" @click="closeDrawer(); $router.push('/notes')"> <a > Notes </a> </li>
                     </ul>
                 </li>
-                <li v-if="logged.applications.indexOf( 'images' )  !== -1" :class="{ 'nav-item': true, active: isActiveNavItem( 'images' ) ||  isActiveNavItem('new image')  }" @click="closeDrawer; $router.push('/images')"> <a>Images</a> </li>
-                <li v-if="logged.applications.indexOf( 'posts' )   !== -1" :class="{ 'nav-item': true, active: isActiveNavItem( 'posts' )  ||  isActiveNavItem('new post') }" @click="closeDrawer; $router.push('/posts')"> <a>Posts</a> </li>
-                <li v-if="logged.applications.indexOf( 'weights' ) !== -1" 
-                    :class="{ 'nav-item': true, active: isActiveNavItem( 'weights' ) || isActiveNavItem( 'quadriceps') }" 
-                    @click="closeDrawer(); $router.push( '/weights' )"> <a> Weights </a> </li>
+                <li v-if="logged.applications.indexOf( 'images' )  !== -1" :class="{ 'nav-item': true, active: isActiveNavItem( 'images' ) ||  isActiveNavItem('new image')  }" @click="closeDrawer(); $router.push('/images')"> <a>Images</a> </li>
+                <li v-if="logged.applications.indexOf( 'posts' )   !== -1" :class="{ 'nav-item': true, active: isActiveNavItem( 'posts' )  ||  isActiveNavItem('new post') }" @click="closeDrawer(); $router.push('/posts')"> <a>Posts</a> </li>
+                <li v-if="logged.applications.indexOf( 'weights' ) !== -1" :class="{ 'nav-item': true, active: isActiveNavItem( 'weights' ) }"   @click="closeDrawer(); $router.push( '/weights' )"> <a> Weights </a> </li>
 
                 <li class="nav-caption" v-if="logged.forums.indexOf('general') !== -1 ">Forum</li>
                 <li v-if="logged.forums.indexOf('general') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('general') }" @click="closeDrawer; $router.push('/forum/general')"> <a>general</a> </li>
                 
                 <li class="nav-caption" v-if="logged.administrations.indexOf('data') !== -1 || logged.administrations.indexOf('users') !== -1 ">Administration</li>
-                <li v-if="logged.administrations.indexOf('data') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('data') }" @click="closeDrawer; $router.push('/data')"> <a>Data</a> </li>
-                <li v-if="logged.administrations.indexOf('users') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('users') || isActiveNavItem('new user') }" @click="closeDrawer; $router.push('/users')"> <a>Users</a> </li>
+                <li v-if="logged.administrations.indexOf('data') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('data') }" @click="closeDrawer(); $router.push('/data')"> <a>Data</a> </li>
+                <li v-if="logged.administrations.indexOf('users') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('users') || isActiveNavItem('new user') }" @click="closeDrawer(); $router.push('/users')"> <a>Users</a> </li>
 
                 <li class="nav-caption" v-if="logged.supports.indexOf('tickets') !== -1 ">Support</li>
-                <li v-if="logged.supports.indexOf('tickets') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('tickets') }" @click="closeDrawer; $router.push('/support/tickets')"> <a>tickets</a> </li>
+                <li v-if="logged.supports.indexOf('tickets') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('tickets') }" @click="closeDrawer(); $router.push('/support/tickets')"> <a>tickets</a> </li>
 
             </ul>
         </div>
@@ -79,7 +77,7 @@
         </div>
     </nav>
    
-    <div id="admin" :class="{ 'content': true, 'admin-open': token && drawer }">
+    <div  :class="{ 'content': true, 'admin-open': token && drawer }">
         <div class="container-fluid">
             <div class="row  heading" v-if="logged && location !== 'portal'">
                 <div class="col-2">
