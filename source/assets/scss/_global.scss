@@ -9,6 +9,7 @@ body {
     background: $primary;
     letter-spacing: 1px;
     font-size: 18px;
+    color:#eee;
 }
 h1,h2,h3,h4,h5,h6 {
     font-weight: 200;
@@ -163,9 +164,122 @@ small {
         }
     }
 }
+
+.row-main {
+    padding-bottom: 60px;
+}
+
+.container-fluid {
+    height: 100%;
+}
+
+hr {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn {
+    padding: 8px 25px;
+    border: none;
+    border-radius: 0;
+
+    a {
+        color: $primary-light;
+    }
+}
+.btn-danger {
+    color: $primary;
+    border: none;
+    background-color: #8a4a4a;
+
+    &:hover {
+        background-color: #c15353;
+    }
+}
+.btn-primary {
+    background-color: $btn-primary;
+    color: $primary-dark;
+    border: none;
+    
+    
+    &:hover {
+        background-color: $btn-primary-light;
+    }
+}
+.btn-dark {
+    color: $primary-light;
+    
+    background-color: rgba(255, 255, 255, 0.01);
+    &:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+}
+.btn-dark.active {
+    color: $primary;
+    background-color: $primary;
+}
+.selectPlaceholder {
+    color: #ccc;
+}
+.btn-disabled {
+    background-color: #ccc;
+    &:hover {
+        background-color: #ccc;
+    }
+}
+.modal {
+    color: #666;
+    .form-control {
+        color: #333;
+        background-color: #fff;
+        border: 1px solid #ced4da;
+        padding: 0.375rem 0.75rem;
+        border-radius: 5px;
+
+    }
+
+    .btn {
+        text-transform: uppercase;
+    }
+    
+    .btn-danger {
+        color: #fff;
+        &:hover {
+            background-color:  #c15353;
+        }
+    }
+
+    .btn-primary {
+        background-color: $btn-primary !important;
+        &:hover {
+            background-color: $btn-primary-dark !important;
+        }
+    }
+}
+.paper {
+    margin: 15px;
+    padding: 15px;
+    background:$primary-dark;
+    h3 {
+        font-weight: 200;
+    }
+}
+.fa {
+    cursor: pointer;
+    font-size: 33px;
+    color: $primary-light;
+    &:hover {
+        color: #ccc;
+    }
+}
+
+
 @media (max-width: 768px) {
     .controls {
         left: 0;
         width: calc(100% + 30px);
+    }
+    .admin-open {
+        margin-left: 100%;
+        overflow: hidden;
     }
 }
