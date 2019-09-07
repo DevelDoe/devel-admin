@@ -36,9 +36,9 @@
             </div>
 
 
-            <ul class="nav nav-stacked clearfix">
+            <ul class="nav nav-apps nav-stacked clearfix">
 
-                <li :class="{ 'nav-item': true, active: isActiveNavItem('overview') }" @click="closeDrawer; $router.push('/overview')"> <a> Dashboard </a> </li>
+                <li v-if="logged.applications.indexOf( 'overview' )  !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('overview') }" @click="closeDrawer; $router.push('/overview')"> <a> Dashboard </a> </li>
                 <li v-if="logged.applications.indexOf( 'settings' )  !== -1" :class="{ 'nav-item': true, active: isActiveNavItem( 'settings' )  }" @click="closeDrawer; $router.push('/settings')"> <a>Settings</a> </li>
                 <li v-if="logged.applications.indexOf('tasks') !== -1 || logged.applications.indexOf('notes') !== -1" class="dropdown" :class="{ 'nav-item': true, active: isActiveNavItem('tasks') ||  isActiveNavItem('notes')  }">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">Productivity <b class="caret"></b></a>

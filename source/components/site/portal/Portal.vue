@@ -126,8 +126,6 @@ export default {
                             
                             if( resource, task, note, post, visitor, photo, user, message, exercise, setting ) {
 
-                                this.$router.push('/overview')
-
                                 if (this.logged.username) {
                                 
                                     if(this.logged.sec_lv != 9) this.$bus.$emit('toast', 'Welcome back ' + this.logged.username )
