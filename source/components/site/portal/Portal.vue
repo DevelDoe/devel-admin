@@ -39,22 +39,19 @@
                     <div class="carousel-caption">
                         <h1 class="display-2">{{ appName }}</h1>
                         <h5>{{intro}}</h5>
-                        <a href="https://github.com/DevelDoe/devel-admin"><button type="button" class="btn btn-outline-secondary btn-lg">GitHub</button> </a>
                     </div>
                 </div>
             </div>
         </figure>
 
        <div class="social" v-if="socialFacebook !== '' || socialGithub !== '' || socialInstagram !== '' || socialTwitter !== '' || socialWebsite !== ''">
-            <a href="https://www.facebook.com/develdoe"><i class="fa fa-facebook"></i></a>
-            <a href="https://www.github.com/develdoe"><i class="fa fa-github"></i></a>
-            <a href="https://www.instagram.com/develdoe"><i class="fa fa-instagram"></i></a>
-            <a href="http://andreeray.se"><i class="fa fa-home"></i></a>
+            <a v-if="socialFacebook" :href="socialFacebook"><i class="fa fa-facebook"></i></a>
+            <a v-if="socialGithub" :href="socialGithub"><i class="fa fa-github"></i></a>
+            <a v-if="socialInstagram" :href="socialInstagram"><i class="fa fa-instagram"></i></a>
+            <a v-if="socialTwitter" :href="socialTwitter"><i class="fa fa-twitter"></i></a>
+            <a v-if="socialWebsite" :href="socialWebsite"><i class="fa fa-home"></i></a>
         </div>
 
-        <footer>
-            <a href="https://github.com/DevelDoe">ĕn-jĕnˈdər by DevelDoe</a> 
-        </footer>
     </div>
 </template>
 
