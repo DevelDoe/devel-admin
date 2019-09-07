@@ -9,6 +9,9 @@ body {
     background: $primary;
     letter-spacing: 1px;
     font-size: 18px;
+    background-image: url('../../assets/img/bg.jpg');
+    background-size: cover;
+    background-position: center center;
 }
 h1,h2,h3,h4,h5,h6 {
     font-weight: 200;
@@ -116,9 +119,9 @@ small {
 .controls {
     position: fixed;
     bottom: 0;
-    background-color: #242a46;
-    left: 100px;
-    width: 100%;
+    background-color: $primary-dark;
+    left: 215px;
+    width: calc(100% - 200px);
     height: 60px;
     box-shadow: 0px -1px 48px 4px rgba(0, 0, 0, 0.2);
     z-index: 999;

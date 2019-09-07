@@ -71,7 +71,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-12">
                 <div class="row padding paper" v-if="this.logged.sec_lv < 3 || this.logged.sec_lv == 9">
 
                     <div class="col-12 heading">

@@ -38,23 +38,19 @@
                 <div id="fixed" :class="{ logged: logged}">
                     <div class="carousel-caption">
                         <h1 class="display-2">{{ appName }}</h1>
-                        <h5>Fully featured web administration application, built with Vue 2.0. Please sign in with guest account and have a look around!</h5>
-                        <a href="https://github.com/DevelDoe/devel-admin"><button type="button" class="btn btn-outline-secondary btn-lg">GitHub</button> </a>
+                        <h5>Keep track of your progress</h5>
                     </div>
                 </div>
             </div>
         </figure>
 
-       <div class="social">
+       <!-- <div class="social">
             <a href="https://www.facebook.com/develdoe"><i class="fa fa-facebook"></i></a>
             <a href="https://www.github.com/develdoe"><i class="fa fa-github"></i></a>
             <a href="https://www.instagram.com/develdoe"><i class="fa fa-instagram"></i></a>
             <a href="http://andreeray.se"><i class="fa fa-home"></i></a>
-        </div>
+        </div> -->
 
-        <footer>
-            <a href="https://github.com/DevelDoe">ĕn-jĕnˈdər by DevelDoe</a> 
-        </footer>
     </div>
 </template>
 
@@ -224,7 +220,7 @@ export default {
 <style lang="scss">
 
 #portal {
-    background-color: #eee;
+    background-color: transparent;
     color: #333;
 
     .carousel-caption {
@@ -299,7 +295,7 @@ export default {
         margin: 0!important;
     }
     #fixed {
-        background-image: url('../../../assets/img/bg.jpg');
+        background-color: transparent;
         position: fixed;
         display: block;
         top: 0;
@@ -312,6 +308,11 @@ export default {
                 transform: translateZ(0);
         will-change: transform;
         transition: left 500ms;
+        
+        
+        .carousel-caption {
+            
+        }
     }
     .social {
         position: fixed;

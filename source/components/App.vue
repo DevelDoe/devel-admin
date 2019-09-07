@@ -38,11 +38,8 @@
 
             <ul class="nav nav-stacked clearfix">
 
-                <li class="nav-caption">Site</li>
-                <li :class="{ 'nav-item': true, activePortal: isActiveNavItem('portal') || isActiveNavItem('stack') || isActiveNavItem('about') || isActiveNavItem('code') || isActiveNavItem('connect') }" @click="$router.push('/')"><a> Portal </a></li>
 
-                <li class="nav-caption">Dashboards</li>
-                <li :class="{ 'nav-item': true, active: isActiveNavItem('overview') }" @click="closeDrawer; $router.push('/admin/overview')"> <a> Overview </a> </li>
+                <li :class="{ 'nav-item': true, active: isActiveNavItem('overview') }" @click="closeDrawer; $router.push('/admin/overview')"> <a> Dashboard </a> </li>
                 <li v-if="logged.applications.indexOf('tasks') !== -1 || logged.applications.indexOf('notes') !== -1" class="dropdown" :class="{ 'nav-item': true, active: isActiveNavItem('tasks') ||  isActiveNavItem('notes')  }">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">Productivity <b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -73,19 +70,12 @@
     
     </transition >
 
-    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top" v-if="!logged" >
+    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top justify-content-between" v-if="!logged" >
         <div class="container-fluid">
             <a class="navbar-brand" href="#"> {{ appName }} </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li id="login" >
-                        <button type="button" class="btn btn-login" data-toggle="modal" data-target="#loginModal" >login</button>
-                    </li>
-                </ul>
-            </div>
+            <form class="form-inline">
+                <button type="button" class="btn btn-login" data-toggle="modal" data-target="#loginModal" >login</button>
+            </form>
         </div>
     </nav>
    
