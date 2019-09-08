@@ -200,7 +200,7 @@
         <div id="workouts" class="row padding paper" v-for="(ex, i) in uniqueWorkouts" :key="'workout'+i" >
             <div class="col-12">
                 <h4>{{ex.group}}</h4>
-                <h3>{{ex.name}} <b>{{ex.workout}}kg</b></h3>
+                <h3>{{ex.name}} <b>{{ex.weight}}kg</b></h3>
                 
             </div>
             <div class="col-12" style="padding: 0 0 1rem 1rem;">
