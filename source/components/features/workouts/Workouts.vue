@@ -1,14 +1,14 @@
 <template>
-    <div id="weights" class="admin">
+    <div id="workouts" class="admin">
 
-        <!-- exercise modal -->
+        <!-- workout modal -->
 
-        <div class="modal fade" id="exerciseModal" tabindex="-1" role="dialog" aria-labelledby="exerciseModallLabel" aria-hidden="true">
+        <div class="modal fade" id="workoutModal" tabindex="-1" role="dialog" aria-labelledby="workoutModallLabel" aria-hidden="true">
             <div class="modal-dialog" role="dialog">
                 <div class="modal-content">
 
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exerciseModalLabel">Add new exercise</h5>
+                        <h5 class="modal-title" id="workoutModalLabel">Add new workout</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                     </div>
 
@@ -18,8 +18,8 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="group">Muscle Group</label>
-                                    <input type="text" class="form-control" id="name" placeholder="Muscle Group" autocomplete="off" v-model="exercise.group">
-                                    <small id="nameHelp" class="form-text text-muted">Enter the muscle group of the exercise, Ex: "Biceps" </small>
+                                    <input type="text" class="form-control" id="name" placeholder="Muscle Group" autocomplete="off" v-model="workout.group">
+                                    <small id="nameHelp" class="form-text text-muted">Enter the muscle group of the workout, Ex: "Biceps" </small>
                                 </div>
                             </div>
                         </div>
@@ -27,9 +27,9 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
-                                    <label for="exercise">Exercise</label>
-                                    <input type="text" class="form-control" id="name" placeholder="Exercise" autocomplete="off" v-model="exercise.name">
-                                    <small id="nameHelp" class="form-text text-muted">Enter the name of the exercise you want to add. Ex: "Straight Leg Raises" </small>
+                                    <label for="workout">Workout</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Workout" autocomplete="off" v-model="workout.name">
+                                    <small id="nameHelp" class="form-text text-muted">Enter the name of the workout you want to add. Ex: "Straight Leg Raises" </small>
                                 </div>
                             </div>
                         </div>
@@ -38,8 +38,8 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="weight">Starting Weight</label>
-                                    <input type="text" class="form-control" id="weight" placeholder="Enter weight" autocomplete="off" v-model="exercise.weight">
-                                    <small id="nameHelp" class="form-text text-muted">Enter the starting weight of the exersice in kilos. Ex: "45" </small>
+                                    <input type="text" class="form-control" id="workout" placeholder="Enter weight" autocomplete="off" v-model="workout.weight">
+                                    <small id="nameHelp" class="form-text text-muted">Enter the starting workout of the exersice in kilos. Ex: "45" </small>
                                 </div>
                             </div>
                         </div>
@@ -48,8 +48,8 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="target">Repetitions goal</label>
-                                    <input type="text" class="form-control" id="weight" placeholder="Enter repetitions target" autocomplete="off" v-model="exercise.target">
-                                    <small id="nameHelp" class="form-text text-muted">Enter how many repetitions is the goal of this exercise. This could vary, example for legs you would generaly have more repetitions, like 12 or 15 while upperbody parts is more common to do less repetitions like 8. </small>
+                                    <input type="text" class="form-control" id="target" placeholder="Enter repetitions target" autocomplete="off" v-model="workout.target">
+                                    <small id="nameHelp" class="form-text text-muted">Enter how many repetitions is the goal of this workout. This could vary, example for legs you would generaly have more repetitions, like 12 or 15 while upperbody parts is more common to do less repetitions like 8. </small>
                                 </div>
                             </div>
                         </div>
@@ -57,14 +57,14 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button class="btn btn-lg btn-primary" @click="saveExercise" data-dismiss="modal">Submit</button>
+                        <button class="btn btn-lg btn-primary" @click="saveWorkout" data-dismiss="modal">Submit</button>
                     </div>
                     
                 </div>
             </div>
         </div>
 
-        <!-- /exercise modal -->
+        <!-- /workout modal -->
 
         <!-- updateModal -->
 
@@ -73,7 +73,7 @@
                 <div class="modal-content">
 
                     <div class="modal-header">
-                        <h5 class="modal-title" id="updateModalLabel">Update {{updateExer.name}}</h5>
+                        <h5 class="modal-title" id="updateModalLabel">Update {{updateWork.name}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                     </div>
 
@@ -83,8 +83,8 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="group">Muscle Group</label>
-                                    <input type="text" class="form-control" id="name" placeholder="Muscle Group" autocomplete="off" v-model="updateExer.group">
-                                    <small id="nameHelp" class="form-text text-muted">Enter the muscle group of the exercise, Ex: "Biceps" </small>
+                                    <input type="text" class="form-control" id="name" placeholder="Muscle Group" autocomplete="off" v-model="updateWork.group">
+                                    <small id="nameHelp" class="form-text text-muted">Enter the muscle group of the workout, Ex: "Biceps" </small>
                                 </div>
                             </div>
                         </div>
@@ -92,9 +92,9 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
-                                    <label for="exercise">Exercise</label>
-                                    <input type="text" class="form-control" id="name" placeholder="Exercise" autocomplete="off" v-model="updateExer.name">
-                                    <small id="nameHelp" class="form-text text-muted">Enter the name of the exercise you want to add. Ex: "Straight Leg Raises" </small>
+                                    <label for="name">Workout</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Workout" autocomplete="off" v-model="updateWork.name">
+                                    <small id="nameHelp" class="form-text text-muted">Enter the name of the workout you want to add. Ex: "Straight Leg Raises" </small>
                                 </div>
                             </div>
                         </div>
@@ -103,7 +103,7 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="weight">Starting Weight</label>
-                                    <input type="text" class="form-control" id="weight" placeholder="Enter weight" autocomplete="off" v-model="updateExer.weight">
+                                    <input type="text" class="form-control" id="weight" placeholder="Enter weight" autocomplete="off" v-model="updateWork.weight">
                                     <small id="nameHelp" class="form-text text-muted">Enter the starting weight of the exersice in kilos. Ex: "45" </small>
                                 </div>
                             </div>
@@ -113,8 +113,8 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="target">Repetitions goal</label>
-                                    <input type="text" class="form-control" id="weight" placeholder="Enter repetitions target" autocomplete="off" v-model="updateExer.target">
-                                    <small id="nameHelp" class="form-text text-muted">Enter how many repetitions is the goal of this exercise. This could vary, example for legs you would generaly have more repetitions, like 12 or 15 while upperbody parts is more common to do less repetitions like 8. </small>
+                                    <input type="text" class="form-control" id="target" placeholder="Enter repetitions target" autocomplete="off" v-model="updateWork.target">
+                                    <small id="nameHelp" class="form-text text-muted">Enter how many repetitions is the goal of this workout. This could vary, example for legs you would generaly have more repetitions, like 12 or 15 while upperbody parts is more common to do less repetitions like 8. </small>
                                 </div>
                             </div>
                         </div>
@@ -122,7 +122,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button class="btn btn-lg btn-primary" @click="updateExercise(updateExer)" data-dismiss="modal">Submit</button>
+                        <button class="btn btn-lg btn-primary" @click="updateWorkout(updateWork)" data-dismiss="modal">Submit</button>
                     </div>
                     
                 </div>
@@ -137,17 +137,17 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="deleteModallLabel">Delete {{delExer.name}}</h5>
+                        <h5 class="modal-title" id="deleteModallLabel">Delete {{delWork.name}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                     </div>
                     <div class="modal-body text-center">
                         <form class="form-signin" id="loginForm" onsubmit="return false;">
                             <h1>Warnign</h1>
-                            <p>Are you shure you want to delete <b>{{delExer.name}}</b>! This action can not be undone!</p>
+                            <p>Are you shure you want to delete <b>{{delWork.name}}</b>! This action can not be undone!</p>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-lg btn-danger btn-block" type="submit" form="loginForm" @click="delExercise(delExer)" >DELETE</button>
+                        <button class="btn btn-lg btn-danger btn-block" type="submit" form="loginForm" @click="delWorkout(delWork)" >DELETE</button>
                     </div>
                 </div>
             </div>
@@ -176,7 +176,7 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label for="weight">Next Level Weight</label>
-                                        <input type="text" class="form-control" id="weight" placeholder="Enter weight" autocomplete="off" v-model="lvEx.weight" style="text-align:center">
+                                        <input type="text" class="form-control" id="weight" placeholder="Enter weight" autocomplete="off" v-model="lvWork.weight" style="text-align:center">
                                         <small id="nameHelp" class="form-text text-muted">Enter the weight to step up to.</small>
                                     </div>
                                 </div>
@@ -188,7 +188,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-lg btn-primary" @click="lvExercise" data-dismiss="modal">Submit</button>
+                        <button class="btn btn-lg btn-primary" @click="lvWorkout" data-dismiss="modal">Submit</button>
                     </div>
                 </div>
             </div>
@@ -196,11 +196,11 @@
 
         <!-- !lvUpModal -->
 
-        <!-- exercises -->
-        <div id="exercises" class="row padding paper" v-for="(ex, i) in uniqueExercises" :key="'exercise'+i" >
+        <!-- workouts -->
+        <div id="workouts" class="row padding paper" v-for="(ex, i) in uniqueWorkouts" :key="'workout'+i" >
             <div class="col-12">
                 <h4>{{ex.group}}</h4>
-                <h3>{{ex.name}} <b>{{ex.weight}}kg</b></h3>
+                <h3>{{ex.name}} <b>{{ex.workout}}kg</b></h3>
                 
             </div>
             <div class="col-12" style="padding: 0 0 1rem 1rem;">
@@ -214,18 +214,18 @@
                 </div>
             </div>
             <div class="col-12" style="padding: 0 0 1rem 1rem;">
-                <button type="button" class="btn btn-danger" data-toggle="modal"  :data-target="'#deleteModal'" @click="delExer = ex">Delete</button>
-                <button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#updateModal'" @click="updateExer = ex">Edit</button>
+                <button type="button" class="btn btn-danger" data-toggle="modal"  :data-target="'#deleteModal'" @click="delWork = ex">Delete</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#updateModal'" @click="updateWork = ex">Edit</button>
             </div>
             
         </div>
-        <!-- /exercises  -->
+        <!-- /workouts  -->
 
         <!-- controls -->
 
         <div class="row controls">
             <div class="btn-group">
-                <button type="button" class="btn" data-toggle="modal" data-target="#exerciseModal" >ADD EXERCISE</button>
+                <button type="button" class="btn" data-toggle="modal" data-target="#workoutModal" >ADD WORKOUT</button>
             </div>
         </div>
         <!-- /controls -->
@@ -237,68 +237,68 @@
 import {mapGetters} from 'vuex'
 import { keySort } from '../../../util/helperFunc.js'
 export default {
-    name: 'weights',
-    page: 'weights',
+    name: 'workouts',
+    page: 'workouts',
     data() {
         return {
-            exercise: {},
-            delExer: {},
-            updateExer: {},
-            lvEx: {}
+            workout: {},
+            delWork: {},
+            updateWork: {},
+            lvWork: {}
         }
     },
     computed: {
-        ...mapGetters([ 'exercises', 'logged' ]),
-        sortedExercises() {
-            return keySort(this.exercises, 'created_at', true)
+        ...mapGetters([ 'workouts', 'logged' ]),
+        sortedWorkouts() {
+            return keySort(this.workouts, 'created_at', true)
         },
-        uniqueExercises() {
+        uniqueWorkouts() {
             var unique = []
-            this.sortedExercises.map(ex => {
-                let isInExercises = '' 
-                isInExercises = unique.find(e => e.name === ex.name )
+            this.sortedWorkouts.map(ex => {
+                let isInWorkouts = '' 
+                isInWorkouts = unique.find(e => e.name === ex.name )
                 
-                if(!isInExercises) unique.push(ex)
+                if(!isInWorkouts) unique.push(ex)
             })
             return unique
         },
 
     },
     methods: {
-        saveExercise() {
-            this.exercise.user_id = this.logged._id
-            this.exercise.name = this.exercise.name.trim() 
-            this.$api.save('exercise', this.exercise )
-            this.exercise.name = ''
-            this.exercise.weight = ''
-            this.exercise.target = ''
+        saveWorkout() {
+            this.workout.user_id = this.logged._id
+            this.workout.name = this.workout.name.trim() 
+            this.$api.save('workout', this.workout )
+            this.workout.name = ''
+            this.workout.weight = ''
+            this.workout.target = ''
         },
-        delExercise(exercise) {
-            this.$api.del( 'exercise', exercise )
+        delWorkout(workout) {
+            this.$api.del( 'workout', workout )
             $('#deleteModal').modal('hide')
         },
-        updateExercise(exercise) {
-            this.$api.update( 'exercise', exercise )
+        updateWorkout(workout) {
+            this.$api.update( 'workout', workout )
         },
         setRepetition(ex, i) {
             ex.repetitions = i
             if(ex.target === i) {
-                this.lvEx = JSON.parse(JSON.stringify(ex))
-                this.lvEx.weight = ''
+                this.lvWork = JSON.parse(JSON.stringify(ex))
+                this.lvWork.weight = ''
                 $('#lvUpModal').modal('show')
             }
-            this.updateExercise(ex)
+            this.updateWorkout(ex)
         },
-        lvExercise() {
-            this.lvEx.level++
-            this.$api.save('exercise', this.lvEx )
+        lvWorkout() {
+            this.lvWork.level++
+            this.$api.save('workout', this.lvWork )
         }
     },
     
 }
 </script>
 <style lang="scss">
-#weights {
+#workouts {
     .repetitions {
         float:left; 
         margin: 0 5px 10px 0; 

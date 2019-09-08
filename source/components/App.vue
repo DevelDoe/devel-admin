@@ -49,7 +49,7 @@
                 </li>
                 <li v-if="logged.applications.indexOf( 'images' )  !== -1" :class="{ 'nav-item': true, active: isActiveNavItem( 'images' ) ||  isActiveNavItem('new image')  }" @click="closeDrawer(); $router.push('/images')"> <a>Images</a> </li>
                 <li v-if="logged.applications.indexOf( 'posts' )   !== -1" :class="{ 'nav-item': true, active: isActiveNavItem( 'posts' )  ||  isActiveNavItem('new post') }" @click="closeDrawer(); $router.push('/posts')"> <a>Posts</a> </li>
-                <li v-if="logged.applications.indexOf( 'weights' ) !== -1" :class="{ 'nav-item': true, active: isActiveNavItem( 'weights' ) }"   @click="closeDrawer(); $router.push( '/weights' )"> <a> Weights </a> </li>
+                <li v-if="logged.applications.indexOf( 'workouts' ) !== -1" :class="{ 'nav-item': true, active: isActiveNavItem( 'workouts' ) }"   @click="closeDrawer(); $router.push( '/workouts' )"> <a> Workouts </a> </li>
 
                 <li class="nav-caption" v-if="logged.forums.indexOf('general') !== -1 ">Forum</li>
                 <li v-if="logged.forums.indexOf('general') !== -1" :class="{ 'nav-item': true, active: isActiveNavItem('general') }" @click="closeDrawer; $router.push('/forum/general')"> <a>general</a> </li>

@@ -31,7 +31,7 @@ const store = new Vux.Store({
         images: [],
         messages: [],
         tickets: [],
-        exercises: [],
+        workouts: [],
         settings: []
     },
     getters: {
@@ -80,8 +80,8 @@ const store = new Vux.Store({
         tickets: state => {
             return state.tickets
         },
-        exercises: state => {
-            return state.exercises
+        workouts: state => {
+            return state.workouts
         },
         settings: state => {
             return state.settings
@@ -210,15 +210,15 @@ const store = new Vux.Store({
             })
         },
 
-        setExercises: (state, payload) => {
-            state.exercises = payload
+        setWorkouts: (state, payload) => {
+            state.workouts = payload
         },
-        addExercise: (state, payload) =>  {
-            state.exercises.push( payload )
+        addWorkout: (state, payload) =>  {
+            state.workouts.push( payload )
         },
-        delExercise: (state, payload) => {
-            state.exercises = state.exercises.filter(exercise => {
-                return exercise._id != payload
+        delWorkout: (state, payload) => {
+            state.workouts = state.workouts.filter(workout => {
+                return workout._id != payload
             })
         },
 
@@ -345,14 +345,14 @@ const store = new Vux.Store({
             ctx.commit('delTicket', payload)
         },
 
-        setExercises: (ctx, payload) => {
-            ctx.commit('setExercises', payload)
+        setWorkouts: (ctx, payload) => {
+            ctx.commit('setWorkouts', payload)
         },
-        addExercise: (ctx, payload) => {
-            ctx.commit('addExercise', payload)
+        addWorkout: (ctx, payload) => {
+            ctx.commit('addWorkout', payload)
         },
-        delExercise: (ctx, payload) => {
-            ctx.commit('delExercise', payload)
+        delWorkout: (ctx, payload) => {
+            ctx.commit('delWorkout', payload)
         },
 
         setSettings: (ctx, payload) => {
