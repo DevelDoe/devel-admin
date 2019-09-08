@@ -88,6 +88,8 @@ export default {
             return this.location === location
         },
         login() {
+            console.log('clearing out localstorage')
+            localStorage.clear()
            
             fetch(`${config.api_url}/public/login`, {
                 method: "POST",
@@ -128,7 +130,7 @@ export default {
                             
                             if( resource, task, note, post, visitor, photo, user, message, exercise, setting ) {
 
-                                if (this.logged.username) {
+                                if (user.username) {
                                 
                                     if(this.logged.sec_lv != 9) this.$bus.$emit('toast', 'Welcome back ' + this.logged.username )
                                     else this.$bus.$emit('toast', 'Welcome ' + this.logged.username + '. Please feel free to look around. If you have any questions feel free to put them forward.' )
@@ -152,7 +154,7 @@ export default {
                                 if (debugSocket) console.log('portal: new')
 
                                 this.$socket.onopen = () => {
-                                    this.$socket.send(JSON.stringify({ type: 'setUser', user: this.logged._id }))
+                                    this.$socket.send(JSON.stringify({ type: 'setUser', user: logged._id }))
                                 }
 
                                 this.$socket.onmessage = e => {
@@ -210,7 +212,7 @@ export default {
                             this.$api.get( 'exercise', () => {
                                 exercise = true
                                 update()
-                            })
+                            }, logged._id )
                             this.$api.get( 'setting', () => {
                                 setting = true
                                 update()
