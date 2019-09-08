@@ -15,7 +15,7 @@ const Posts     = () => import('../components/features/posts/Posts.vue')
 const Post      = () => import('../components/features/posts/Post.vue')
 const Images    = () => import('../components/features/images/Images.vue')
 const Image     = () => import('../components/features/images/Image.vue')
-const Weights   = () => import('../components/features/weights/Weights.vue')
+const Workouts   = () => import('../components/features/workouts/Workouts.vue')
 const Data      = () => import('../components/administration/data/Data.vue')
 const Users     = () => import('../components/administration/users/Users.vue')
 const User      = () => import('../components/administration/users/User.vue')
@@ -94,8 +94,8 @@ export default [{
         name: 'image',
         beforeEnter: authenticate
     }, {
-        path: '/weights',
-        component: Weights,
+        path: '/workouts',
+        component: Workouts,
         beforeEnter: authenticate
     }, {
         path: '/forum/general',

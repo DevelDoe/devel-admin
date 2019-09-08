@@ -124,11 +124,12 @@ export default {
                         let message
                         let ticket
                         let exercise
+                        let workout
                         let setting
 
                         const update = () => {
                             
-                            if( resource, task, note, post, visitor, photo, user, message, exercise, setting ) {
+                            if( resource, task, note, post, visitor, photo, user, message, exercise, workout, setting ) {
 
                                 if (user.username) {
                                 
@@ -209,8 +210,12 @@ export default {
                                 ticket = true
                                 update()
                             })
-                            this.$api.get( 'exercise', () => {
-                                exercise = true
+                            // this.$api.get( 'exercise', () => {
+                            //     exercise = true
+                            //     update()
+                            // }, logged._id )
+                            this.$api.get( 'workout', () => {
+                                workout = true
                                 update()
                             }, logged._id )
                             this.$api.get( 'setting', () => {
