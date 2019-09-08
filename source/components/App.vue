@@ -141,6 +141,9 @@ export default {
             this.mobile === true ? this.drawer = false : this.drawer = true
         },
         logout: function() {
+
+            console.log('clearing out localstorage')
+            localStorage.clear()
             
             fetch(`${config.api_url}/public/logout`, {
                 method: "POST",
