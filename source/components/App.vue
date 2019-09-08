@@ -3,7 +3,7 @@
 
     <DevelToast :toast="toast"/>
     <transition name="fade" mode="out-in" >
-        <gSearch />
+        <gSearch v-if="logged" />
     </transition>
 
     <div class='dots' :class="{ animate: loading }">
