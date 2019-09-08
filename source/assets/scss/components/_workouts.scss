@@ -1,17 +1,46 @@
 #workouts {
-    margin: 0 +15px;
-    
+    width: calc(100% + 30px);
+    margin-left: -15px;
+
     .repetitions {
-        float:left; 
-        margin: 0 5px 10px 0; 
-        padding: 10px 20px; 
-        background-color: rgba(255,255,255,.01); 
-        cursor:pointer;
+      float:left; 
+      margin: 0 5px 10px 0; 
+      padding: 10px 20px; 
+      background-color: rgba(255,255,255,.01); 
+      cursor: pointer;
     }
+
     #accordionGroup {
-        .btn {
-            width: 100%;
-        }
+        .card {
+            border: none;
+            background: transparent;
+
+            #heading {
+                padding: 0;
+                border: none;
+                border-bottom: 1px solid $primary-light;
+
+                .btn {
+                    width: 100%;
+                    color: $primary-light;
+                    background: $btn-primary;
+                    height: 80px;
+                    font-size: 25px;
+
+                    &:hover { text-decoration: none; }
+                    &:focus { text-decoration: none; }
+                }
+              }
+          }
+
+          .card-body {
+              padding: 20px 0;
+              background: $primary-dark;
+
+              .paper {
+                margin: 0
+              }
+          }
     }
 }
 

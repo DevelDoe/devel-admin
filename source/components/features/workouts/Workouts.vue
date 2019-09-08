@@ -197,13 +197,6 @@
         <!-- !lvUpModal -->
 
         <!-- workouts -->
-<<<<<<< HEAD
-        <div id="workouts" class="row padding paper" v-for="(ex, i) in uniqueWorkouts" :key="'workout'+i" >
-            <div class="col-12">
-                <h4>{{ex.group}}</h4>
-                <h3>{{ex.name}} <b>{{ex.weight}}kg</b></h3>
-                
-=======
 
         <div class="accordion" :id="'accordionGroup'">
           <div class="card" v-for="(group, i) in groups" :key="'g'+i">
@@ -213,14 +206,12 @@
                     {{group}}
                 </button>
               </h5>
->>>>>>> massexercises
             </div>
             <div :id="'collapse'+i " class="collapse" :aria-labelledby="'heading' " :data-parent="'#accordionGroup' ">
                 <div class="card-body text-left">
                     <div id="workouts" class="row padding paper" v-for="(ex, i) in uniqueWorkouts" v-if="ex.group === group" :key="'workout'+i" >
                         <div class="col-12">
-                            <h4>{{ex.group}}</h4>
-                            <h3>{{ex.name}} <b>{{ex.weight}}kg</b></h3>
+                            <h4>{{ex.name}} <b>{{ex.weight}}kg</b></h4>
                         </div>
                         <div class="col-12" style="padding: 0 0 1rem 1rem;">
                             <div v-for="i in ex.target">
@@ -269,9 +260,12 @@ export default {
     },
     computed: {
         ...mapGetters([ 'workouts', 'logged' ]),
+        sortedWorkouts() {
+            return keySort(this.workouts, 'created_at', true)
+        },
         uniqueWorkouts() {
             var unique = []
-            this.workouts.map(ex => {
+            this.sortedWorkouts.map(ex => {
                 let isInWorkouts = '' 
                 isInWorkouts = unique.find(e => e.name === ex.name )
                 if(!isInWorkouts) unique.push(ex)
@@ -292,7 +286,7 @@ export default {
     methods: {
         saveWorkout() {
             this.workout.user_id = this.logged._id
-            this.workout.name = this.workout.name.trim() 
+            this.workout.name = this.workout.name.trim().toUpperCase()
             this.$api.save('workout', this.workout )
             this.workout.name = ''
             this.workout.weight = ''
