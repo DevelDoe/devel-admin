@@ -197,28 +197,48 @@
         <!-- !lvUpModal -->
 
         <!-- workouts -->
+<<<<<<< HEAD
         <div id="workouts" class="row padding paper" v-for="(ex, i) in uniqueWorkouts" :key="'workout'+i" >
             <div class="col-12">
                 <h4>{{ex.group}}</h4>
                 <h3>{{ex.name}} <b>{{ex.weight}}kg</b></h3>
                 
+=======
+
+        <div class="accordion" :id="'accordionGroup'">
+          <div class="card" v-for="(group, i) in groups" :key="'g'+i">
+            <div class="card-header" :id="'heading'">
+              <h5 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" :data-target="'#collapse'+i" aria-expanded="true" aria-controls="collapseOne">
+                    {{group}}
+                </button>
+              </h5>
+>>>>>>> massexercises
             </div>
-            <div class="col-12" style="padding: 0 0 1rem 1rem;">
-                <div v-for="i in ex.target">
-                    <div v-if=" ex.repetitions && ex.repetitions >= i " @click="setRepetition(ex, i)" class="repetitions">
-                        {{i}}
+            <div :id="'collapse'+i " class="collapse" :aria-labelledby="'heading' " :data-parent="'#accordionGroup' ">
+                <div class="card-body text-left">
+                    <div id="workouts" class="row padding paper" v-for="(ex, i) in uniqueWorkouts" v-if="ex.group === group" :key="'workout'+i" >
+                        <div class="col-12">
+                            <h4>{{ex.group}}</h4>
+                            <h3>{{ex.name}} <b>{{ex.weight}}kg</b></h3>
+                        </div>
+                        <div class="col-12" style="padding: 0 0 1rem 1rem;">
+                            <div v-for="i in ex.target">
+                                <div v-if=" ex.repetitions && ex.repetitions >= i " @click="setRepetition(ex, i)" class="repetitions"> {{i}} </div>
+                                <div v-else  @click="setRepetition(ex, i)" class="repetitions" style="background-color: rgba(255,255,255,.1);"> {{i}} </div>
+                            </div>
+                        </div>
+                        <div class="col-12" style="padding: 0 0 1rem 1rem;">
+                            <button type="button" class="btn btn-danger" data-toggle="modal"  :data-target="'#deleteModal'" @click="delWork = ex">Delete</button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#updateModal'" @click="updateWork = ex">Edit</button>
+                        </div>
                     </div>
-                    <div v-else  @click="setRepetition(ex, i)" class="repetitions" style="background-color: rgba(255,255,255,.1);">
-                        {{i}}
-                    </div>
-                </div>
+              </div>
             </div>
-            <div class="col-12" style="padding: 0 0 1rem 1rem;">
-                <button type="button" class="btn btn-danger" data-toggle="modal"  :data-target="'#deleteModal'" @click="delWork = ex">Delete</button>
-                <button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#updateModal'" @click="updateWork = ex">Edit</button>
-            </div>
-            
+          </div>
         </div>
+
+        
         <!-- /workouts  -->
 
         <!-- controls -->
@@ -249,19 +269,24 @@ export default {
     },
     computed: {
         ...mapGetters([ 'workouts', 'logged' ]),
-        sortedWorkouts() {
-            return keySort(this.workouts, 'created_at', true)
-        },
         uniqueWorkouts() {
             var unique = []
-            this.sortedWorkouts.map(ex => {
+            this.workouts.map(ex => {
                 let isInWorkouts = '' 
                 isInWorkouts = unique.find(e => e.name === ex.name )
-                
                 if(!isInWorkouts) unique.push(ex)
             })
             return unique
         },
+        groups() {
+            var unique = []
+            for(var i = 0, len = this.uniqueWorkouts.length; i < len; i++) {
+                if(!unique.includes(this.uniqueWorkouts[i].group)) {
+                    unique.push(this.uniqueWorkouts[i].group)
+                }
+            }
+            return unique
+        }
 
     },
     methods: {
@@ -293,137 +318,7 @@ export default {
             this.lvWork.level++
             this.$api.save('workout', this.lvWork )
         }
-    },
+    }
     
 }
 </script>
-<style lang="scss">
-#workouts {
-    .repetitions {
-        float:left; 
-        margin: 0 5px 10px 0; 
-        padding: 10px 20px; 
-        background-color: rgba(255,255,255,.01); 
-        cursor:pointer;
-    }
-}
-
-$particles: 50;
-$width: 500;
-$height: 500;
-
-// Create the explosion...
-$box-shadow: ();
-$box-shadow2: ();
-@for $i from 0 through $particles {
-  $box-shadow: $box-shadow,
-               random($width)-$width / 2 + px
-               random($height)-$height / 1.2 + px
-               hsl(random(360), 100, 50);
-  $box-shadow2: $box-shadow2, 0 0 #fff
-}
-@mixin keyframes ($animationName) {
-    @-webkit-keyframes #{$animationName} {
-        @content;
-    }
-
-    @-moz-keyframes #{$animationName} {
-        @content;
-    }
-
-    @-o-keyframes #{$animationName} {
-        @content;
-    }
-
-    @-ms-keyframes #{$animationName} {
-        @content;
-    }
-
-    @keyframes #{$animationName} {
-        @content;
-    }
-}
-
-@mixin animation-delay ($settings) {
-    -moz-animation-delay: $settings;
-    -webkit-animation-delay: $settings;
-    -o-animation-delay: $settings;
-    -ms-animation-delay: $settings;
-    animation-delay: $settings;
-}
-
-@mixin animation-duration ($settings) {
-    -moz-animation-duration: $settings;
-    -webkit-animation-duration: $settings;
-    -o-animation-duration: $settings;
-    -ms-animation-duration: $settings;
-    animation-duration: $settings;
-}
-
-@mixin animation ($settings) {
-    -moz-animation: $settings;
-    -webkit-animation: $settings;
-    -o-animation: $settings;
-    -ms-animation: $settings;
-    animation: $settings;
-}
-
-@mixin transform ($settings) {
-    transform: $settings;
-    -moz-transform: $settings;
-    -webkit-transform: $settings;
-    -o-transform: $settings;
-    -ms-transform: $settings;
-}
-
-.pyro > .before, .pyro > .after {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  box-shadow: $box-shadow2;
-  @include animation((1s bang ease-out infinite backwards, 1s gravity ease-in infinite backwards, 5s position linear infinite backwards));
-}
-    
-.pyro > .after {
-  @include animation-delay((1.25s, 1.25s, 1.25s));
-  @include animation-duration((1.25s, 1.25s, 6.25s));
-}
-        
-@include keyframes(bang) {
-  to {
-    box-shadow:$box-shadow;
-  }
-}
-    
-@include keyframes(gravity)  {
-  to {
-    @include transform(translateY(200px));
-    opacity: 0;
-  }
-}
-    
-@include keyframes(position) {
-  0%, 19.9% {
-    margin-top: 10%;
-    margin-left: 40%;
-  }
-  20%, 39.9% {
-    margin-top: 40%;
-    margin-left: 30%;
-  }
-  40%, 59.9% {  
-    margin-top: 20%;
-    margin-left: 70%
-  }
-  60%, 79.9% {  
-    margin-top: 30%;
-    margin-left: 20%;
-  }
-  80%, 99.9% {  
-    margin-top: 30%;
-    margin-left: 80%;
-  }
-}
-
-</style>
