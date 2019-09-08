@@ -249,11 +249,8 @@ export default {
     },
     computed: {
         ...mapGetters([ 'exercises', 'logged' ]),
-        usersExercises() {
-            return this.exercises.filter(ex => ex.user_id === this.logged._id)
-        },
         sortedExercises() {
-            return keySort(this.usersExercises, 'created_at', true)
+            return keySort(this.exercises, 'created_at', true)
         },
         uniqueExercises() {
             var unique = []

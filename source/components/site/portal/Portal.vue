@@ -210,7 +210,7 @@ export default {
                             this.$api.get( 'exercise', () => {
                                 exercise = true
                                 update()
-                            })
+                            }, this.logged._id )
                             this.$api.get( 'setting', () => {
                                 setting = true
                                 update()
