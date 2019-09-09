@@ -1,6 +1,6 @@
 module.exports = {
     app_name: 'DEVEL ADMIN',
-    app_intro: 'Fully featured web administration application, built with Vue 2.0. Please sign in with guest account and have a look around!',
+    app_intro: 'Fully featured web administration application, built with Vue 2.0. Please sign in user "guest@develadmin.nu" and password "guest" to have a look around!',
     api_url: 'http://35.210.92.246:4000',
     web_socket: 'ws://35.210.92.246:4000',
     target_site: 'DEVEL ADMIN',
