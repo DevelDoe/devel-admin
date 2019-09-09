@@ -142,6 +142,9 @@ export default {
         },
         logout: function() {
             
+            console.log('clearing out localstorage')
+            localStorage.clear()
+            
             fetch(`${config.api_url}/public/logout`, {
                 method: "POST",
                 mode: "cors",

@@ -246,7 +246,7 @@
 </template>
 <script>
 import {mapGetters} from 'vuex'
-import { keySort } from '../../../util/helperFunc.js'
+import { keySort, cap } from '../../../util/helperFunc.js'
 export default {
     name: 'workouts',
     page: 'workouts',
@@ -286,7 +286,8 @@ export default {
     methods: {
         saveWorkout() {
             this.workout.user_id = this.logged._id
-            this.workout.name = this.workout.name.trim().toUpperCase()
+            this.workout.name = cap(this.workout.name)
+            this.workout.group = cap(this.workout.group)
             this.$api.save('workout', this.workout )
             this.workout.name = ''
             this.workout.weight = ''
@@ -297,6 +298,8 @@ export default {
             $('#deleteModal').modal('hide')
         },
         updateWorkout(workout) {
+            workout.name = cap(workout.name)
+            workout.group = cap(workout.group)
             this.$api.update( 'workout', workout )
         },
         setRepetition(ex, i) {

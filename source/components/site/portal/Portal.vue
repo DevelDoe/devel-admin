@@ -173,7 +173,7 @@ export default {
 
                                 }
                             } else {
-                                this.$socket.send(JSON.stringify({ type: 'setUser', user: this.logged._id }))
+                                this.$socket.send(JSON.stringify({ type: 'setUser', user: logged._id }))
                                 if (debugSocket) console.log('portal: setuser')
                             }
                             
