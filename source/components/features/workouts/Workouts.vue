@@ -231,6 +231,7 @@
                                     <div class="card-body text-left">
                                         <div class="row" style="width: 100%;">
                                             <div class="col-12" style="padding: 27px 20px 12px 42px;">
+                                                <h5>Repetitions</h5>
                                                 <div v-for="i in ex.target">
                                                     <div v-if=" ex.repetitions && ex.repetitions >= i " @click="setRepetition(ex, i)" class="repetitions"> {{i}} </div>
                                                     <div v-else @click="setRepetition(ex, i)" class="repetitions" style="background-color: rgba(255,255,255,.1);"> {{i}} </div>
