@@ -160,6 +160,7 @@
         <div class="modal fade" :id="'lvUpModal'" tabindex="-1" role="dialog" aria-labelledby="lvUpModallLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
+                    
                     <div class="modal-header">
                         <h5 class="modal-title" id="lvUpModalLabel">Level Up</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
@@ -199,34 +200,54 @@
         <!-- workouts -->
 
         <div class="accordion" :id="'accordionGroup'">
-          <div class="card" v-for="(group, i) in groups" :key="'g'+i">
-            <div class="card-header" :id="'heading'">
-              <h5 class="mb-0">
-                <button class="btn btn-link" type="button" data-toggle="collapse" :data-target="'#collapse'+i" aria-expanded="true" aria-controls="collapseOne">
-                    {{group}}
-                </button>
-              </h5>
-            </div>
-            <div :id="'collapse'+i " class="collapse" :aria-labelledby="'heading' " :data-parent="'#accordionGroup' ">
-                <div class="card-body text-left">
-                    <div id="workouts" class="row padding paper" v-for="(ex, i) in uniqueWorkouts" v-if="ex.group === group" :key="'workout'+i" >
-                        <div class="col-12">
-                            <h4>{{ex.name}} <b>{{ex.weight}}kg</b></h4>
-                        </div>
-                        <div class="col-12" style="padding: 0 0 1rem 1rem;">
-                            <div v-for="i in ex.target">
-                                <div v-if=" ex.repetitions && ex.repetitions >= i " @click="setRepetition(ex, i)" class="repetitions"> {{i}} </div>
-                                <div v-else  @click="setRepetition(ex, i)" class="repetitions" style="background-color: rgba(255,255,255,.1);"> {{i}} </div>
+            <div class="card" v-for="(group, i) in groups" :key="'g'+i">
+
+                <div class="card-header" :id="'heading'">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" :data-target="'#collapse'+i"
+                            aria-expanded="true" aria-controls="collapseOne">
+                            {{group}}
+                        </button>
+                    </h5>
+                </div>
+
+                <div :id="'collapse'+i " class="collapse" :aria-labelledby="'heading' " :data-parent="'#accordionGroup' ">
+                    <div class="card-body text-left">
+
+
+
+                        <div class="accordion" :id="'accordionWorkout'">
+                            <div class="card" v-for="(ex, i) in uniqueWorkouts" v-if="ex.group === group" :key="'workout'+i">
+
+                                <div class="card-header" :id="'heading'">
+                                    <h5 class="mb-0">
+                                        <button style="font-size: .6rem; padding-left: 30px;" class="btn btn-link" type="button" data-toggle="collapse" :data-target="'#collapseW'+i" aria-expanded="true" aria-controls="collapseOne">
+                                            {{ex.name}} <b>{{ex.weight}}kg</b>
+                                        </button>
+                                    </h5>
+                                </div>
+
+                                <div :id="'collapseW'+i " class="collapse" :aria-labelledby="'heading' " :data-parent="'#accordionWorkout' ">
+                                    <div class="card-body text-left">
+                                        <div class="row" style="width: 100%;">
+                                            <div class="col-12" style="padding: 27px 20px 12px 42px;">
+                                                <div v-for="i in ex.target">
+                                                    <div v-if=" ex.repetitions && ex.repetitions >= i " @click="setRepetition(ex, i)" class="repetitions"> {{i}} </div>
+                                                    <div v-else @click="setRepetition(ex, i)" class="repetitions" style="background-color: rgba(255,255,255,.1);"> {{i}} </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12" style="padding: 0px 20px 20px 42px;">
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#deleteModal'" @click="delWork = ex">Delete</button>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#updateModal'" @click="updateWork = ex">Edit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-12" style="padding: 0 0 1rem 1rem;">
-                            <button type="button" class="btn btn-danger" data-toggle="modal"  :data-target="'#deleteModal'" @click="delWork = ex">Delete</button>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#updateModal'" @click="updateWork = ex">Edit</button>
-                        </div>
                     </div>
-              </div>
+                </div>
             </div>
-          </div>
         </div>
 
         
