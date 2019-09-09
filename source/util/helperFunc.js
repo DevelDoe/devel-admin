@@ -16,3 +16,8 @@ export const numSort = (list) => {
         return a - b;
     })
 }
+
+export const cap = (str) => {
+    str =  str.trim().toLowerCase()
+    return str.charAt(0).toUpperCase() + str.slice(1)
+}
