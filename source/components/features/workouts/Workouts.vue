@@ -18,7 +18,9 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="group">Muscle Group</label>
-                                    <input type="text" class="form-control" id="name" placeholder="Muscle Group" autocomplete="off" v-model="workout.group">
+                                    <select id="group" class="form-control"  v-model="workout.group" @blur="$forceUpdate()">
+                                        <option v-for="(g, i) in muscle_groups" :value="g" >{{g}}</option>
+                                    </select>
                                     <small id="nameHelp" class="form-text text-muted">Enter the muscle group of the workout, Ex: "Biceps" </small>
                                 </div>
                             </div>
@@ -83,7 +85,9 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="group">Muscle Group</label>
-                                    <input type="text" class="form-control" id="name" placeholder="Muscle Group" autocomplete="off" v-model="updateWork.group">
+                                    <select id="group" class="form-control"  v-model="updateWork.group" @blur="$forceUpdate()">
+                                        <option v-for="(g, i) in muscle_groups" :value="g" >{{g}}</option>
+                                    </select>
                                     <small id="nameHelp" class="form-text text-muted">Enter the muscle group of the workout, Ex: "Biceps" </small>
                                 </div>
                             </div>
@@ -277,7 +281,8 @@ export default {
             workout: {},
             delWork: {},
             updateWork: {},
-            lvWork: {}
+            lvWork: {},
+            muscle_groups: [ 'Neck', 'Traps', 'Shoulders', 'Chest', 'Biceps', 'Forearm', 'Abs', 'Quads', 'Calves', 'Lats', 'Middle Back', 'Lower Back', 'Glutes', 'Quads', 'Hamstrings' ],
         }
     },
     computed: {
@@ -309,7 +314,6 @@ export default {
         saveWorkout() {
             this.workout.user_id = this.logged._id
             this.workout.name = cap(this.workout.name)
-            this.workout.group = cap(this.workout.group)
             this.$api.save('workout', this.workout )
             this.workout.name = ''
             this.workout.weight = ''
@@ -321,7 +325,6 @@ export default {
         },
         updateWorkout(workout) {
             workout.name = cap(workout.name)
-            workout.group = cap(workout.group)
             this.$api.update( 'workout', workout )
         },
         setRepetition(ex, i) {
