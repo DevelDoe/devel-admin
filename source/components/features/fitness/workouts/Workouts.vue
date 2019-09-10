@@ -84,18 +84,6 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
-                                    <label for="group">Muscle Group</label>
-                                    <select id="group" class="form-control"  v-model="updateWork.group" @blur="$forceUpdate()">
-                                        <option v-for="(g, i) in muscle_groups" :value="g" >{{g}}</option>
-                                    </select>
-                                    <small id="nameHelp" class="form-text text-muted">Enter the muscle group of the workout, Ex: "Biceps" </small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group">
                                     <label for="name">Workout</label>
                                     <input type="text" class="form-control" id="name" placeholder="Workout" autocomplete="off" v-model="updateWork.name">
                                     <small id="nameHelp" class="form-text text-muted">Enter the name of the workout you want to add. Ex: "Straight Leg Raises" </small>
@@ -174,13 +162,13 @@
                             <div class="row">
                                 <div class="col">
                                     <h2>Congratulations</h2>
-                                    <p>You have reached your goal for this level!</p>
+                                    <p>You have reached your goal ({{lvWork.weight}}) for level {{lvWork.level}}!</p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="weight">Next Level Weight</label>
+                                        <label for="weight">Enter Level {{lvWork.level + 1}} Weight</label>
                                         <input type="text" class="form-control" id="weight" placeholder="Enter weight" autocomplete="off" v-model="lvWork.weight" style="text-align:center">
                                         <small id="nameHelp" class="form-text text-muted">Enter the weight to step up to.</small>
                                     </div>
