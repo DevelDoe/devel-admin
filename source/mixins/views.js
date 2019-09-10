@@ -21,7 +21,6 @@ export default {
         const page = getPage(this)
         if(page && window.location.hostname !== 'localhost') {
             var self = this
-            console.log('visitors')
             this.visitor = {
                 type: 'view',
                 page,
