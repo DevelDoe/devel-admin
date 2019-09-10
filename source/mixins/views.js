@@ -19,9 +19,9 @@ export default {
     },
     mounted() {
         const page = getPage(this)
-        if(page) {
+        if(page && window.location.hostname !== 'localhost') {
             var self = this
-
+            console.log('visitors')
             this.visitor = {
                 type: 'view',
                 page,
@@ -99,7 +99,7 @@ export default {
     },
     destroyed() {
         const page = getPage(this)
-        if (page) {
+        if (page && window.location.hostname !== 'localhost') {
             if( this.$socket.readyState === 1 ) { this.$socket.send(JSON.stringify({ type:'endview'})) }
             if (debugSocket) console.log('view(destroy): endview')
             if (debugSocket) console.log('view(destroy): removeEventListener', this.visibilityChange)
