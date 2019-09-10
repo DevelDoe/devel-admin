@@ -295,7 +295,7 @@ export default {
                     unique.push(this.uniqueWorkouts[i].group)
                 }
             }
-            return unique
+            return unique.sort()
         },
         srtMuscle_groups() {
             return this.muscle_groups.sort()
