@@ -162,13 +162,13 @@
                             <div class="row">
                                 <div class="col">
                                     <h2>Congratulations</h2>
-                                    <p>You have reached your goal ({{lvWork.weight}}) for level {{lvWork.level}}!</p>
+                                    <p>You have reached your level {{lvWork.level}} goal ({{levelOldWeight}} kg)</p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="weight">Enter Level {{lvWork.level + 1}} Weight</label>
+                                        <label for="weight">Enter the next levels goal</label>
                                         <input type="text" class="form-control" id="weight" placeholder="Enter weight" autocomplete="off" v-model="lvWork.weight" style="text-align:center">
                                         <small id="nameHelp" class="form-text text-muted">Enter the weight to step up to.</small>
                                     </div>
@@ -271,13 +271,14 @@ export default {
             delWork: {},
             updateWork: {},
             lvWork: {},
+            levelOldWeight: undefined,
             muscle_groups: [ 'Neck', 'Traps', 'Triceps', 'Shoulders', 'Chest', 'Biceps', 'Forearm', 'Abs', 'Quads', 'Calves', 'Lats', 'Middle Back', 'Lower Back', 'Glutes', 'Quads', 'Hamstrings' ],
         }
     },
     computed: {
         ...mapGetters([ 'workouts', 'logged' ]),
         sortedWorkouts() {
-            return keySort(this.workouts, 'group', true)
+            return keySort(this.workouts, 'created_at', true)
         },
         uniqueWorkouts() {
             var unique = []
@@ -286,7 +287,7 @@ export default {
                 isInWorkouts = unique.find(e => e.name === ex.name )
                 if(!isInWorkouts) unique.push(ex)
             })
-            return unique
+            return keySort(unique, 'name', false)
         },
         groups() {
             var unique = []
@@ -329,6 +330,7 @@ export default {
             ex.repetitions = i
             if(ex.target === i) {
                 this.lvWork = JSON.parse(JSON.stringify(ex))
+                this.levelOldWeight = ex.weight
                 this.lvWork.weight = ''
                 $('#lvUpModal').modal('show')
             }
