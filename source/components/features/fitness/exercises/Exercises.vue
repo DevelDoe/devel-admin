@@ -272,10 +272,11 @@
 </template>
 <script>
 import {mapGetters} from 'vuex'
-import { keySort, cap } from '../../../util/helperFunc.js'
+import { keySort, cap } from '../../../../util/helperFunc.js'
+import store from '../../../../store/store'
 export default {
-    name: 'workouts',
-    page: 'workouts',
+    name: 'exercises',
+    page: 'exercises',
     data() {
         return {
             workout: {},
@@ -288,7 +289,7 @@ export default {
     computed: {
         ...mapGetters([ 'workouts', 'logged' ]),
         sortedWorkouts() {
-            return keySort(this.workouts, 'created_at', true)
+            return keySort(this.workouts, 'group', true)
         },
         uniqueWorkouts() {
             var unique = []
@@ -321,6 +322,12 @@ export default {
         },
         delWorkout(workout) {
             this.$api.del( 'workout', workout )
+            this.workouts.forEach( w => {
+                if(w.name === workout.name) {
+                    store.dispatch( `delWorkout`, w._id )
+                }
+            })
+            
             $('#deleteModal').modal('hide')
         },
         updateWorkout(workout) {
