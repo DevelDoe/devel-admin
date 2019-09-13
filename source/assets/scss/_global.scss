@@ -10,6 +10,7 @@ body {
     letter-spacing: 1px;
     font-size: 18px;
     color:#eee;
+    font-weight: 100;
 }
 h1,h2,h3,h4,h5,h6 {
     font-weight: 200;
@@ -134,10 +135,14 @@ small {
             text-transform: uppercase;
             color: $primary-dark;
             height: 100%;
+            margin-right: 15px;
 
             &:hover {
                 background-color: $btn-primary-light;
             }
+        }
+        button:first-child {
+            margin-left: -200px !important;
         }
 
         .btn-ctrl {
@@ -188,10 +193,10 @@ hr {
 .btn-danger {
     color: $primary;
     border: none;
-    background-color: #8a4a4a;
+    background-color: #8a4a4a !important;
 
     &:hover {
-        background-color: #c15353;
+        background-color: #c15353 !important;
     }
 }
 .btn-primary {
@@ -284,5 +289,14 @@ hr {
     .col {
         padding-right: 0 !important;
         padding-left: 0 !important;
+    }
+    .controls {
+    
+        .btn-group {
+    
+            button  {
+                margin-left: -0px !important;
+            }
+        }
     }
 }

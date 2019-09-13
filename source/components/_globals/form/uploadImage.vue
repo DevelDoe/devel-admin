@@ -1,7 +1,7 @@
 <template>
     <div id="uploadImage">
         <form enctype="multipart/form-data" @submit.prevent="sendFile"  >
-            <div class="dropzone" v-if="file === ''">
+            <div class="dropzone" v-if="file === '' || file === undefined">
                 <input 
                     type="file" 
                     class="input-field" 
@@ -103,10 +103,9 @@ export default {
         height: 50px;
         position: relative;
         cursor: pointer;
-        outline: 2px dashed #384373;
+        outline: 2px dashed #999;
         outline-offset: -10px;
-        background: #2e3658;
-        color: #eeeeee;
+        background: transparent;
         
 
         &:hover {

@@ -210,10 +210,10 @@ export default {
                                 ticket = true
                                 update()
                             })
-                            // this.$api.get( 'exercise', () => {
-                            //     exercise = true
-                            //     update()
-                            // }, logged._id )
+                            this.$api.get( 'exercise', () => {
+                                exercise = true
+                                update()
+                            })
                             this.$api.get( 'workout', () => {
                                 workout = true
                                 update()
