@@ -1,27 +1,17 @@
 <template>
-    <div id="exercises" class="admin">
+    <div id="exercise" >
 
-        <!-- exercise modal -->
-        <div class="modal fade" id="exerciseModal" tabindex="-1" role="dialog" aria-labelledby="exerciseModallLabel" aria-hidden="true">
+        <!-- updateModal -->
+        <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModallLabel" aria-hidden="true" v-if="exercise">
             <div class="modal-dialog" role="dialog">
                 <div class="modal-content">
 
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exerciseModalLabel">Add new exercise</h5>
+                        <h5 class="modal-title" id="updateModalLabel">Update {{exercise.name}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
                     </div>
 
                     <div class="modal-body">
-
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="exercise">Exercise</label>
-                                    <input type="text" class="form-control" id="exercise" placeholder="Exercise name" autocomplete="off" v-model="exercise.name">
-                                    <small id="exerciseHelp" class="form-text text-muted">Enter the name of the exercise you want to add. Ex: "Straight Leg Raises" </small>
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="row">
                             <div class="col">
@@ -109,101 +99,116 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button class="btn btn-lg btn-primary" @click="saveExercise" data-dismiss="modal">Save</button>
+                        <button class="btn btn-lg btn-primary" @click="updateExercise(exercise)" data-dismiss="modal">Save</button>
                     </div>
                     
                 </div>
             </div>
         </div>
-        <!-- /exercise modal -->
+        <!-- /updateModal -->
 
-        <!-- exercises -->
-        <div class='row exercises' v-for="(e,i) in exercises" :key="'e'+i">
-            <div class="col-2" >
-                <img :src="api_url + e.images[0]" alt="exersice images"  style="width:100%; max-width:275px "/>
-            </div>
-            <div class="col-8" >
-                <a :href="'#/exercises/' + e.name.replace(/ /g,'_')" >
-                <div class="row"><h4 >{{e.name}}</h4></div>
-                <div class="row">Muscle Group: {{e.group}}</div>
-                <div class="row">Equipment: {{e.equipment}}</div>
-                <div class="row"></div>
-                </a>
+        <!-- deleteModal -->
+
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModallLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModallLabel">Delete {{exercise.name}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <form class="form-signin" id="loginForm" onsubmit="return false;">
+                            <h1>Warnign</h1>
+                            <p>Are you shure you want to delete <b>{{exercise.name}}</b>! This action can not be undone!</p>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-lg btn-danger btn-block" type="submit" form="loginForm" @click="delExercise" >DELETE</button>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- /exercises  -->
 
+        <!-- /deleteModal -->
+
+        <div class="row">
+            <div class="col">
+                <h2>{{exercise.name}}</h2>
+            </div>
+        </div>
+        <div class="row meta">
+            <div class="col">
+                <span>{{exercise.group}}</span> 
+                <span>{{exercise.equipment}}</span> 
+                <span>{{exercise.type}}</span> 
+                <span>{{exercise.mechanic}}</span>
+            </div>
+        </div>
+        <div class="row images" v-if="exercise.images[0]">
+            <div class="col-12">
+                <img :src="api_url + exercise.images[0]" alt="exersice images"  style="width:100%; max-width:275px "/>
+                <img v-if="exercise.images[1]" :src="api_url + exercise.images[1]" alt="exersice images"  style="width:100%; max-width:275px "/>
+            </div>
+        </div>
+        <div class="row video" v-if="exercise.video">
+            <div class="col-12">
+                <video :src="exercise.video+'#t=0.4'"  controls width="100%" style="max-width: 556px; "></video>
+            </div>
+        </div>
+        <div class="row instructions" v-if="exercise.instructions[0]">
+            <div class="col-12" v-for="(ins, i) in exercise.instructions" :key="'ins'+i">
+                <P><b>{{i+1}}</b> {{ins}}</P>
+            </div>
+        </div>
         <!-- controls -->
-
         <div class="row controls">
             <div class="btn-group">
-                <button type="button" class="btn" data-toggle="modal" data-target="#exerciseModal" >ADD Exercise</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#updateModal'">Edit</button>
+                <button type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#deleteModal'" >Delete</button>
             </div>
         </div>
         <!-- /controls -->
-
     </div>
-    
 </template>
 <script>
-import {mapGetters} from 'vuex'
-import { keySort, cap } from '../../../../util/helperFunc.js'
-import store from '../../../../store/store'
 import config from '../../../../../config'
 export default {
-    name: 'exercises',
-    page: 'exercises',
+    name: 'exercise',
+    page() {
+        return this.$route.path.substring(this.$route.path.lastIndexOf('/') + 1).replace(/_/g,' ')
+    },
     data() {
         return {
-            exercise: { images: [], type: 'Strength', mechanic: 'Compound', instructions: [] },
+            api_url: config.api_url,
+            show_video_title: true,
             equipments: [ 'Dumbbell', 'Barbell', 'Cable', 'Machine', 'Bands', 'Foam Roll', 'Kettlebells', 'Body Only', 'Medicine Ball', 'Exercise Ball', 'E-Z Curl Bar', 'None', 'Other' ],
             types: [ 'Cardio', 'Olympic Weightlifting', 'Plyometrics', 'Powerlifting', 'Strength', 'Stretching', 'Strongman' ],
             mechanics: [ 'Compound', 'Isolation', 'N/A' ],
             muscle_groups: [ 'Neck', 'Traps', 'Shoulders', 'Chest', 'Biceps', 'Forearm', 'Abs',  'Calves', 'Triceps', 'Lats', 'Middle Back', 'Lower Back', 'Glutes', 'Quads', 'Hamstrings', 'Adductors', 'Abductors' ],
-            delWork: {},
-            updateWork: {},
-            api_url: config.api_url,
-            hoverImg: false
+
         }
     },
     computed: {
-        ...mapGetters([ 'exercises', 'logged' ]),
+        exercise() {
+            return this.$store.getters.exercises.find( ex => ex.name === this.$route.path.substring(this.$route.path.lastIndexOf('/') + 1).replace(/_/g,' '))
+        },
         srtMuscle_groups() {
             return this.muscle_groups.sort()
         },
     },
     methods: {
-        saveExercise() {
-            this.exercise.name = cap(this.exercise.name)
-            this.$api.save('exercise', this.exercise )
-            this.exercise.name = ''
-            this.exercise.video = ''
-            this.exercise.images = []
-            this.exercise.instructions = []
+        delExercise() {
+            this.$api.del( 'exercise', this.exercise )     
+            $('#deleteModal').modal('hide') 
+            this.$router.push('/exercises')
+        },
+        updateExercise() {
+            this.$api.update( 'exercise', this.exercise )
+            this.$router.push('/exercises/'+ this.exercise.name)
         },
         addField( ) {
             this.exercise.instructions.push('')
         },
-
-        delWorkout(workout) {
-            this.$api.del( 'workout', workout )
-            this.workouts.forEach( w => {
-                if(w.name === workout.name) {
-                    store.dispatch( `delWorkout`, w._id )
-                }
-            })
-            
-            $('#deleteModal').modal('hide')
-        },
-        updateWorkout(workout) {
-            workout.name = cap(workout.name)
-            this.$api.update( 'workout', workout )
-        },
-    },
-    created() {
-        this.$bus.$on('addImages', payload => { this.exercise.images.push(payload) })
-        this.$bus.$on('delImages', payload => { this.exercise.images.splice(payload, 1) })
-    },
-    
+    }
 }
 </script>
