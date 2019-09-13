@@ -119,7 +119,7 @@
 
         <!-- exercises -->
         <div class='row exercises' v-for="(e,i) in exercises" :key="'e'+i">
-            <div class="col-2" >
+            <div class="col-2" v-if="e.images[0]">
                 <img :src="api_url + e.images[0]" alt="exersice images"  style="width:100%; max-width:275px "/>
             </div>
             <div class="col-8" >
