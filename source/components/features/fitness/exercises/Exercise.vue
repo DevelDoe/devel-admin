@@ -209,6 +209,10 @@ export default {
         addField( ) {
             this.exercise.instructions.push('')
         },
-    }
+    },
+    created() {
+        this.$bus.$on('addImages', payload => { this.exercise.images.push(payload) })
+        this.$bus.$on('delImages', payload => { this.exercise.images.splice(payload, 1) })
+    },
 }
 </script>
