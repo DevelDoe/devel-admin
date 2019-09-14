@@ -146,8 +146,8 @@
         </div>
         <div class="row images" v-if="exercise.images[0]">
             <div class="col-12">
-                <img :src="api_url + exercise.images[0]" alt="exersice images"  style="width:100%; max-width:275px "/>
-                <img v-if="exercise.images[1]" :src="api_url + exercise.images[1]" alt="exersice images"  style="width:100%; max-width:275px "/>
+                <img :src="api_url + exercise.images[0]" alt="exersice images" />
+                <img v-if="exercise.images[1]" :src="api_url + exercise.images[1]" alt="exersice images"  />
             </div>
         </div>
         <div class="row video" v-if="exercise.video">
