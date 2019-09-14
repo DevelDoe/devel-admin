@@ -135,7 +135,7 @@ small {
             text-transform: uppercase;
             color: $primary-dark;
             height: 100%;
-            margin-right: 15px;
+            margin: 0 15px;
 
             &:hover {
                 background-color: $btn-primary-light;
@@ -170,11 +170,12 @@ small {
 }
 
 .row-main {
-    padding-bottom: 60px;
+    padding-bottom: 50px;
 }
 
 .container-fluid {
     height: 100%;
+    padding-top: 50px;
 }
 
 hr {
@@ -294,8 +295,8 @@ hr {
     
         .btn-group {
     
-            button  {
-                margin-left: -0px !important;
+            button:first-child  {
+                margin-left: 15px !important;
             }
         }
     }

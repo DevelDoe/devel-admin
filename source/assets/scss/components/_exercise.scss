@@ -5,6 +5,10 @@
         margin-bottom: 0;
     }
 
+    .row {
+        margin: 0;
+    }
+
     .meta {
         span {
             background: $secondary;
@@ -18,10 +22,16 @@
     .images {
         margin: 20px 0;
         
-
-        .col-12 {
-            padding-left: 0;
+        img {
+            width:100%;
+            margin: 0 auto;
+            margin-bottom: 15px;
         }
+
+        
+    }
+    .col-12 {
+        padding: 0;
     }
 
     .video {
