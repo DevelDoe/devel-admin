@@ -2,7 +2,42 @@
     width: 100%;
 
     .exercises {
-      margin: 15px 0;
+        margin: 0;
+        .row, .col {
+            margin:0;
+            padding:0;
+        }
+        .image {
+            padding:0;
+            img {
+                width:100%;
+                max-width: 200px;
+                opacity: .7;
+            }
+        }
+        
+        .info {
+            
+            h3 {
+                font-size: 1rem;
+                padding-top: 3px;
+            }
+            .meta {
+                span {
+                    background: $secondary;
+                    padding: 0px 13px;
+                    font-size: .7rem;
+                    color: $primary-dark;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+    .exercises:nth-child(odd) {
+        background:rgba(0,0,0,.3);
+    }
+    .exercises:nth-child(even) {
+        background:rgba(0,0,0,.23);
     }
 
     #accordionGroup {
@@ -55,7 +90,41 @@
     }
 }
 @media (max-width: 768px) {
-
+    #exercises {
+        .exercises {
+          padding: 10px 5px;
+          margin: 0;
+          .row, .col {
+              margin:0;
+              padding:0;
+          }
+          .image {
+              padding:0;
+              img {
+                  width:100%;
+                  max-width: 200px;
+                  opacity: .7;
+              }
+          }
+          
+          .info {
+              
+              h3 {
+                  font-size: 1rem;
+                  padding-top: 3px;
+              }
+              .meta {
+                  span {
+                      background: $secondary;
+                      padding: 0px 5px;
+                      font-size: .7rem;
+                      color: $primary-dark;
+                      font-weight: 500;
+                  }
+              }
+          }
+      }
+    }
 }
 
 

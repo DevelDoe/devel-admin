@@ -119,15 +119,20 @@
 
         <!-- exercises -->
         <div class='row exercises' v-for="(e,i) in exercises" :key="'e'+i">
-            <div class="col-2" v-if="e.images[0]">
-                <img :src="api_url + e.images[0]" alt="exersice images"  style="width:100%; max-width:275px "/>
+            <div class="col-4 col-lg-1 image" v-if="e.images[0]">
+                <img :src="api_url + e.images[0]" alt="exersice images" />
             </div>
-            <div class="col-8" >
+            <div class="col-8 info" >
                 <a :href="'#/exercises/' + e.name.replace(/ /g,'_')" >
-                <div class="row"><h4 >{{e.name}}</h4></div>
-                <div class="row">Muscle Group: {{e.group}}</div>
-                <div class="row">Equipment: {{e.equipment}}</div>
-                <div class="row"></div>
+                    <h3 >{{e.name}}</h3>
+                    <div class="row meta">
+                        <div class="col">
+                            <span>{{e.group}}</span> 
+                            <span>{{e.equipment}}</span> 
+                            <span>{{e.type}}</span> 
+                            <span>{{e.mechanic}}</span>
+                        </div>
+                    </div>
                 </a>
             </div>
         </div>
@@ -160,10 +165,7 @@ export default {
             types: [ 'Cardio', 'Olympic Weightlifting', 'Plyometrics', 'Powerlifting', 'Strength', 'Stretching', 'Strongman' ],
             mechanics: [ 'Compound', 'Isolation', 'N/A' ],
             muscle_groups: [ 'Neck', 'Traps', 'Shoulders', 'Chest', 'Biceps', 'Forearm', 'Abs',  'Calves', 'Triceps', 'Lats', 'Middle Back', 'Lower Back', 'Glutes', 'Quads', 'Hamstrings', 'Adductors', 'Abductors' ],
-            delWork: {},
-            updateWork: {},
             api_url: config.api_url,
-            hoverImg: false
         }
     },
     computed: {

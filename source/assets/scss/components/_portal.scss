@@ -1,6 +1,8 @@
 #portal {
     color: #333;
 
+    
+
     .carousel-caption {
         position: absolute;
         top: 56%;
@@ -147,6 +149,7 @@
     
     /*---Media Queries --*/
     @media (max-width: 992px) {
+        
         .carousel-caption {
             h3 {
                 display: none;
@@ -163,7 +166,7 @@
         .carousel-caption {
 
             h1 {
-                font-size: 350%;
+                font-size: 2rem;
             }
             h3 {
                 display: none;
@@ -171,6 +174,9 @@
             .btn {
                 font-size: 95%;
                 padding: 8px 14px;
+            }
+            p {
+                font-size:.9rem;
             }
         }
         .display-4 {
