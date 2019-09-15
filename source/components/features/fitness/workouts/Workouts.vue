@@ -81,15 +81,6 @@
 
                     <div class="modal-body">
 
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="weight">Starting Weight</label>
-                                    <input type="text" class="form-control" id="weight" placeholder="Enter weight" autocomplete="off" v-model="updateWork.weight">
-                                    <small id="nameHelp" class="form-text text-muted">Enter the starting weight of the exersice in kilos. Ex: "45" </small>
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="row">
                             <div class="col">
@@ -302,7 +293,9 @@ export default {
     methods: {
         saveWorkout() {
             this.workout.user_id = this.logged._id
+            this.workout.name = this.exercises.find( ex => ex._id === this.workout.exercise_id ).name
             this.$api.save('workout', this.workout )
+            this.workout.name
             this.workout.exercise_id = ''
             this.workout.weight = ''
             this.workout.target = ''
@@ -318,7 +311,6 @@ export default {
             $('#deleteModal').modal('hide')
         },
         updateWorkout(workout) {
-            workout.name = cap(workout.name)
             this.$api.update( 'workout', workout )
         },
         setRepetition(ex, i) {
