@@ -21,7 +21,6 @@
                                     <select id="group" class="form-control"  v-model="workout.group" @blur="$forceUpdate()">
                                         <option v-for="(g, i) in srtMuscle_groups" :value="g" >{{g}}</option>
                                     </select>
-                                    <small id="nameHelp" class="form-text text-muted">Enter the muscle group of the workout, Ex: "Biceps" </small>
                                 </div>
                             </div>
                         </div>
@@ -29,9 +28,10 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
-                                    <label for="workout">Workout</label>
-                                    <input type="text" class="form-control" id="name" placeholder="Workout" autocomplete="off" v-model="workout.name">
-                                    <small id="nameHelp" class="form-text text-muted">Enter the name of the workout you want to add. Ex: "Straight Leg Raises" </small>
+                                    <label for="exerciseId">Exercise</label>
+                                    <select id="exerciseId" class="form-control"  v-model="workout.exercise_id" @blur="$forceUpdate()">
+                                        <option v-for="(e, i) in filteredExercises" :value="e._id" >{{e.name}}</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -80,16 +80,6 @@
                     </div>
 
                     <div class="modal-body">
-
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="name">Workout</label>
-                                    <input type="text" class="form-control" id="name" placeholder="Workout" autocomplete="off" v-model="updateWork.name">
-                                    <small id="nameHelp" class="form-text text-muted">Enter the name of the workout you want to add. Ex: "Straight Leg Raises" </small>
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="row">
                             <div class="col">
@@ -262,6 +252,10 @@
 import {mapGetters} from 'vuex'
 import { keySort, cap } from '../../../../util/helperFunc.js'
 import store from '../../../../store/store'
+var filters = {
+    all : function (exercises) { return exercises} ,
+    group: function ( exercises, group ) { return exercises.filter( ex => ex.group === group ) }
+}
 export default {
     name: 'workouts',
     page: 'workouts',
@@ -276,7 +270,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters([ 'workouts', 'logged' ]),
+        ...mapGetters([ 'workouts', 'logged', 'exercises' ]),
         sortedWorkouts() {
             return keySort(this.workouts, 'created_at', true)
         },
@@ -300,15 +294,16 @@ export default {
         },
         srtMuscle_groups() {
             return this.muscle_groups.sort()
+        },
+        filteredExercises() {
+            return this.exercises.filter( ex => ex.group === this.workout.group )
         }
-
     },
     methods: {
         saveWorkout() {
             this.workout.user_id = this.logged._id
-            this.workout.name = cap(this.workout.name)
             this.$api.save('workout', this.workout )
-            this.workout.name = ''
+            this.workout.exercise_id = ''
             this.workout.weight = ''
             this.workout.target = ''
         },
