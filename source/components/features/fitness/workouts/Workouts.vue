@@ -257,7 +257,7 @@ export default {
             updateWork: {},
             lvWork: {},
             levelOldWeight: undefined,
-            muscle_groups: [ 'Neck', 'Traps', 'Triceps', 'Shoulders', 'Chest', 'Biceps', 'Forearm', 'Abs', 'Quads', 'Calves', 'Triceps', 'Lats', 'Middle Back', 'Lower Back', 'Glutes', 'Quads', 'Hamstrings', 'Adductors', 'Abductors'  ],
+            muscle_groups: [ 'Neck', 'Traps', 'Triceps', 'Shoulders', 'Chest', 'Biceps', 'Forearm', 'Abs', 'Calves', 'Triceps', 'Lats', 'Middle Back', 'Lower Back', 'Glutes', 'Quads', 'Hamstrings', 'Adductors', 'Abductors'  ],
         }
     },
     computed: {
