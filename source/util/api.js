@@ -10,10 +10,14 @@ const API = {
         const args = (arguments === 1 ? [arguments[0]] : Array.apply(null, arguments))
         const coll = args.shift() || null
         const cb   = args.shift() || null
+        let id     = args.shift() || '' 
+        if( id !== '' ) {
+            id = '/' + id
+        }
 
         store.dispatch('setLoading', true)
 
-        fetch(`${config.api_url}/${coll}s`, {
+        fetch(`${config.api_url}/${coll}s${id}`, {
             method: "GET", // *GET, POST, PUT, DELETE, etc.
             mode: "cors", // no-cors, cors, *same-origin
             cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

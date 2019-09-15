@@ -71,7 +71,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-12">
                 <div class="row padding paper" v-if="this.logged.sec_lv < 3 || this.logged.sec_lv == 9">
 
                     <div class="col-12 heading">
@@ -98,7 +98,7 @@
 
                     <div class="col-6">
                         <div class="paper">
-                            <canvas ref="countriesCanvas" width="400" height="50" ></canvas>
+                            <canvas ref="countriesCanvas" width="400" height="100" ></canvas>
                         </div>
                     </div>
 
@@ -715,127 +715,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss">
-#dashboard {
-
-    .heading {
-        padding-bottom: 0;
-        background: transparent;
-
-        h3 {
-            margin-bottom: 0;
-            background: #212740;
-            color: #b0b0d4;
-            margin:0;
-            padding: 10px;
-            width: 100%;
-            font-size: 1.2rem;
-        }
-    }
-
-    .paper {
-
-        margin: 15px;
-        padding: 15px;
-
-        h3 {
-            margin-bottom: 0;
-            background: #212740;
-            color: #b0b0d4;
-            margin:0;
-            padding: 10px;
-            width: 100%;
-            font-size: 1.2rem;
-        }
-
-        p {
-            padding: 0;
-            margin: 0;
-        }
-
-        ul {
-            padding: 0;
-
-            li {
-                list-style-type: none;
-                list-style-type: none;
-                padding: 20px;
-                margin: 10px;
-                background: #242a46;
-                color: #b0b0d4;
-                overflow: hidden;
-            }
-            a {
-                color: #eee;
-            }
-        }
-    }
-    .pie {
-        padding: 50px;
-        margin-top: 39px;
-
-        .paper {
-            margin: 0;
-            padding: 0;
-        }
-    }
-    .task-count {
-            font-size: 9px;
-            color: #b0b0d4;
-        }
-    .task {
-        position: relative;
-        font-size: 14px;
-
-        .fa-times {
-            position: absolute;
-            top: 8px;
-            right: 5px;
-            font-size: 11px;
-            color: #3a3a4a;
-
-            &:hover {
-                color: #b0b0d4;
-            }
-        }
-    }
-
-    .images {
-
-        h4, 
-        h5,
-        h6 {
-            margin:0;
-            padding: 10px;
-            width: 100%;
-        }
-
-
-        h4 {
-            font-size: 18px;
-        }
-
-        h5 {
-            font-size: 14px;
-            padding-top: 0;
-        }
-
-        h6 {
-            font-size: 9px;
-            padding-top: 0;
-        }
-
-        .cover {
-            transform: scale(1);
-            transition: transform 0.3s ease-in-out;
-            overflow: hidden;
-
-            &:hover {
-                transform: scale(1.1);
-            }
-        }
-
-    }
-}
-</style>

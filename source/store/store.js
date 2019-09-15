@@ -31,7 +31,9 @@ const store = new Vux.Store({
         images: [],
         messages: [],
         tickets: [],
-        exercises: []
+        workouts: [],
+        exercises: [],
+        settings: []
     },
     getters: {
         appName: state => {
@@ -79,8 +81,14 @@ const store = new Vux.Store({
         tickets: state => {
             return state.tickets
         },
+        workouts: state => {
+            return state.workouts
+        },
         exercises: state => {
             return state.exercises
+        },
+        settings: state => {
+            return state.settings
         }
     },
     mutations: {
@@ -206,6 +214,18 @@ const store = new Vux.Store({
             })
         },
 
+        setWorkouts: (state, payload) => {
+            state.workouts = payload
+        },
+        addWorkout: (state, payload) =>  {
+            state.workouts.push( payload )
+        },
+        delWorkout: (state, payload) => {
+            state.workouts = state.workouts.filter(workout => {
+                return workout._id != payload
+            })
+        },
+
         setExercises: (state, payload) => {
             state.exercises = payload
         },
@@ -216,7 +236,19 @@ const store = new Vux.Store({
             state.exercises = state.exercises.filter(exercise => {
                 return exercise._id != payload
             })
-        }
+        },
+
+        setSettings: (state, payload) => {
+            state.settings = payload
+        },
+        addSetting: (state, payload) =>  {
+            state.settings.push( payload )
+        },
+        delSetting: (state, payload) =>  {
+            state.settings = state.settings.filter(setting => {
+                return setting._id != payload
+            })
+        },
 
 
     },
@@ -329,6 +361,16 @@ const store = new Vux.Store({
             ctx.commit('delTicket', payload)
         },
 
+        setWorkouts: (ctx, payload) => {
+            ctx.commit('setWorkouts', payload)
+        },
+        addWorkout: (ctx, payload) => {
+            ctx.commit('addWorkout', payload)
+        },
+        delWorkout: (ctx, payload) => {
+            ctx.commit('delWorkout', payload)
+        },
+
         setExercises: (ctx, payload) => {
             ctx.commit('setExercises', payload)
         },
@@ -337,6 +379,16 @@ const store = new Vux.Store({
         },
         delExercise: (ctx, payload) => {
             ctx.commit('delExercise', payload)
+        },
+
+        setSettings: (ctx, payload) => {
+            ctx.commit('setSettings', payload)
+        },
+        addSetting: (ctx, payload) => {
+            ctx.commit('addSetting', payload)
+        },
+        delSetting: (ctx, payload) => {
+            ctx.commit('delSetting', payload)
         },
 
     }

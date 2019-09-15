@@ -77,7 +77,7 @@ export default {
                     this.uploading = true
                     file.uploading = true
                     this.$axios.defaults.headers.common['Authorization'] = `${this.$store.getters.token}`
-                    const res = await this.$axios.post('http://35.210.92.246:4000/image', formData, {
+                    const res = await this.$axios.post(`${this.api_url}/image`, formData, {
                         onUploadProgress: e => this.progress = Math.round(e.loaded * 100 / e.total)
                     })
                     this.progress = 0
@@ -113,14 +113,13 @@ export default {
         height: 50px;
         position: relative;
         cursor: pointer;
-        outline: 2px dashed #384373;
+        outline: 2px dashed #999;
         outline-offset: -10px;
-        background: #2e3658;
-        color: #eeeeee;
+        background: transparent;
         
 
         &:hover {
-            background: #39426b;
+            background: #777;
         }
 
         .input-field {
@@ -145,10 +144,12 @@ export default {
         .file {
             padding: 30px 5px;
             position: relative;
+            overflow: hidden;
 
             .image-info {
                 padding: 20px;
                 min-height: 150px;
+                margin-bottom: 20px;
 
                 h5 {
                     margin: 12px 0;
