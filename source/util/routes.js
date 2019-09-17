@@ -7,14 +7,17 @@
  * @Last modified time: 2018-01-18T21:26:42+01:00
  */
 const Portal    = () => import('../components/site/portal/Portal.vue')
-const Overview  = () => import('../components/dashboards/overview/Overview.vue')
-const Tasks     = () => import('../components/dashboards/productivity/tasks/Tasks.vue')
-const Notes     = () => import('../components/dashboards/productivity/notes/Notes.vue')
-const Posts     = () => import('../components/dashboards/posts/Posts.vue')
-const Post      = () => import('../components/dashboards/posts/Post.vue')
-const Images    = () => import('../components/dashboards/images/Images.vue')
-const Image     = () => import('../components/dashboards/images/Image.vue')
-const Weights   = () => import('../components/dashboards/weights/Weights.vue')
+const Overview  = () => import('../components/features/overview/Overview.vue')
+const Settings  = () => import('../components/features/settings/Settings.vue')
+const Tasks     = () => import('../components/features/productivity/tasks/Tasks.vue')
+const Notes     = () => import('../components/features/productivity/notes/Notes.vue')
+const Posts     = () => import('../components/features/posts/Posts.vue')
+const Post      = () => import('../components/features/posts/Post.vue')
+const Images    = () => import('../components/features/images/Images.vue')
+const Image     = () => import('../components/features/images/Image.vue')
+const Workouts  = () => import('../components/features/fitness/workouts/Workouts.vue')
+const Exercises = () => import('../components/features/fitness/exercises/Exercises.vue')
+const Exercise = () => import('../components/features/fitness/exercises/Exercise.vue')
 const Data      = () => import('../components/administration/data/Data.vue')
 const Users     = () => import('../components/administration/users/Users.vue')
 const User      = () => import('../components/administration/users/User.vue')
@@ -38,71 +41,87 @@ function authenticate( to, from, next ) {
 }
 
 export default [{
-        path: '/admin/overview',
+        path: '/overview',
         component: Overview,
         name: 'overview',
         beforeEnter: authenticate
     },{
-        path: '/admin/tasks',
+        path: '/settings',
+        component: Settings,
+        name: 'settings',
+        beforeEnter: authenticate
+    },{
+        path: '/tasks',
         component: Tasks,
         name: 'tasks',
         beforeEnter: authenticate
     },{
-        path: '/admin/notes',
+        path: '/notes',
         component: Notes,
         name: 'notes',
         beforeEnter: authenticate
     }, {
-        path: '/admin/posts',
+        path: '/posts',
         component: Posts,
         name: 'posts',
         beforeEnter: authenticate
     },{
-        path: '/admin/post',
+        path: '/post',
         component: Post,
         name: 'post',
         beforeEnter: authenticate
     },{
-        path: '/admin/data',
+        path: '/data',
         component: Data,
         name: 'data',
         beforeEnter: authenticate
     },{
-        path: '/admin/users',
+        path: '/users',
         component: Users,
         name: 'users',
         beforeEnter: authenticate
     },{
-        path: '/admin/user',
+        path: '/user',
         component: User,
         name: 'user',
         beforeEnter: authenticate
     },{
-        path: '/admin/images',
+        path: '/images',
         component: Images,
         name: 'images',
         beforeEnter: authenticate
     }, {
-        path: '/admin/image',
+        path: '/image',
         component: Image,
         name: 'image',
         beforeEnter: authenticate
     }, {
-        path: '/weights',
-        component: Weights,
+        path: '/workouts',
+        component: Workouts,
+        name: 'workouts',
         beforeEnter: authenticate
     }, {
-        path: '/admin/forum/general',
+        path: '/exercises',
+        component: Exercises,
+        name: 'exercises',
+        beforeEnter: authenticate
+    },, {
+        path: '/exercises/:exercise',
+        component: Exercise,
+        name: 'exercise',
+        beforeEnter: authenticate
+    }, {
+        path: '/forum/general',
         component: General,
         name: 'general',
         beforeEnter: authenticate
     }, {
-        path: '/admin/support/tickets',
+        path: '/support/tickets',
         component: Tickets,
         name: 'tickets',
         beforeEnter: authenticate
     }, {
-        path: '/admin/support/ticket',
+        path: '/support/ticket',
         component: Ticket,
         name: 'ticket',
         beforeEnter: authenticate

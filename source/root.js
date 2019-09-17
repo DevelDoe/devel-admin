@@ -29,15 +29,16 @@ import store from './store/store'
 
 import develLS from 'devel-localstorage'
 
-var ls = develLS.get('version')
-if (!ls || ls.version > 3.6) {
-    console.log('clearing out localstorage')
-    localStorage.clear()
-    store.dispatch('delToken')
-    store.dispatch('delLogged')
-}
+// clearing localstorage in login function
+// var ls = develLS.get('version')
+// if (!ls || ls.version > 3.6) {
+//     console.log('clearing out localstorage')
+//     localStorage.clear()
+//     store.dispatch('delToken')
+//     store.dispatch('delLogged')
+// }
 
-develLS.set('version', { version: 3.6 })
+develLS.set('version', { version: 3.5 })
 
 import api from './util/api'
 Object.defineProperty(Vue.prototype, '$api', { get() { return this.$root.api } } )

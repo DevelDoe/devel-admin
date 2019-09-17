@@ -1,7 +1,7 @@
 <template>
-    <div id="uploadImages">
+    <div id="uploadImage">
         <form enctype="multipart/form-data" @submit.prevent="sendFile"  >
-            <div class="dropzone" v-if="file === ''">
+            <div class="dropzone" v-if="file === '' || file === undefined">
                 <input 
                     type="file" 
                     class="input-field" 
@@ -19,7 +19,7 @@
                 <div class="file" v-if="file">
                     <div class="image-info">
                         <h5 >{{img.name}}<i v-if="img.name" class="fa fa-times" @click="delImage"></i></h5>
-                        <img :src="api_url+img.img_src" alt="" style="max-width:200px;">
+                        <img :src="api_url+img.img_src" alt="" style="max-width:100%; ">
                     </div>
                     <div class="progress" >
                         <div class="progress-bar bg-info" role="progressbar" :style="'width:'+progress+'%'" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100"></div>
@@ -34,11 +34,8 @@
 import { mapGetters } from 'vuex'
 import config from '../../../../config'
 export default {
-
-    name: 'uploadImages',
-
+    name: 'uploadImage',
     props: [ 'image' ],
-    
     data() {
         return {
             uploading: false,
@@ -47,7 +44,6 @@ export default {
             api_url: config.api_url
         }
     },
-
     computed: {
         ...mapGetters([ 'logged' ]),
         img() {
@@ -57,7 +53,6 @@ export default {
             }
         }
     },
-
     methods: {
         async sendFile() {
 
@@ -73,7 +68,7 @@ export default {
                 try {
                     this.uploading = true
                     this.$axios.defaults.headers.common['Authorization'] = `${this.$store.getters.token}`
-                    const res = await this.$axios.post('http://35.210.92.246:4000/image', formData, {
+                    const res = await this.$axios.post(`${this.api_url}/image`, formData, {
                         onUploadProgress: e => this.progress = Math.round(e.loaded * 100 / e.total)
                     })
                     this.img.img_src = res.data.file
@@ -81,6 +76,7 @@ export default {
                     this.$bus.$emit('addImage', res.data.file )
                     this.uploading = false
                     file.uploading = false
+                    this.$forceUpdate()
                 } catch (error) {
                     this.$bus.$emit('toast', error.response.data.error )
                     setTimeout( () => { this.$bus.$emit('toast', '' ) }, 4000 )
@@ -101,16 +97,15 @@ export default {
 </script>
 
 <style lang="scss">
-#dropzone {
+#uploadImage {
     .dropzone {
         min-height: 50px;
         height: 50px;
         position: relative;
         cursor: pointer;
-        outline: 2px dashed #384373;
+        outline: 2px dashed #999;
         outline-offset: -10px;
-        background: #2e3658;
-        color: #eeeeee;
+        background: transparent;
         
 
         &:hover {
@@ -158,6 +153,11 @@ export default {
                         right: -20px;
                     }
                 }
+
+                img {
+                    padding-bottom: 40px;
+                }
+
             }
 
             .progress {

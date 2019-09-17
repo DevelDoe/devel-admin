@@ -11,7 +11,7 @@ module.exports = {
     plugins: [
         new WriteFilePlugin(),
         new HtmlWebpackPlugin({
-            title: 'devel admin',
+            title: 'Devel Admin',
             template: 'index.html'
         }),
         new webpack.ProvidePlugin({
