@@ -9,5 +9,5 @@ module.exports = {
     social_instagram:'',
     social_website: '',
     social_github: '',
-    portal_btn: 'https://github.com/develdoe'
+    portal_btn: ''
 }

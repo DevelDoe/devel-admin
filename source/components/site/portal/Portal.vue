@@ -38,12 +38,8 @@
                 <div id="fixed" :class="{ logged: logged}">
                     <div class="carousel-caption">
                         <h1 class="display-2">{{ appName }}</h1>
-<<<<<<< HEAD
-                        <h5>{{intro}}</h5>
-=======
                         <p>{{intro}}</p>
                         <a v-if="portalBtn" :href="portalBtn"><button type="button" class="btn btn-outline-secondary btn-lg">GitHub</button> </a>
->>>>>>> master
                     </div>
                 </div>
             </div>
