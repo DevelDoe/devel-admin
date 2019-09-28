@@ -45,3 +45,23 @@
 .fade-slow-leave-active {
   opacity: 0
 }
+
+
+
+
+.opacity-enter-active{
+  transition-duration: 0.5s;
+  transition-property: opacity;
+  transition-timing-function: ease-in;
+}
+
+.opacity-leave-active {
+  transition-duration: 0s;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
+
+.opacity-enter,
+.opacity-leave-active {
+  opacity: 0;
+}

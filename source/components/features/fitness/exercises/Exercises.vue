@@ -117,8 +117,44 @@
         </div>
         <!-- /exercise modal -->
 
+        <!-- search & filter -->
+        <div id="filters">
+            <div class="row">
+                <div class="col-10 col-md-11 search">
+                    <input type="text" placeholder="search" v-model='search'/>
+                </div>
+                <div class="col-2 col-md-1 filters"><i class="fa fa-filter " @click="toggleFilters = !toggleFilters"></i></div>
+            </div>
+            <transition name="opacity">
+            <div class="row" style="padding: 15px; " v-if="toggleFilters">
+                <div class="col">
+                    <ul>
+                        <li v-for="(group, i) in muscle_groups" :key="'group'+i"><button >{{group}}</button></li>
+                    </ul>
+                    
+                </div>
+                <div class="col">
+                    <ul>
+                        <li v-for="(equipment, i) in equipments" :key="'group'+i"><button >{{equipment}}</button></li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <ul>
+                        <li v-for="(type, i) in types" :key="'group'+i"><button >{{type}}</button></li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <ul>
+                        <li v-for="(mechanic, i) in mechanics" :key="'group'+i"><button >{{mechanic}}</button></li>
+                    </ul>
+                </div>
+            </div>
+            </transition >
+        </div>
+        <!-- /search & filter -->
+
         <!-- exercises -->
-        <div class='row exercises' v-for="(e,i) in exercises" :key="'e'+i">
+        <div class='row exercises' v-for="(e,i) in srtExercises" :key="'e'+i">
             <div class="col-4 col-lg-1 image" v-if="e.images[0]">
                 <img :src="api_url + e.images[0]" alt="exersice images" />
             </div>
@@ -166,10 +202,18 @@ export default {
             mechanics: [ 'Compound', 'Isolation', 'N/A' ],
             muscle_groups: [ 'Neck', 'Traps', 'Shoulders', 'Chest', 'Biceps', 'Forearm', 'Abs',  'Calves', 'Triceps', 'Lats', 'Middle Back', 'Lower Back', 'Glutes', 'Quads', 'Hamstrings', 'Adductors', 'Abductors' ],
             api_url: config.api_url,
+            search: '',
+            toggleFilters: false,
+            fGroup: []
         }
     },
     computed: {
         ...mapGetters([ 'exercises', 'logged' ]),
+        srtExercises() {
+            return this.exercises.filter( ex => {
+                return ex.name.toLowerCase().indexOf( this.search.toLowerCase().trim() ) > -1
+            })
+        },
         srtMuscle_groups() {
             return this.muscle_groups.sort()
         },
@@ -209,7 +253,7 @@ export default {
     created() {
         this.$bus.$on('addImages', payload => { this.exercise.images.push(payload) })
         this.$bus.$on('delImages', payload => { this.exercise.images.splice(payload, 1) })
-    },
+    }
     
 }
 </script>

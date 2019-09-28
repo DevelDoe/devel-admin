@@ -66,7 +66,7 @@ small {
 ::-webkit-input-placeholder {
     /* Chrome/Opera/Safari */
     color: rgba(255,255,255,.2);
-    font-weight: 300;
+    font-weight: 400;
 }
 
 ::-moz-placeholder {
@@ -171,6 +171,9 @@ small {
 
 .row-main {
     padding-bottom: 50px;
+    .col {
+        padding: 0;
+    }
 }
 
 .container-fluid {
@@ -275,6 +278,9 @@ hr {
     &:hover {
         color: #ccc;
     }
+}
+.fa {
+    color: #86888c;
 }
 
 
