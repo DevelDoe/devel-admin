@@ -204,10 +204,10 @@ export default {
             api_url: config.api_url,
             search: '',
             toggleFilters: false,
-            fltMuscleGroup: [],
-            fltEquipments: [],
-            fltTypes: [],
-            fltMechanics: []
+            fltMuscleGroup: [ 'Neck', 'Traps', 'Shoulders', 'Chest', 'Biceps', 'Forearm', 'Abs',  'Calves', 'Triceps', 'Lats', 'Middle Back', 'Lower Back', 'Glutes', 'Quads', 'Hamstrings', 'Adductors', 'Abductors' ],
+            fltEquipments: [ 'Dumbbell', 'Barbell', 'Cable', 'Machine', 'Bands', 'Foam Roll', 'Kettlebells', 'Body Only', 'Medicine Ball', 'Exercise Ball', 'E-Z Curl Bar', 'None', 'Other' ],
+            fltTypes: [ 'Cardio', 'Weightlifting', 'Plyometrics', 'Powerlifting', 'Strength', 'Stretching', 'Strongman' ],
+            fltMechanics: [ 'Compound', 'Isolation', 'N/A' ]
         }
     },
     computed: {
@@ -221,17 +221,27 @@ export default {
             return this.muscle_groups.sort()
         },
         filterExercises() {
+            var fltMuscleGroup = this.fltMuscleGroup.length
             return this.srtExercises.filter( exercise => {
                 if( !this.fltMuscleGroup.length && !this.fltEquipments.length && !this.fltTypes.length && !this.fltMechanics.length ) return true 
                 else {
-                    let res
-                    res += this.fltMuscleGroup.find( flt => exercise.group === flt )
-                    res += this.fltEquipments.find( flt => exercise.equipment === flt )
-                    res += this.fltTypes.find( flt => exercise.type === flt )
-                    res += this.fltMechanics.find( flt => exercise.mechanic === flt )
-                    return res
+                    return  (  this.fltMuscleGroup.find( flt => exercise.group === flt) ) && 
+                            (  this.fltEquipments.find( flt =>  exercise.equipment === flt ) ) && 
+                            (  this.fltTypes.find( flt =>  exercise.type === flt ) ) && 
+                            (  this.fltMechanics.find( flt => exercise.mechanic === flt ) ) 
                 }
             })
+            // return this.srtExercises.filter( exercise => {
+            //     if( !this.fltMuscleGroup.length && !this.fltEquipments.length && !this.fltTypes.length && !this.fltMechanics.length ) return true 
+            //     else {
+            //         let res
+            //         res += this.fltMuscleGroup.find( flt => exercise.group === flt )
+            //         res += this.fltEquipments.find( flt => exercise.equipment === flt )
+            //         res += this.fltTypes.find( flt => exercise.type === flt )
+            //         res += this.fltMechanics.find( flt => exercise.mechanic === flt )
+            //         return res
+            //     }
+            // })
         },
 
     },
@@ -267,22 +277,38 @@ export default {
             this.$api.update( 'workout', workout )
         },
         toggleMuscleGroups(group) {
-            if( this.fltMuscleGroup.indexOf(group) !== -1 ) this.fltMuscleGroup.splice(this.fltMuscleGroup.indexOf(group), 1)
+            if( this.fltMuscleGroup.length === 17 ) this.fltMuscleGroup.length = []
+            if( this.fltMuscleGroup.indexOf(group) !== -1 ) {
+                this.fltMuscleGroup.splice(this.fltMuscleGroup.indexOf(group), 1)
+                if( this.fltMuscleGroup.length === 0 ) this.fltMuscleGroup = [ 'Neck', 'Traps', 'Shoulders', 'Chest', 'Biceps', 'Forearm', 'Abs',  'Calves', 'Triceps', 'Lats', 'Middle Back', 'Lower Back', 'Glutes', 'Quads', 'Hamstrings', 'Adductors', 'Abductors' ]
+            } 
             else this.fltMuscleGroup.push(group)
             this.$forceUpdate()
         },
         toggleEquipments(equipment) {
-            if( this.fltEquipments.indexOf(equipment) !== -1 ) this.fltEquipments.splice(this.fltEquipments.indexOf(equipment), 1)
+            if( this.fltEquipments.length === 13 ) this.fltEquipments.length = []
+            if( this.fltEquipments.indexOf(equipment) !== -1 ) {
+                this.fltEquipments.splice(this.fltEquipments.indexOf(equipment), 1)
+                if( this.fltEquipments.length === 0 ) this.fltEquipments = [ 'Dumbbell', 'Barbell', 'Cable', 'Machine', 'Bands', 'Foam Roll', 'Kettlebells', 'Body Only', 'Medicine Ball', 'Exercise Ball', 'E-Z Curl Bar', 'None', 'Other' ]
+            } 
             else this.fltEquipments.push(equipment)
             this.$forceUpdate()
         },
         toggleTypes(type) {
-            if( this.fltTypes.indexOf(type) !== -1 ) this.fltTypes.splice(this.fltTypes.indexOf(type), 1)
+            if( this.fltTypes.length === 7 ) this.fltTypes.length = []
+            if( this.fltTypes.indexOf(type) !== -1 ) {
+                this.fltTypes.splice(this.fltTypes.indexOf(type), 1)
+                if( this.fltTypes.length === 0 ) this.fltTypes = [ 'Cardio', 'Weightlifting', 'Plyometrics', 'Powerlifting', 'Strength', 'Stretching', 'Strongman' ]
+            } 
             else this.fltTypes.push(type)
             this.$forceUpdate()
         },
         toggleMechanics(mechanic) {
-            if( this.fltMechanics.indexOf(mechanic) !== -1 ) this.fltMechanics.splice(this.fltMechanics.indexOf(mechanic), 1)
+            if( this.fltMechanics.length === 3 ) this.fltMechanics.length = []
+            if( this.fltMechanics.indexOf(mechanic) !== -1 ) {
+                this.fltMechanics.splice(this.fltMechanics.indexOf(mechanic), 1)
+                if( this.fltMechanics.length === 0 ) this.fltMechanics =  [ 'Compound', 'Isolation', 'N/A' ]
+            } 
             else this.fltMechanics.push(mechanic)
             this.$forceUpdate()
         }
