@@ -129,23 +129,23 @@
             <div class="row" style="padding: 15px; " v-if="toggleFilters">
                 <div class="col">
                     <ul>
-                        <li v-for="(group, i) in muscle_groups" :key="'group'+i"><button >{{group}}</button></li>
+                        <li v-for="(group, i) in muscle_groups" :key="'group'+i" @click="toggleMuscleGroups(group)" ><button :class="{active: fltMuscleGroup.indexOf(group) !== -1 || !fltMuscleGroup.length }">{{group}}</button></li>
                     </ul>
                     
                 </div>
                 <div class="col">
                     <ul>
-                        <li v-for="(equipment, i) in equipments" :key="'group'+i"><button >{{equipment}}</button></li>
+                        <li v-for="(equipment, i) in equipments" :key="'group'+i" @click="toggleEquipments(equipment)"><button :class="{active: fltEquipments.indexOf(equipment) !== -1 || !fltEquipments.length }">{{equipment}}</button></li>
                     </ul>
                 </div>
                 <div class="col">
                     <ul>
-                        <li v-for="(type, i) in types" :key="'group'+i"><button >{{type}}</button></li>
+                        <li v-for="(type, i) in types" :key="'group'+i" @click="toggleTypes(type)"><button :class="{active: fltTypes.indexOf(type) !== -1 || !fltTypes.length }">{{type}}</button></li>
                     </ul>
                 </div>
                 <div class="col">
                     <ul>
-                        <li v-for="(mechanic, i) in mechanics" :key="'group'+i"><button >{{mechanic}}</button></li>
+                        <li v-for="(mechanic, i) in mechanics" :key="'group'+i" @click="toggleMechanics(mechanic)"><button :class="{active: fltMechanics.indexOf(mechanic) !== -1 || !fltMechanics.length }">{{mechanic}}</button></li>
                     </ul>
                 </div>
             </div>
@@ -154,7 +154,7 @@
         <!-- /search & filter -->
 
         <!-- exercises -->
-        <div class='row exercises' v-for="(e,i) in srtExercises" :key="'e'+i">
+        <div class='row exercises' v-for="(e,i) in filterExercises" :key="'e'+i">
             <div class="col-4 col-lg-1 image" v-if="e.images[0]">
                 <img :src="api_url + e.images[0]" alt="exersice images" />
             </div>
@@ -198,13 +198,16 @@ export default {
         return {
             exercise: { images: [], type: 'Strength', mechanic: 'Compound', instructions: [] },
             equipments: [ 'Dumbbell', 'Barbell', 'Cable', 'Machine', 'Bands', 'Foam Roll', 'Kettlebells', 'Body Only', 'Medicine Ball', 'Exercise Ball', 'E-Z Curl Bar', 'None', 'Other' ],
-            types: [ 'Cardio', 'Olympic Weightlifting', 'Plyometrics', 'Powerlifting', 'Strength', 'Stretching', 'Strongman' ],
+            types: [ 'Cardio', 'Weightlifting', 'Plyometrics', 'Powerlifting', 'Strength', 'Stretching', 'Strongman' ],
             mechanics: [ 'Compound', 'Isolation', 'N/A' ],
             muscle_groups: [ 'Neck', 'Traps', 'Shoulders', 'Chest', 'Biceps', 'Forearm', 'Abs',  'Calves', 'Triceps', 'Lats', 'Middle Back', 'Lower Back', 'Glutes', 'Quads', 'Hamstrings', 'Adductors', 'Abductors' ],
             api_url: config.api_url,
             search: '',
             toggleFilters: false,
-            fGroup: []
+            fltMuscleGroup: [],
+            fltEquipments: [],
+            fltTypes: [],
+            fltMechanics: []
         }
     },
     computed: {
@@ -217,6 +220,20 @@ export default {
         srtMuscle_groups() {
             return this.muscle_groups.sort()
         },
+        filterExercises() {
+            return this.srtExercises.filter( exercise => {
+                if( !this.fltMuscleGroup.length && !this.fltEquipments.length && !this.fltTypes.length && !this.fltMechanics.length ) return true 
+                else {
+                    let res
+                    res += this.fltMuscleGroup.find( flt => exercise.group === flt )
+                    res += this.fltEquipments.find( flt => exercise.equipment === flt )
+                    res += this.fltTypes.find( flt => exercise.type === flt )
+                    res += this.fltMechanics.find( flt => exercise.mechanic === flt )
+                    return res
+                }
+            })
+        },
+
     },
     methods: {
         saveExercise() {
@@ -249,6 +266,26 @@ export default {
             workout.name = cap(workout.name)
             this.$api.update( 'workout', workout )
         },
+        toggleMuscleGroups(group) {
+            if( this.fltMuscleGroup.indexOf(group) !== -1 ) this.fltMuscleGroup.splice(this.fltMuscleGroup.indexOf(group), 1)
+            else this.fltMuscleGroup.push(group)
+            this.$forceUpdate()
+        },
+        toggleEquipments(equipment) {
+            if( this.fltEquipments.indexOf(equipment) !== -1 ) this.fltEquipments.splice(this.fltEquipments.indexOf(equipment), 1)
+            else this.fltEquipments.push(equipment)
+            this.$forceUpdate()
+        },
+        toggleTypes(type) {
+            if( this.fltTypes.indexOf(type) !== -1 ) this.fltTypes.splice(this.fltTypes.indexOf(type), 1)
+            else this.fltTypes.push(type)
+            this.$forceUpdate()
+        },
+        toggleMechanics(mechanic) {
+            if( this.fltMechanics.indexOf(mechanic) !== -1 ) this.fltMechanics.splice(this.fltMechanics.indexOf(mechanic), 1)
+            else this.fltMechanics.push(mechanic)
+            this.$forceUpdate()
+        }
     },
     created() {
         this.$bus.$on('addImages', payload => { this.exercise.images.push(payload) })
