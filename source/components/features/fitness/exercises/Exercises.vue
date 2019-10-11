@@ -163,7 +163,7 @@
         <div class='row exercises' v-for="(e,i) in filterExercises" :key="'e'+i">
             <div class="col-4 col-lg-1 image" v-if="e.images[0]">
                 <a :href="'#/exercises/' + e.name.replace(/ /g,'_')" >
-                <img :src="api_url + e.images[0]" alt="exersice images" />
+                <img :src="api_url + e.images[1]" alt="exersice images" />
                 </a>
             </div>
             <div class="col-8 info" >
