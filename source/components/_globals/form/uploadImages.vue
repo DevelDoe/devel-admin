@@ -102,7 +102,7 @@ export default {
             this.uploadedFiles.splice(i,1)
             this.$bus.$emit('delImages', i )
         }
-    }
+    },
 } 
 </script>
 

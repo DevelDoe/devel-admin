@@ -102,7 +102,7 @@
                             <div class="col">
                                 <label for="image">Add Images</label>
                                 <small id="imageHelp" class="form-text text-muted">Add 2 images of the exercise. One at start and one at end of the exercise movement.</small>
-                                <uploadImages :images="exercise.images" />
+                                <uploadImages :images="exercise.images" v-if="renderComponent" />
                             </div>
                         </div>
 
@@ -219,7 +219,8 @@ export default {
             fltEquipments: [ 'Dumbbell', 'Barbell', 'Cable', 'Machine', 'Bands', 'Foam Roll', 'Kettlebells', 'Body Only', 'Medicine Ball', 'Exercise Ball', 'E-Z Curl Bar', 'None', 'Other' ],
             fltTypes: [ 'Cardio', 'Weightlifting', 'Plyometrics', 'Powerlifting', 'Strength', 'Stretching', 'Strongman' ],
             fltMechanics: [ 'Compound', 'Isolation', 'N/A' ],
-            workoutEx: {}
+            workoutEx: {},
+            renderComponent: true
         }
     },
     computed: {
@@ -258,6 +259,14 @@ export default {
             this.exercise.mechanic = ''
             this.exercise.video = ''
             this.exercise.images = []
+
+            // force partial view uploadImages to reload to clear images
+            this.renderComponent = false;
+        
+            this.$nextTick(() => {
+            // Add the component back in
+            this.renderComponent = true;
+            });
         },
         addField( ) {
             this.exercise.instructions.push('')
