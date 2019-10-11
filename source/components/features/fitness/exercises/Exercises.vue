@@ -249,13 +249,14 @@ export default {
     },
     methods: {
         saveExercise() {
+            debugger
             this.exercise.name = cap(this.exercise.name)
             this.$api.save('exercise', this.exercise )
             this.exercise.name = ''
             this.exercise.instructions = []    
             this.exercise.group = ''
             this.exercise.equipment = ''
-            this.exercise.tupe = ''
+            this.exercise.type = ''
             this.exercise.mechanic = ''
             this.exercise.video = ''
             this.exercise.images = []
