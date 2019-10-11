@@ -153,13 +153,21 @@
         </div>
         <!-- /search & filter -->
 
+        <!-- add modal -->
+
+        <AddModal :workoutEx="workoutEx" :lId="logged._id"/>
+
+        <!-- /add modal -->
+
         <!-- exercises -->
         <div class='row exercises' v-for="(e,i) in filterExercises" :key="'e'+i">
             <div class="col-4 col-lg-1 image" v-if="e.images[0]">
+                <a :href="'#/exercises/' + e.name.replace(/ /g,'_')" >
                 <img :src="api_url + e.images[0]" alt="exersice images" />
+                </a>
             </div>
             <div class="col-8 info" >
-                <a :href="'#/exercises/' + e.name.replace(/ /g,'_')" >
+                    <a :href="'#/exercises/' + e.name.replace(/ /g,'_')" >
                     <h3 >{{e.name}}</h3>
                     <div class="row meta">
                         <div class="col">
@@ -169,7 +177,9 @@
                             <span>{{e.mechanic}}</span>
                         </div>
                     </div>
-                </a>
+                     </a>
+                    <button type="button" data-toggle="modal" class="btn btn-primary" data-target="#addModal" @click='setWorkout(e)'>add</button>
+               
             </div>
         </div>
         <!-- /exercises  -->
@@ -191,6 +201,7 @@ import {mapGetters} from 'vuex'
 import { keySort, cap } from '../../../../util/helperFunc.js'
 import store from '../../../../store/store'
 import config from '../../../../../config'
+import AddModal from './AddModal.vue'
 export default {
     name: 'exercises',
     page: 'exercises',
@@ -207,7 +218,8 @@ export default {
             fltMuscleGroup: [ 'Neck', 'Traps', 'Shoulders', 'Chest', 'Biceps', 'Forearm', 'Abs',  'Calves', 'Triceps', 'Lats', 'Middle Back', 'Lower Back', 'Glutes', 'Quads', 'Hamstrings', 'Adductors', 'Abductors' ],
             fltEquipments: [ 'Dumbbell', 'Barbell', 'Cable', 'Machine', 'Bands', 'Foam Roll', 'Kettlebells', 'Body Only', 'Medicine Ball', 'Exercise Ball', 'E-Z Curl Bar', 'None', 'Other' ],
             fltTypes: [ 'Cardio', 'Weightlifting', 'Plyometrics', 'Powerlifting', 'Strength', 'Stretching', 'Strongman' ],
-            fltMechanics: [ 'Compound', 'Isolation', 'N/A' ]
+            fltMechanics: [ 'Compound', 'Isolation', 'N/A' ],
+            workoutEx: {}
         }
     },
     computed: {
@@ -231,17 +243,6 @@ export default {
                             (  this.fltMechanics.find( flt => exercise.mechanic === flt ) ) 
                 }
             })
-            // return this.srtExercises.filter( exercise => {
-            //     if( !this.fltMuscleGroup.length && !this.fltEquipments.length && !this.fltTypes.length && !this.fltMechanics.length ) return true 
-            //     else {
-            //         let res
-            //         res += this.fltMuscleGroup.find( flt => exercise.group === flt )
-            //         res += this.fltEquipments.find( flt => exercise.equipment === flt )
-            //         res += this.fltTypes.find( flt => exercise.type === flt )
-            //         res += this.fltMechanics.find( flt => exercise.mechanic === flt )
-            //         return res
-            //     }
-            // })
         },
 
     },
@@ -311,7 +312,13 @@ export default {
             } 
             else this.fltMechanics.push(mechanic)
             this.$forceUpdate()
+        },
+        setWorkout(exercise) {
+            this.workoutEx = exercise
         }
+    },
+    components: {
+        AddModal
     },
     created() {
         this.$bus.$on('addImages', payload => { this.exercise.images.push(payload) })
