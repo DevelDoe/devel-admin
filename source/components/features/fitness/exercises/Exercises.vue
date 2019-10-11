@@ -251,13 +251,14 @@ export default {
         saveExercise() {
             debugger
             this.exercise.name = cap(this.exercise.name)
+            debugger
             this.$api.save('exercise', this.exercise )
             this.exercise.name = ''
             this.exercise.instructions = []    
             this.exercise.group = ''
             this.exercise.equipment = ''
-            this.exercise.type = ''
-            this.exercise.mechanic = ''
+            this.exercise.type = 'Strength'
+            this.exercise.mechanic = 'Compound'
             this.exercise.video = ''
             this.exercise.images = []
 
