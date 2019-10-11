@@ -131,6 +131,12 @@
 
         <!-- /deleteModal -->
 
+        <!-- add modal -->
+
+        <AddModal :workoutEx="exercise" :lId="logged._id"/>
+
+        <!-- /add modal -->
+
         <div class="row">
             <div class="col">
                 <h2>{{exercise.name}}</h2>
@@ -160,9 +166,11 @@
                 <P><b>{{i+1}}</b> {{ins}}</P>
             </div>
         </div>
+
         <!-- controls -->
         <div class="row controls">
             <div class="btn-group">
+                <button type="button" data-toggle="modal" class="btn btn-primary" data-target="#addModal" @click='setWorkout()'>add</button>
                 <button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#updateModal'">Edit</button>
                 <button type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#deleteModal'" >Delete</button>
             </div>
@@ -172,6 +180,7 @@
 </template>
 <script>
 import config from '../../../../../config'
+import AddModal from './AddModal.vue'
 export default {
     name: 'exercise',
     page() {
@@ -209,10 +218,16 @@ export default {
         addField( ) {
             this.exercise.instructions.push('')
         },
+        setWorkout(exercise) {
+            this.workoutEx = exercise
+        }
+    },
+    components: {
+        AddModal
     },
     created() {
         this.$bus.$on('addImages', payload => { this.exercise.images.push(payload) })
         this.$bus.$on('delImages', payload => { this.exercise.images.splice(payload, 1) })
-    },
+    }
 }
 </script>

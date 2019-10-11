@@ -80,12 +80,22 @@
 
             .meta {
                 span {
-                    background: $secondary;
+                    background: rgba(255, 255, 255, .72);
                     padding: 0px 13px;
                     font-size: .7rem;
                     color: $primary-dark;
                     font-weight: 500;
                 }
+            }
+
+            button {
+                color: rgba(255, 255, 255, .72);
+                font-size: 12px;
+                float: right;
+                padding: 3px 10px;
+                position: absolute;
+                bottom: 5px;
+                right: 15px;
             }
         }
     }
@@ -166,6 +176,7 @@
             .col {
                 margin: 0;
                 padding: 0;
+                line-height: 15px;
             }
 
             .image {
@@ -179,20 +190,31 @@
             }
 
             .info {
+                position: relative;
 
                 h3 {
                     font-size: 1rem;
                     padding-top: 3px;
+                    margin-bottom: 0;
                 }
 
                 .meta {
+                    padding: 0 0 15px 0;
                     span {
-                        background: $secondary;
                         padding: 0px 5px;
-                        font-size: .7rem;
-                        color: $primary-dark;
+                        font-size: .5rem;
+                        color: $primary-light;
                         font-weight: 500;
                     }
+                }
+
+                button {
+                    font-size: 12px;
+                    float: right;
+                    padding: 3px 10px;
+                    position: absolute;
+                    bottom: 5px;
+                    right: 15px;
                 }
             }
         }
