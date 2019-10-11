@@ -152,8 +152,9 @@
         </div>
         <div class="row images" v-if="exercise.images[0]">
             <div class="col-12">
-                <img :src="api_url + exercise.images[0]" alt="exersice images" />
-                <img v-if="exercise.images[1]" :src="api_url + exercise.images[1]" alt="exersice images"  />
+                <span v-for="(image, i) in exercise.images" :key="'img'+i">
+                    <img :src="api_url + exercise.images[i]" alt="exersice images" />
+                </span>
             </div>
         </div>
         <div class="row video" v-if="exercise.video">
