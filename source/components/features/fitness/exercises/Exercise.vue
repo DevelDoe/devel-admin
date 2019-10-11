@@ -168,6 +168,7 @@
         </div>
 
         <!-- controls -->
+        
         <div class="row controls">
             <div class="btn-group">
                 <button type="button" data-toggle="modal" class="btn btn-primary" data-target="#addModal" @click='setWorkout()'>add</button>
@@ -175,6 +176,7 @@
                 <button type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#deleteModal'" >Delete</button>
             </div>
         </div>
+
         <!-- /controls -->
     </div>
 </template>
