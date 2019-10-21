@@ -102,7 +102,7 @@
                             <div class="col">
                                 <label for="image">Add Images</label>
                                 <small id="imageHelp" class="form-text text-muted">Add 2 images of the exercise. One at start and one at end of the exercise movement.</small>
-                                <uploadImages :images="exercise.images" />
+                                <uploadImages :images="exercise.images" v-if="renderComponent" />
                             </div>
                         </div>
 
@@ -117,13 +117,57 @@
         </div>
         <!-- /exercise modal -->
 
+        <!-- search & filter -->
+        <div id="filters">
+            <div class="row">
+                <div class="col-10 col-md-11 search">
+                    <input type="text" placeholder="search" v-model='search'/>
+                </div>
+                <div class="col-2 col-md-1 filters"><i class="fa fa-filter " @click="toggleFilters = !toggleFilters"></i></div>
+            </div>
+            <transition name="opacity">
+            <div class="row" style="padding: 15px; " v-if="toggleFilters">
+                <div class="col">
+                    <ul>
+                        <li v-for="(group, i) in muscle_groups" :key="'group'+i" @click="toggleMuscleGroups(group)" ><button :class="{active: fltMuscleGroup.indexOf(group) !== -1 || !fltMuscleGroup.length }">{{group}}</button></li>
+                    </ul>
+                    
+                </div>
+                <div class="col">
+                    <ul>
+                        <li v-for="(equipment, i) in equipments" :key="'group'+i" @click="toggleEquipments(equipment)"><button :class="{active: fltEquipments.indexOf(equipment) !== -1 || !fltEquipments.length }">{{equipment}}</button></li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <ul>
+                        <li v-for="(type, i) in types" :key="'group'+i" @click="toggleTypes(type)"><button :class="{active: fltTypes.indexOf(type) !== -1 || !fltTypes.length }">{{type}}</button></li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <ul>
+                        <li v-for="(mechanic, i) in mechanics" :key="'group'+i" @click="toggleMechanics(mechanic)"><button :class="{active: fltMechanics.indexOf(mechanic) !== -1 || !fltMechanics.length }">{{mechanic}}</button></li>
+                    </ul>
+                </div>
+            </div>
+            </transition >
+        </div>
+        <!-- /search & filter -->
+
+        <!-- add modal -->
+
+        <AddModal :workoutEx="workoutEx" :lId="logged._id"/>
+
+        <!-- /add modal -->
+
         <!-- exercises -->
-        <div class='row exercises' v-for="(e,i) in exercises" :key="'e'+i">
+        <div class='row exercises' v-for="(e,i) in filterExercises" :key="'e'+i">
             <div class="col-4 col-lg-1 image" v-if="e.images[0]">
-                <img :src="api_url + e.images[0]" alt="exersice images" />
+                <a :href="'#/exercises/' + e.name.replace(/ /g,'_')" >
+                <img :src="api_url + e.images[1]" alt="exersice images" />
+                </a>
             </div>
             <div class="col-8 info" >
-                <a :href="'#/exercises/' + e.name.replace(/ /g,'_')" >
+                    <a :href="'#/exercises/' + e.name.replace(/ /g,'_')" >
                     <h3 >{{e.name}}</h3>
                     <div class="row meta">
                         <div class="col">
@@ -133,7 +177,9 @@
                             <span>{{e.mechanic}}</span>
                         </div>
                     </div>
-                </a>
+                     </a>
+                    <button type="button" data-toggle="modal" class="btn btn-primary" data-target="#addModal" @click='setWorkout(e)'>add</button>
+               
             </div>
         </div>
         <!-- /exercises  -->
@@ -155,6 +201,7 @@ import {mapGetters} from 'vuex'
 import { keySort, cap } from '../../../../util/helperFunc.js'
 import store from '../../../../store/store'
 import config from '../../../../../config'
+import AddModal from './AddModal.vue'
 export default {
     name: 'exercises',
     page: 'exercises',
@@ -162,30 +209,66 @@ export default {
         return {
             exercise: { images: [], type: 'Strength', mechanic: 'Compound', instructions: [] },
             equipments: [ 'Dumbbell', 'Barbell', 'Cable', 'Machine', 'Bands', 'Foam Roll', 'Kettlebells', 'Body Only', 'Medicine Ball', 'Exercise Ball', 'E-Z Curl Bar', 'None', 'Other' ],
-            types: [ 'Cardio', 'Olympic Weightlifting', 'Plyometrics', 'Powerlifting', 'Strength', 'Stretching', 'Strongman' ],
+            types: [ 'Cardio', 'Weightlifting', 'Plyometrics', 'Powerlifting', 'Strength', 'Stretching', 'Strongman' ],
             mechanics: [ 'Compound', 'Isolation', 'N/A' ],
             muscle_groups: [ 'Neck', 'Traps', 'Shoulders', 'Chest', 'Biceps', 'Forearm', 'Abs',  'Calves', 'Triceps', 'Lats', 'Middle Back', 'Lower Back', 'Glutes', 'Quads', 'Hamstrings', 'Adductors', 'Abductors' ],
             api_url: config.api_url,
+            search: '',
+            toggleFilters: false,
+            fltMuscleGroup: [ 'Neck', 'Traps', 'Shoulders', 'Chest', 'Biceps', 'Forearm', 'Abs',  'Calves', 'Triceps', 'Lats', 'Middle Back', 'Lower Back', 'Glutes', 'Quads', 'Hamstrings', 'Adductors', 'Abductors' ],
+            fltEquipments: [ 'Dumbbell', 'Barbell', 'Cable', 'Machine', 'Bands', 'Foam Roll', 'Kettlebells', 'Body Only', 'Medicine Ball', 'Exercise Ball', 'E-Z Curl Bar', 'None', 'Other' ],
+            fltTypes: [ 'Cardio', 'Weightlifting', 'Plyometrics', 'Powerlifting', 'Strength', 'Stretching', 'Strongman' ],
+            fltMechanics: [ 'Compound', 'Isolation', 'N/A' ],
+            workoutEx: {},
+            renderComponent: true
         }
     },
     computed: {
         ...mapGetters([ 'exercises', 'logged' ]),
+        srtExercises() {
+            return this.exercises.filter( ex => {
+                return ex.name.toLowerCase().indexOf( this.search.toLowerCase().trim() ) > -1
+            })
+        },
         srtMuscle_groups() {
             return this.muscle_groups.sort()
         },
+        filterExercises() {
+            var fltMuscleGroup = this.fltMuscleGroup.length
+            return this.srtExercises.filter( exercise => {
+                if( !this.fltMuscleGroup.length && !this.fltEquipments.length && !this.fltTypes.length && !this.fltMechanics.length ) return true 
+                else {
+                    return  (  this.fltMuscleGroup.find( flt => exercise.group === flt) ) && 
+                            (  this.fltEquipments.find( flt =>  exercise.equipment === flt ) ) && 
+                            (  this.fltTypes.find( flt =>  exercise.type === flt ) ) && 
+                            (  this.fltMechanics.find( flt => exercise.mechanic === flt ) ) 
+                }
+            })
+        },
+
     },
     methods: {
         saveExercise() {
+            debugger
             this.exercise.name = cap(this.exercise.name)
+            debugger
             this.$api.save('exercise', this.exercise )
             this.exercise.name = ''
             this.exercise.instructions = []    
             this.exercise.group = ''
             this.exercise.equipment = ''
-            this.exercise.tupe = ''
-            this.exercise.mechanic = ''
+            this.exercise.type = 'Strength'
+            this.exercise.mechanic = 'Compound'
             this.exercise.video = ''
             this.exercise.images = []
+
+            // force partial view uploadImages to reload to clear images
+            this.renderComponent = false;
+        
+            this.$nextTick(() => {
+            // Add the component back in
+            this.renderComponent = true;
+            });
         },
         addField( ) {
             this.exercise.instructions.push('')
@@ -205,11 +288,53 @@ export default {
             workout.name = cap(workout.name)
             this.$api.update( 'workout', workout )
         },
+        toggleMuscleGroups(group) {
+            if( this.fltMuscleGroup.length === 17 ) this.fltMuscleGroup.length = []
+            if( this.fltMuscleGroup.indexOf(group) !== -1 ) {
+                this.fltMuscleGroup.splice(this.fltMuscleGroup.indexOf(group), 1)
+                if( this.fltMuscleGroup.length === 0 ) this.fltMuscleGroup = [ 'Neck', 'Traps', 'Shoulders', 'Chest', 'Biceps', 'Forearm', 'Abs',  'Calves', 'Triceps', 'Lats', 'Middle Back', 'Lower Back', 'Glutes', 'Quads', 'Hamstrings', 'Adductors', 'Abductors' ]
+            } 
+            else this.fltMuscleGroup.push(group)
+            this.$forceUpdate()
+        },
+        toggleEquipments(equipment) {
+            if( this.fltEquipments.length === 13 ) this.fltEquipments.length = []
+            if( this.fltEquipments.indexOf(equipment) !== -1 ) {
+                this.fltEquipments.splice(this.fltEquipments.indexOf(equipment), 1)
+                if( this.fltEquipments.length === 0 ) this.fltEquipments = [ 'Dumbbell', 'Barbell', 'Cable', 'Machine', 'Bands', 'Foam Roll', 'Kettlebells', 'Body Only', 'Medicine Ball', 'Exercise Ball', 'E-Z Curl Bar', 'None', 'Other' ]
+            } 
+            else this.fltEquipments.push(equipment)
+            this.$forceUpdate()
+        },
+        toggleTypes(type) {
+            if( this.fltTypes.length === 7 ) this.fltTypes.length = []
+            if( this.fltTypes.indexOf(type) !== -1 ) {
+                this.fltTypes.splice(this.fltTypes.indexOf(type), 1)
+                if( this.fltTypes.length === 0 ) this.fltTypes = [ 'Cardio', 'Weightlifting', 'Plyometrics', 'Powerlifting', 'Strength', 'Stretching', 'Strongman' ]
+            } 
+            else this.fltTypes.push(type)
+            this.$forceUpdate()
+        },
+        toggleMechanics(mechanic) {
+            if( this.fltMechanics.length === 3 ) this.fltMechanics.length = []
+            if( this.fltMechanics.indexOf(mechanic) !== -1 ) {
+                this.fltMechanics.splice(this.fltMechanics.indexOf(mechanic), 1)
+                if( this.fltMechanics.length === 0 ) this.fltMechanics =  [ 'Compound', 'Isolation', 'N/A' ]
+            } 
+            else this.fltMechanics.push(mechanic)
+            this.$forceUpdate()
+        },
+        setWorkout(exercise) {
+            this.workoutEx = exercise
+        }
+    },
+    components: {
+        AddModal
     },
     created() {
         this.$bus.$on('addImages', payload => { this.exercise.images.push(payload) })
         this.$bus.$on('delImages', payload => { this.exercise.images.splice(payload, 1) })
-    },
+    }
     
 }
 </script>
