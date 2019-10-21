@@ -249,9 +249,7 @@ export default {
     },
     methods: {
         saveExercise() {
-            debugger
             this.exercise.name = cap(this.exercise.name)
-            debugger
             this.$api.save('exercise', this.exercise )
             this.exercise.name = ''
             this.exercise.instructions = []    

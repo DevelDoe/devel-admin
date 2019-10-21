@@ -101,6 +101,7 @@ small {
 
 .content {
     transition: margin .3s;
+    height: 100%;
 }
 
 .admin-open {
@@ -123,48 +124,46 @@ small {
     bottom: 0;
     background-color: $primary-dark;
     left: 215px;
-    width: 100%;
+    right: 0;
     height: 50px;
     box-shadow: 0px -1px 48px 4px rgba(0, 0, 0, 0.2);
     z-index: 999;
+    padding: 5px;
 
     .btn-group {
         margin: 0 auto;
+        height: 100%;
 
         button {
             background-color: $btn-primary;
             text-transform: uppercase;
-            color: $primary-dark;
-            height: 100%;
-            margin: 0 15px;
+            margin: 0 3px 0 3px !important;
+            &:hover {
+                background-color: $btn-primary-light;
+            }
+        }
+
+        .btn-ctrl {
+            background-color: $primary;
+            text-transform: lowercase;
+            font-size: 61%;
+            height: 30px;
+            margin: 5px 5px !important;
+            
+            
+            color: white;
 
             &:hover {
                 background-color: $btn-primary-light;
             }
         }
-        button:first-child {
-            margin-left: -200px !important;
-        }
-
-        .btn-ctrl {
-            background-color: #242a46;
-            text-transform: lowercase;
-            font-size: 80%;
-            color: #b0b0d4;
-            margin: 10px 10px;
-            height: 40px;
-            border-radius: 5px !important;
-
-            &:hover {
-                background-color: #2d3352;
-            }
-        }
 
         .active {
-            background-color: $primary;
+            background-color: $btn-primary;
+            color: $primary-dark;
 
             &:hover {
-                background-color: #363d63;
+                background-color: $btn-primary-light;
             }
         }
     }
@@ -282,7 +281,7 @@ hr {
 @media (max-width: 768px) {
     .controls {
         left: 0;
-        width: calc(100% + 30px);
+        width: calc(100% + 15px);
     }
     .admin-open {
         margin-left: 100%;
@@ -291,14 +290,5 @@ hr {
     .col {
         padding-right: 0 !important;
         padding-left: 0 !important;
-    }
-    .controls {
-    
-        .btn-group {
-    
-            button:first-child  {
-                margin-left: 15px !important;
-            }
-        }
     }
 }
