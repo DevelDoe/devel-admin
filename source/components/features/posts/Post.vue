@@ -12,8 +12,8 @@ export default {
     page: 'new post',
     data() {
         return {
-            select: {
-                category: [ 'HTML', 'CSS', 'JavaScript', 'Linux', 'Windows', 'MongoDB', 'Git', 'Vue', 'Webpack', 'Node', 'Design', 'Electronics', 'Jekyll', 'Github' ],
+            select: { 
+                category: [ 'HTML', 'CSS', 'JavaScript', 'Linux', 'Windows', 'MongoDB', 'Git', 'Vue', 'Webpack', 'Node', 'Design', 'Electronics', 'Jekyll', 'Github',  'Star Citizen', 'Music Production' ],
                 lang: [ 'en', 'sv']
             }
         }
