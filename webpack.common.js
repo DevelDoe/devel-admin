@@ -11,7 +11,7 @@ module.exports = {
     plugins: [
         new WriteFilePlugin(),
         new HtmlWebpackPlugin({
-            title: 'develdevils',
+            title: 'udiohn',
             template: 'index.html'
         }),
         new webpack.ProvidePlugin({
