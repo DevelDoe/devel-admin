@@ -35,7 +35,7 @@ import { mapGetters } from 'vuex'
 import config from '../../../../config'
 export default {
     name: 'uploadImage',
-    props: [ 'image' ],
+    props: [ 'image', 'index'],
     data() {
         return {
             uploading: false,
@@ -73,7 +73,8 @@ export default {
                     })
                     this.img.img_src = res.data.file
                     this.img.name = res.data.file.substring(res.data.file.lastIndexOf('/')+1, res.data.file.length)
-                    this.$bus.$emit('addImage', res.data.file )
+                    const resArray = [res.data.file, this.index ]
+                    this.$bus.$emit('addImage', resArray  )
                     this.uploading = false
                     file.uploading = false
                     this.$forceUpdate()
