@@ -40,9 +40,6 @@
                         </span>
 
                         
-                        
-                        <!-- <input type="text" class="form-control"  aria-describedby="websiteHelp" placeholder="" v-model="setting.website">
-                        <small id="websiteHelp" class="form-text text-muted">Enter name of your website.</small> -->
                     </div>
                     
                     <!-- controls -->
@@ -72,7 +69,7 @@ export default {
         setting() {
             let res = {}
             res = this.settings.find( set  => set.user_id === this.logged._id )
-            res ?  null : res = {}
+            res ?  res : res = {}
             return res
         }
     },
