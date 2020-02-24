@@ -11,7 +11,7 @@ module.exports = {
     plugins: [
         new WriteFilePlugin(),
         new HtmlWebpackPlugin({
-            title: 'udiohn admin',
+            title: 'devel admin',
             template: 'index.html'
         }),
         new webpack.ProvidePlugin({
