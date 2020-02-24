@@ -100,21 +100,6 @@
 
             </div>
 
-            <!-- BLOG -->
-            <div class="col-lg-6" id="blogPreview" v-if="schema === 'post'">
-                <div class="child" id="blogPreviewChild">
-                    <header id="header">
-                        <h1>{{ data.category}} - {{ data.title }}</h1>
-                    </header>
-                    <div id="summary">
-                        <small>{{ data.summary }}</small>
-                    </div>
-                    <div id="blogPreviewBody" >
-                        <p v-html="$markdown.render(data.body)"></p>
-                    </div>
-                </div>
-            </div>
-
             <!-- USER -->
             <div class="col-4 toggleFeatures" v-if="schema === 'user' && logged.sec_lv <= 4" >
                 <div class="row padding" v-if="logged.sec_lv <= 4 || logged.sec_lv == 9"> 

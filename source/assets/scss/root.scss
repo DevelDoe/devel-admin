@@ -10,6 +10,7 @@ $fa-font-path: "~font-awesome/fonts";
 @import '_drawer';
 @import '_transitions';
 @import '_loading-animation';
+@import '_uploadImage';
 
 @import './components/_portal';
 @import './components/_dashboard';
@@ -19,6 +20,7 @@ $fa-font-path: "~font-awesome/fonts";
 @import './components/_workouts';
 @import './components/_exercises';
 @import './components/_exercise';
+@import './components/_post';
 @import '_hl';
 
 // Alternatively, you may import parts of Boostrap individually as needed.
