@@ -1,0 +1,60 @@
+.dropbox {
+    outline: 2px dashed grey; /* the dash box */
+    outline-offset: -10px;
+    color: #ccc;
+    min-height: 150px;
+    position: relative;
+    cursor: pointer;
+
+    &:hover {
+        background: #5c6577; /* when mouse over to the drop zone, change color */
+    }
+
+    p {
+        font-size: 1.2em;
+        text-align: center;
+        padding: 54px 0;
+    }
+}
+.dropbox-success {
+    color: #96d696;
+    a {
+        z-index: 9999;
+    }
+    img {
+        max-width: 50px;
+        float: left;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+}
+.dropbox-fail {
+    color: #965252;
+}
+.input-file {
+    opacity: 0; /* invisible but it's there! */
+    width: 100%;
+    height: 150px;
+    position: absolute;
+    cursor: pointer;
+}
+.uploading {
+    font-size: 1.2em;
+    text-align: center;
+    padding: 54px 100px;
+    color: #777;
+    -moz-animation-duration: 400ms;
+    -moz-animation-name: blink;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-direction: alternate;
+
+    -webkit-animation-duration: 400ms;
+    -webkit-animation-name: blink;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-direction: alternate;
+
+    animation-duration: 400ms;
+    animation-name: blink;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
