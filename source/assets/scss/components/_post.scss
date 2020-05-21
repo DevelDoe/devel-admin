@@ -1,16 +1,43 @@
 #post {
     position: relative;
+    height: 100%;
     padding-bottom: 50px;
 
+    .post-title {
+        height: auto;
+        div[class^="col"]{
+            padding: 0
+        }
+        .form-group {
+            padding: 20px;
+            .form-control {
+                text-transform: lowercase !important;
+            }
+        }
+    }
+
+    .parent {
+        height: 100%;
+    }
+
+    form {
+        height: 100%;
+        .body {
+            height: calc(100% - 200px);
+        }
+    }
+
     .form-group {
-        padding: 20px;
+        padding: 5px;
 
         .form-control {
-            color: #ccc;
+            color: #717171;
             background-color: rgba(255, 255, 255, 0.01);
             border: none;
             padding: 20px;
             border-radius: 0;
+            height: 59px;
+            font-weight: lighter;
         }
         select {
             padding: 17px !important;
@@ -36,12 +63,14 @@
         :-moz-placeholder { /* Firefox 18- */
             text-transform: lowercase;
         }
+            
+
         #summary {
-            height: 66px;
+            height: 100px;
             padding: 20px;
         }
         #body {
-            height: 450px;
+            height:calc(100% - 20px);
         }
     }
     
@@ -104,31 +133,32 @@
             border: none;
         }
     }
-    #blogPreview {
-        padding-top: 0;
-        min-height: 100%;
-        width: 100%;
-        overflow: hidden;
-        position: relative;
+    // #blogPreview {
+    //     padding-top: 0;
+    //     min-height: 100%;
+    //     width: 100%;
+    //     overflow: hidden;
+    //     position: relative;
 
-        .child {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: -17px; /* Increase/Decrease this value for cross-browser compatibility */
-            overflow-y: scroll;
+    //     .child {
+    //         position: absolute;
+    //         top: 0;
+    //         bottom: 0;
+    //         left: 0;
+    //         right: -17px; /* Increase/Decrease this value for cross-browser compatibility */
+    //         overflow-y: scroll;
 
-            header {
-                margin-bottom: 10px;
-            }
-            #summary {
-                margin-bottom: 10px;
-                font-style: italic;
-            }
-            #blogPreviewBody {
-                padding-right: 40px;
-            }
-        }
-    }
+    //         header {
+    //             margin: 32px 0px;
+    //             margin-bottom: 0;
+    //         }
+    //         #summary {
+    //             margin-bottom: 10px;
+    //             font-style: italic;
+    //         }
+    //         #blogPreviewBody {
+    //             padding-right: 40px;
+    //         }
+    //     }
+    // }
 }
