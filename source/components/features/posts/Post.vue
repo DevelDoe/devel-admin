@@ -1,6 +1,28 @@
 <template>
     <div id="post">
 
+        <!-- deleteModal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModallLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModallLabel">Delete</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <form class="form-signin" id="loginForm" onsubmit="return false;">
+                            <h1>Warnign</h1>
+                            <p>Are you shure you want to delete {{post.title}}!
+                            This action can not be undone!</p>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-lg btn-danger btn-block" type="submit" form="loginForm" @click="remove(data)" >DELETE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row parent">
 
             <!-- FORM -->
@@ -71,7 +93,7 @@
                         </div>
 
                         <div class="form-group">
-                            <select class="form-control"  v-model="post.category" @blur="$forceUpdate()">
+                            <select class="form-control"  v-model="post.lang" @blur="$forceUpdate()">
                                 <option disabled value="">language</option>
                                 <option v-for="(key, i) in select.lang" :value="key" :key="'lang'+i">{{key}}</option>
                             </select>
@@ -141,11 +163,56 @@ export default {
     data() {
         return {
             select: { 
-                category: [ 'HTML', 'CSS', 'JavaScript', 'Linux', 'Windows', 'MongoDB', 'Git', 'Vue', 'Webpack', 'Node', 'Design', 'Electronics', 'Jekyll', 'Github',  'Star Citizen', 'Music Production' ],
+                category: [ 'HTML', 'CSS', 'JavaScript', 'Shopify', 'Linux', 'Windows', 'MongoDB', 'Git', 'Vue', 'Webpack', 'Node', 'Design', 'Electronics', 'Jekyll', 'Github',  'Star Citizen', 'Music Production' ],
                 lang: [ 'en', 'sv'],
             },
             valid: true,
         }
+    },
+    methods: {
+        save:  function () {
+            if (this.logged.sec_lv != 9 ) {
+                const valid = this.$api.save( 'post', this.post )
+                if( valid === undefined ) {
+                    this.$router.push(`posts`)
+                } else {
+                    this.valid = false
+                }
+            } else {
+                this.$bus.$emit('toast', 'no write permissions, your on a guest account.')
+                setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
+            }
+        },
+        update() {
+            if(this.logged.sec_lv != 9) {
+                const valid = this.$api.update( 'post', this.post )
+                if( valid === undefined ) {
+                    this.$router.push(`posts`)
+                } else {
+                    this.valid = false
+                }
+            } else {
+                this.$bus.$emit('toast', 'no write permissions, your on a guest account.')
+                setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
+            }
+        },
+        remove: function() {
+            if(this.logged.sec_lv != 9) {
+                if( this.post.deleted === false ) {
+                    this.post.deleted = true
+                    this.$store.dispatch('delTicket', this.post._id)
+                    this.update()
+                } else {
+                    this.$api.del( 'post', this.post )
+                }
+                $('#deleteModal').modal('hide')
+                this.$router.push(`posts`)
+            } else {
+                this.$bus.$emit('toast', 'no write permissions, your on a guest account.')
+                setTimeout( () => { this.$bus.$emit('toast', '' ) }, 8000 )
+                $('#deleteModal').modal('hide')
+            }
+        },
     },
     computed: {
         ...mapGetters([ 'posts', 'logged' ]),
@@ -175,9 +242,9 @@ export default {
     components: {
         Datepicker,
     },
-    updated() {
-        var body = document.getElementById("blogPreviewChild")
-        body.scrollTop = body.scrollHeight 
-    },
+    // updated() {
+    //     var body = document.getElementById("blogPreviewChild")
+    //     body.scrollTop = body.scrollHeight 
+    // },
 }
 </script>
