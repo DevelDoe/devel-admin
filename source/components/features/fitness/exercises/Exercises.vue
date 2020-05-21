@@ -300,7 +300,7 @@ export default {
             if( this.fltEquipments.indexOf(equipment) !== -1 ) {
                 this.fltEquipments.splice(this.fltEquipments.indexOf(equipment), 1)
                 if( this.fltEquipments.length === 0 ) this.fltEquipments = [ 'Dumbbell', 'Barbell', 'Cable', 'Machine', 'Bands', 'Foam Roll', 'Kettlebells', 'Body Only', 'Medicine Ball', 'Exercise Ball', 'E-Z Curl Bar', 'None', 'Other' ]
-            } 
+            }
             else this.fltEquipments.push(equipment)
             this.$forceUpdate()
         },
