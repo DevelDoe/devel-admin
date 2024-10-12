@@ -42,7 +42,7 @@ Complete featured web administration application. built with Vue 2.0 + vue-route
 
 ## Build Setup
 
-**Requires Node.js 7+**
+**Requires Node.js 10+**
 
 Add configuration file 'config.js' to root of file structure:
 

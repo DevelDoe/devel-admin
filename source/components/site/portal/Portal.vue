@@ -14,7 +14,7 @@
                             <h1>{{appName}}</h1>
                             <p class="h3 mb-3 font-weight-normal">sign in</p>
                             <label for="inputEmail" class="sr-only">Email address</label>
-                            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="" v-model="email">
+                            <input type="text" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="" v-model="email">
                             <label for="inputPassword" class="sr-only">Password</label>
                             <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" v-model="password">
                             <div class="checkbox mb-3">
@@ -66,8 +66,8 @@ export default {
     page: 'portal',
     data() {
         return {
-            email: '',
-            password: '',
+            email: 'root@toor.me',
+            password: 'JI21ko87.',
             appName: config.app_name,
             intro: config.app_intro,
             socialFacebook: config.social_facebook,
@@ -107,7 +107,9 @@ export default {
                 res.json().then( data => {
                     if(data.token) {
 
+                        console.log('data ',data)
                         this.$store.dispatch('setToken', data.token)
+
 
                         $('#loginModal').modal('hide')
                         this.$router.push('overview')
