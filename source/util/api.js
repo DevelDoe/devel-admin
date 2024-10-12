@@ -23,17 +23,17 @@ const API = {
             cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
             credentials: "same-origin", // include, same-origin, *omit
             headers: {
-                'Authorization': store.state.token
+                'Authorization': `${store.state.token}`
             },
             redirect: "follow", // manual, *follow, error
             referrer: "no-referrer", // no-referrer, *client
         }).then( res => {
-            if( res.status !== 200 ) {
-                if( process.env.NODE_ENV === 'development' ) console.log('Status Code: ' + res.status)
-                bus.$emit('toast', 'Error fetching data' )
-                setTimeout( () => { bus.$emit('toast', '' ) }, 4000 )
-                store.dispatch('setLoading', false)
-                return
+            if (res.status !== 200) {
+                console.error('Error Status Code:', res.status, 'Response:', res.statusText);
+                bus.$emit('toast', `Error fetching data: ${res.statusText}`);
+                setTimeout(() => { bus.$emit('toast', '') }, 4000);
+                store.dispatch('setLoading', false);
+                return;
             }
             var Coll = capitalize(coll)
             res.json().then( data => {

@@ -153,15 +153,6 @@
             </div>
             
         </div>
-
-        
-
-        
-
-        
-
-         
-        
         
     </div>
 </template>
@@ -190,7 +181,8 @@ export default {
     computed: {
         ...mapGetters([ 'tasks', 'logged', 'notes', 'posts', 'users', 'visitors', 'images' ]),
         filteredTasks() {
-            // this users tasks
+            // this users 
+            console.log(this.logged)
             const user = this.tasks.filter( todo => {  return todo.user_id === this.logged._id  })
             const completed = user.filter( todo => { return todo.completed === false  })
             const sorted = completed.sort((a, b) => a.title.localeCompare(b.title) )

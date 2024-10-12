@@ -145,10 +145,12 @@ const store = new Vux.Store({
         },
 
         setLogged: (state, payload) => {
-            state.logged = payload
+            console.log("[Vuex] Setting logged user:", payload);  // Log the logged user
+            state.logged = payload;
         },
-        delLogged: (state, payload) => {
-            state.logged = null
+        delLogged: (state) => {
+            console.log("[Vuex] Removing logged user");  // Log when the user is removed
+            state.logged = null;
         },
 
         setNotes: (state, payload) => {
@@ -300,10 +302,12 @@ const store = new Vux.Store({
         },
 
         setLogged: (ctx, payload) => {
-            ctx.commit('setLogged', payload)
+            console.log("[Vuex Action] setLogged called with payload:", payload);  // Log the action call
+            ctx.commit('setLogged', payload);
         },
-        delLogged: (ctx, payload) => {
-            ctx.commit('delLogged', payload)
+        delLogged: (ctx) => {
+            console.log("[Vuex Action] delLogged called");  // Log when the user is removed
+            ctx.commit('delLogged');
         },
 
         setNotes: (ctx, payload) => {

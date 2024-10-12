@@ -202,7 +202,9 @@ export default {
     computed: {
         ...mapGetters([ 'logged' ]),
         fields() {
-            let res = this.$store.getters.resources.find( resource => resource.name === this.schema )
+            let res = (this.$store.getters.resources && Array.isArray(this.$store.getters.resources))
+                ? this.$store.getters.resources.find(resource => resource.name === this.schema)
+                : null;
             return res.fields
         },
         accelSecLv() {

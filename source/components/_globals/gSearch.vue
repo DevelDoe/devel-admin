@@ -51,58 +51,51 @@ export default {
     computed: {
         ...mapGetters( [ 'logged', 'showSearch' ]),
         data() {
-            var resources = this.$store.getters.resources
-            var list = []
 
-            // for every resource
-            resources.forEach( resource => {
-                
-                // get the dataset e.g dataset => user = [{ name: 'bla', username: 'vla' }, { name: 'bla', username: 'vla' }]
-                var dataset = this.$store.getters[`${resource.name}s`]
+            var resources = this.$store.getters.resources || [];
+            var list = [];
 
-                // get the route to this resource
-                var route = routes.find( route => { return route.name === `${resource.name}s` })
+            if (Array.isArray(resources)) {
+                resources.forEach(resource => {
+                    if (resource && resource.name) {
+                        var dataset = this.$store.getters[`${resource.name}s`] || [];
 
-                
-                // for every object in dataset 
-                dataset.forEach( obj => {
-                    
-                    // for every field in this resource => { "_id": "5bcbc3c4c9458972099f6783", "name": "note", "read": 9, "write": 9, "__v": 5, "details": false,  "fields": [ { "name": "title", "inputType": "text", "dbType": "String", "unique": true, "required": true, "label": "Title", "search": true }, { "name": "user_id", "inputType": "none", "dbType": "String", "unique": false, "required": true }, { "name": "overview", "inputTypes": "", "dbTypes": "", "unique": false, "required": true, "inputType": "checkbox", "dbType": "Boolean", "label": "Overview" } ]}
-                    resource.fields.forEach(field => {
-                        
-                        // if this field is searchable
-                        if(field.search) {
+                        if (Array.isArray(dataset)) {
+                            dataset.forEach(obj => {
+                                resource.fields.forEach(field => {
+                                    if (field.search) {
+                                        var newObj = {};
 
-                            var newObj = {}
+                                        // Handle route finding safely
+                                        var route = Array.isArray(routes)
+                                            ? routes.find(route => route.name === `${resource.name}s`)
+                                            : null;
 
-                            // parse every key in this field
-                            for(var key in obj) {
-                                // is the field the searchable field
-                                if(key === field.name ) {
-                                    // is there an user associated to this field, is so check if its the current user and add only those
-                                    // Check if the logged sec_lv is lower than the sec_lv of a user
-                                    if( ( (obj.user_id && obj.user_id === this.logged._id) || !obj.user_id ) && ( obj.sec_lv && this.logged.administrations.indexOf('users') !== -1 && this.logged.sec_lv <= obj.sec_lv || !obj.sec_lv ) ) {
-                                        newObj['field'] = obj[key]
-                                    } else {
-                                        newObj['field'] = ''
+                                        // Safely assign route path
+                                        newObj['path'] = route ? route.path : '';
+
+                                        for (var key in obj) {
+                                            if (key === field.name) {
+                                                newObj['field'] = (obj.user_id && obj.user_id === this.logged._id) || !obj.user_id 
+                                                    ? obj[key] 
+                                                    : '';
+                                            }
+                                            if (key === '_id' && resource.details) {
+                                                newObj[key] = obj[key];
+                                            }
+                                        }
+
+                                        if (newObj.field) list.push(newObj);
                                     }
-                                }
-                                // is this the key id and has this resource a details page?
-                                if(key === '_id' && resource.details) {
-                                    newObj[key] = obj[key]
-                                }
-                                newObj['path'] = route.path
-                            }
-
-                            if(newObj.field) list.push(newObj)
-
+                                });
+                            });
                         }
-                    })
+                    }
+                });
+            }
 
-                })
-            })
+            return list;
 
-            return list
         },
         filterData() {
             return this.data.filter( key => {

@@ -37,6 +37,8 @@ Complete featured web administration application. built with Vue 2.0 + vue-route
 * 3.0
   * feature Weights
   * minor mobile adjustments
+* 4.0
+  * Refactor of Token implementation
 
 
 

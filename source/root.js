@@ -94,11 +94,19 @@ import chart from 'chart.js'
 Object.defineProperty(Vue.prototype, '$chart', { get() { return this.$root.chart } })
 
 
-const debugSocket = false
+const debugSocket = true
 import config from '../config'
 
 let socket = new WebSocket(config.web_socket)
-if (debugSocket) console.log('root: new')
+socket.onerror = (error) => {
+    console.error("WebSocket error:", error);
+};
+socket.onclose = () => {
+    console.log("WebSocket closed, attempting to reconnect in 5 seconds...");
+    setTimeout(() => {
+        socket = new WebSocket(config.web_socket);
+    }, 5000);
+};
 
 socket.onopen = () => {
     if (store.getters.logged) {
@@ -110,7 +118,6 @@ socket.onopen = () => {
 socket.onmessage = e => {
 
     const parsed = JSON.parse(e.data)
-
     if( parsed.type === 'online' ) {
         let user = store.getters.users.find( u => u._id === parsed.id )
         user.online = parsed.online

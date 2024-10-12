@@ -152,7 +152,7 @@ export default {
                 cache: "no-cache",
                 credentials: "same-origin",
                 headers: {
-                    "Content-Type": "application/json; charset=utf-8",
+                    "Content-Type": "application/json; charset=utf-8"
                 },
                 redirect: "follow",
                 referrer: "no-referrer",

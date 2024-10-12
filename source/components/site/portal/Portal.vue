@@ -66,10 +66,8 @@ export default {
     page: 'portal',
     data() {
         return {
-            // email: 'guest@develadmin.nu',
-            // password: 'guest',
-            email: '',
-            password: '',
+            email: 'root@toor.me',
+            password: 'asdf',
             appName: config.app_name,
             intro: config.app_intro,
             socialFacebook: config.social_facebook,
@@ -88,6 +86,7 @@ export default {
             return this.location === location
         },
         login() {
+            console.log('Attempting to log in...');
             console.log('clearing out localstorage')
             localStorage.clear()
            
@@ -109,40 +108,48 @@ export default {
                 res.json().then( data => {
                     if(data.token) {
 
-                        this.$store.dispatch('setToken', data.token)
+                        console.log('Login response:', data);
 
-                        $('#loginModal').modal('hide')
-                        this.$router.push('overview')
+                        if (data.token) {
 
-                        let user
-                        let resource
-                        let task 
-                        let note 
-                        let post 
-                        let visitor 
-                        let photo
-                        let message
-                        let ticket
-                        let exercise
-                        let workout
-                        let setting
+                            // Store the complete token ('Bearer <token>') in Vuex and localStorage
+                             this.$store.dispatch('setToken', data.token)
 
-                        const update = () => {
-                            
-                            if( resource, task, note, post, visitor, photo, user, message, exercise, workout, setting ) {
+                            $('#loginModal').modal('hide');
+                            this.$router.push('overview');
 
-                                if (user.username) {
+                            let user
+                            let resource
+                            let task 
+                            let note 
+                            let post 
+                            let visitor 
+                            let photo
+                            let message
+                            let ticket
+                            let exercise
+                            let workout
+                            let setting
+
+                            const update = () => {
                                 
-                                    if(this.logged.sec_lv != 9) this.$bus.$emit('toast', 'Welcome back ' + this.logged.username )
-                                    else this.$bus.$emit('toast', 'Welcome ' + this.logged.username + '. Please feel free to look around. If you have any questions feel free to put them forward.' )
-                                    setTimeout( () => { this.$bus.$emit('toast', '' ) }, 4000 )
-                                
-                                }
+                                // if( resource, task, note, post, visitor, photo, user, message, ticker, exercise, workout, setting ) {
+
+                                    if (user.username) {
+                                    
+                                        if(this.logged.sec_lv != 9) this.$bus.$emit('toast', 'Welcome back ' + this.logged.username )
+                                        else this.$bus.$emit('toast', 'Welcome ' + this.logged.username + '. Please feel free to look around. If you have any questions feel free to put them forward.' )
+                                        setTimeout( () => { this.$bus.$emit('toast', '' ) }, 4000 )
+                                    
+                                    }
+
+                                // }
 
                             }
 
+                        } else {
+                            console.error('Login failed:', data.msg);
                         }
-
                         this.$api.get( 'user', () => {
                             
                             var logged = this.users.find( user => user.email === this.email )
